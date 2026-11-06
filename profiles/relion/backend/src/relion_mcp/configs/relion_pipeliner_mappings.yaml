@@ -1,0 +1,2021 @@
+backend: relion
+interface: relion_pipeliner
+version: 0.3.0
+relion_version: "5.0"
+manifest: configs/backends/relion_operation_manifest.yaml
+label_status: source_manifest_referenced
+operation_aliases:
+  beam_induced_motion_correction: motion_correction
+  autopicking: reference_autopicking
+  particle_picking: log_autopicking
+  particle_extraction: extract_particles
+  postprocessing: postprocess
+  bayesian_polishing: polish
+parameter_value_sources:
+  use_gpu: resource_allocation_gpu_enabled
+  gpu_ids: resource_allocation_gpu_ids
+operations:
+  import_movies:
+    relion_job_type: Import
+    manifest_job_type: Import
+    support_level: schedule_mappable
+    description: Import raw movies or micrographs into a RELION project.
+    fixed_options:
+      do_raw:
+        value: true
+        type: bool
+        format: yes_no
+      do_other:
+        value: false
+        type: bool
+        format: yes_no
+    inputs:
+      source_movies:
+        required: true
+        accepted_result_types:
+          - imported_movies
+        manifest_option_key: fn_in_raw
+    params:
+      raw_movie_glob:
+        required: true
+        type: path
+        manifest_option_key: fn_in_raw
+      is_multiframe:
+        required: false
+        type: bool
+        manifest_option_key: is_multiframe
+        default: true
+        format: yes_no
+      optics_group_name:
+        required: false
+        type: str
+        manifest_option_key: optics_group_name
+        default: opticsGroup1
+      pixel_size_A:
+        required: true
+        type: float
+        manifest_option_key: angpix
+      voltage_kv:
+        required: false
+        type: float
+        manifest_option_key: kV
+        default: 300
+      spherical_aberration_mm:
+        required: false
+        type: float
+        manifest_option_key: Cs
+        default: 2.7
+      amplitude_contrast:
+        required: false
+        type: float
+        manifest_option_key: Q0
+        default: 0.1
+    expected_results:
+      - imported_movies
+
+  import_particles:
+    relion_job_type: Import
+    manifest_job_type: Import
+    support_level: schedule_mappable
+    description: Import an existing particles STAR file.
+    fixed_options:
+      do_raw:
+        value: false
+        type: bool
+        format: yes_no
+      do_other:
+        value: true
+        type: bool
+        format: yes_no
+      node_type:
+        value: Particles STAR file (.star)
+        type: enum
+        legacy_param: import_type
+    inputs:
+      particles:
+        required: true
+        accepted_result_types:
+          - extracted_particles
+          - selected_particles
+        manifest_option_key: fn_in_other
+    expected_results:
+      - selected_particles
+
+  motion_correction:
+    relion_job_type: MotionCorr
+    manifest_job_type: MotionCorr
+    support_level: schedule_mappable
+    description: Correct beam-induced motion for imported movies.
+    inputs:
+      movies:
+        required: true
+        accepted_result_types:
+          - imported_movies
+        manifest_option_key: input_star_mics
+    params:
+      number_of_mpi:
+        required: false
+        type: int
+        manifest_option_key: nr_mpi
+        default: 1
+      number_of_threads:
+        required: false
+        type: int
+        manifest_option_key: nr_threads
+        default: 4
+      submit_to_queue:
+        required: false
+        type: bool
+        manifest_option_key: do_queue
+        default: false
+        format: yes_no
+      patch_x:
+        required: false
+        type: str
+        manifest_option_key: patch_x
+        default: "1"
+      patch_y:
+        required: false
+        type: str
+        manifest_option_key: patch_y
+        default: "1"
+      gain_reference:
+        required: false
+        type: path
+        manifest_option_key: fn_gain_ref
+      gain_rotation:
+        required: false
+        type: int
+        manifest_option_key: gain_rot
+        default: 0
+        format: gain_rotation_radio
+      gain_flip:
+        required: false
+        type: int
+        manifest_option_key: gain_flip
+        default: 0
+        format: gain_flip_radio
+      use_relion_own_motioncor:
+        required: false
+        type: bool
+        manifest_option_key: do_own_motioncor
+        default: true
+        format: yes_no
+      motioncor2_executable:
+        required: false
+        type: path
+        manifest_option_key: fn_motioncor2_exe
+      defect_file:
+        required: false
+        type: path
+        manifest_option_key: fn_defect
+      gpu_ids:
+        required: false
+        type: str
+        manifest_option_key: gpu_ids
+      dose_per_frame:
+        required: false
+        type: float
+        manifest_option_key: dose_per_frame
+    expected_results:
+      - motion_corrected_micrographs
+
+  ctf_estimation:
+    relion_job_type: CtfFind
+    manifest_job_type: CtfFind
+    support_level: schedule_mappable
+    description: Estimate CTF parameters for motion-corrected micrographs.
+    inputs:
+      micrographs:
+        required: true
+        accepted_result_types:
+          - motion_corrected_micrographs
+        manifest_option_key: input_star_mics
+    params:
+      number_of_mpi:
+        required: false
+        type: int
+        manifest_option_key: nr_mpi
+        default: 1
+      submit_to_queue:
+        required: false
+        type: bool
+        manifest_option_key: do_queue
+        default: false
+        format: yes_no
+      box_size_pix:
+        required: false
+        type: int
+        manifest_option_key: box
+      ctf_window_size_pix:
+        required: false
+        type: int
+        manifest_option_key: ctf_win
+      min_resolution_A:
+        required: false
+        type: float
+        manifest_option_key: resmin
+      max_resolution_A:
+        required: false
+        type: float
+        manifest_option_key: resmax
+      min_defocus_A:
+        required: false
+        type: float
+        manifest_option_key: dfmin
+      max_defocus_A:
+        required: false
+        type: float
+        manifest_option_key: dfmax
+      defocus_step_A:
+        required: false
+        type: float
+        manifest_option_key: dfstep
+      astigmatism_A:
+        required: false
+        type: float
+        manifest_option_key: dast
+      use_ctffind4:
+        required: false
+        type: bool
+        manifest_option_key: use_ctffind4
+        default: true
+        format: yes_no
+      use_power_spectra_from_motioncorr:
+        required: false
+        type: bool
+        manifest_option_key: use_given_ps
+        format: yes_no
+      ctffind_executable:
+        required: false
+        type: path
+        manifest_option_key: fn_ctffind_exe
+      use_exhaustive_search:
+        required: false
+        type: bool
+        manifest_option_key: slow_search
+        format: yes_no
+    expected_results:
+      - ctf_estimates
+
+  manual_picking:
+    relion_job_type: ManualPick
+    manifest_job_type: ManualPick
+    support_level: schedule_mappable
+    description: Open micrographs for manual particle picking.
+    inputs:
+      micrographs:
+        required: true
+        accepted_result_types:
+          - motion_corrected_micrographs
+          - ctf_estimates
+        manifest_option_key: fn_in
+    params:
+      lowpass_filter_A:
+        required: false
+        type: float
+        manifest_option_key: lowpass
+        default: 20
+      particle_diameter_A:
+        required: true
+        type: float
+        manifest_option_key: diameter
+      micrograph_scale:
+        required: false
+        type: float
+        manifest_option_key: micscale
+      sigma_contrast:
+        required: false
+        type: float
+        manifest_option_key: sigma_contrast
+      black_value:
+        required: false
+        type: float
+        manifest_option_key: black_val
+      white_value:
+        required: false
+        type: float
+        manifest_option_key: white_val
+      use_topaz_denoise:
+        required: false
+        type: bool
+        manifest_option_key: do_topaz_denoise
+        format: yes_no
+    expected_results:
+      - picked_particles
+
+  micrograph_subset_selection:
+    relion_job_type: Select
+    manifest_job_type: Select
+    support_level: schedule_mappable
+    description: Split micrograph STAR files into subsets for downstream picking.
+    inputs:
+      micrographs:
+        required: true
+        accepted_result_types:
+          - ctf_estimates
+          - motion_corrected_micrographs
+        manifest_option_key: fn_mic
+    params:
+      split_into_subsets:
+        required: false
+        type: bool
+        manifest_option_key: do_split
+        default: true
+        format: yes_no
+      randomize_order:
+        required: false
+        type: bool
+        manifest_option_key: do_random
+        default: true
+        format: yes_no
+      subset_size:
+        required: true
+        type: int
+        manifest_option_key: split_size
+      number_of_subsets:
+        required: false
+        type: int
+        manifest_option_key: nr_split
+        default: -1
+    expected_results:
+      - selected_micrographs
+
+  log_autopicking:
+    relion_job_type: AutoPick
+    manifest_job_type: AutoPick
+    support_level: schedule_mappable
+    description: Pick particles with the Laplacian-of-Gaussian picker.
+    inputs:
+      micrographs:
+        required: true
+        accepted_result_types:
+          - selected_micrographs
+          - motion_corrected_micrographs
+          - ctf_estimates
+        manifest_option_key: fn_input_autopick
+    params:
+      use_log:
+        required: false
+        type: bool
+        manifest_option_key: do_log
+        default: true
+        format: yes_no
+      lowpass_filter_A:
+        required: false
+        type: float
+        manifest_option_key: lowpass
+        default: 20
+      log_diameter_min_A:
+        required: true
+        type: float
+        manifest_option_key: log_diam_min
+      log_diameter_max_A:
+        required: true
+        type: float
+        manifest_option_key: log_diam_max
+      shrink_factor:
+        required: false
+        type: float
+        manifest_option_key: shrink
+      log_adjust_threshold:
+        required: false
+        type: float
+        manifest_option_key: log_adjust_thr
+      log_upper_threshold:
+        required: false
+        type: float
+        manifest_option_key: log_upper_thr
+      number_of_mpi:
+        required: false
+        type: int
+        manifest_option_key: nr_mpi
+        default: 1
+      submit_to_queue:
+        required: false
+        type: bool
+        manifest_option_key: do_queue
+        default: false
+        format: yes_no
+    expected_results:
+      - picked_particles
+
+  topaz_training:
+    relion_job_type: AutoPick
+    manifest_job_type: AutoPick
+    support_level: schedule_mappable
+    description: Train a Topaz neural network model from selected particles.
+    inputs:
+      micrographs:
+        required: true
+        accepted_result_types:
+          - selected_micrographs
+          - motion_corrected_micrographs
+          - ctf_estimates
+        manifest_option_key: fn_input_autopick
+      particles:
+        required: true
+        accepted_result_types:
+          - selected_particles
+        manifest_option_key: topaz_train_parts
+    params:
+      use_topaz:
+        required: false
+        type: bool
+        manifest_option_key: do_topaz
+        format: yes_no
+      perform_topaz_training:
+        required: false
+        type: bool
+        manifest_option_key: do_topaz_train
+        format: yes_no
+      train_on_particles:
+        required: false
+        type: bool
+        manifest_option_key: do_topaz_train_parts
+        format: yes_no
+      perform_topaz_picking:
+        required: false
+        type: bool
+        manifest_option_key: do_topaz_pick
+        format: yes_no
+      topaz_particle_diameter_A:
+        required: true
+        type: float
+        manifest_option_key: topaz_particle_diameter
+      use_gpu:
+        required: false
+        type: bool
+        manifest_option_key: use_gpu
+        format: yes_no
+      gpu_ids:
+        required: false
+        type: str
+        manifest_option_key: gpu_ids
+      submit_to_queue:
+        required: false
+        type: bool
+        manifest_option_key: do_queue
+        format: yes_no
+      topaz_executable:
+        required: false
+        type: path
+        manifest_option_key: fn_topaz_exe
+    expected_results:
+      - topaz_model
+
+  topaz_picking:
+    relion_job_type: AutoPick
+    manifest_job_type: AutoPick
+    support_level: schedule_mappable
+    description: Pick particles with a trained Topaz neural network model.
+    inputs:
+      micrographs:
+        required: true
+        accepted_result_types:
+          - ctf_estimates
+          - motion_corrected_micrographs
+        manifest_option_key: fn_input_autopick
+      model:
+        required: true
+        accepted_result_types:
+          - topaz_model
+        manifest_option_key: topaz_model
+    params:
+      use_topaz:
+        required: false
+        type: bool
+        manifest_option_key: do_topaz
+        format: yes_no
+      perform_topaz_training:
+        required: false
+        type: bool
+        manifest_option_key: do_topaz_train
+        format: yes_no
+      perform_topaz_picking:
+        required: false
+        type: bool
+        manifest_option_key: do_topaz_pick
+        format: yes_no
+      topaz_particle_diameter_A:
+        required: true
+        type: float
+        manifest_option_key: topaz_particle_diameter
+      use_gpu:
+        required: false
+        type: bool
+        manifest_option_key: use_gpu
+        format: yes_no
+      gpu_ids:
+        required: false
+        type: str
+        manifest_option_key: gpu_ids
+      number_of_mpi:
+        required: false
+        type: int
+        manifest_option_key: nr_mpi
+        default: 1
+      submit_to_queue:
+        required: false
+        type: bool
+        manifest_option_key: do_queue
+        format: yes_no
+      topaz_executable:
+        required: false
+        type: path
+        manifest_option_key: fn_topaz_exe
+    expected_results:
+      - picked_particles
+
+  reference_autopicking:
+    relion_job_type: AutoPick
+    manifest_job_type: AutoPick
+    support_level: schedule_mappable
+    description: Pick particles with 2D reference templates.
+    inputs:
+      micrographs:
+        required: true
+        accepted_result_types:
+          - motion_corrected_micrographs
+          - ctf_estimates
+        manifest_option_key: fn_input_autopick
+      references:
+        required: true
+        accepted_result_types:
+          - two_d_classes
+        manifest_option_key: fn_refs_autopick
+    params:
+      use_references:
+        required: false
+        type: bool
+        manifest_option_key: do_refs
+        default: true
+        format: yes_no
+      lowpass_filter_A:
+        required: false
+        type: float
+        manifest_option_key: lowpass
+        default: 20
+      number_of_mpi:
+        required: false
+        type: int
+        manifest_option_key: nr_mpi
+        default: 1
+      submit_to_queue:
+        required: false
+        type: bool
+        manifest_option_key: do_queue
+        default: false
+        format: yes_no
+    expected_results:
+      - picked_particles
+
+  extract_particles:
+    relion_job_type: Extract
+    manifest_job_type: Extract
+    support_level: schedule_mappable
+    description: Extract particles from picked coordinates.
+    inputs:
+      micrographs:
+        required: true
+        accepted_result_types:
+          - ctf_estimates
+          - motion_corrected_micrographs
+        manifest_option_key: star_mics
+      coordinates:
+        required: false
+        accepted_result_types:
+          - picked_particles
+        manifest_option_key: coords_suffix
+      refined_particles:
+        required: false
+        accepted_result_types:
+          - refine3d_particles
+          - selected_particles
+        manifest_option_key: fndata_reextract
+    params:
+      reextract_refined_particles:
+        required: false
+        type: bool
+        manifest_option_key: do_reextract
+        default: false
+        format: yes_no
+      recenter_refined_coordinates:
+        required: false
+        type: bool
+        manifest_option_key: do_recenter
+        default: false
+        format: yes_no
+      recenter_x_pix:
+        required: false
+        type: str
+        manifest_option_key: recenter_x
+        emit_when:
+          param: recenter_refined_coordinates
+          equals: true
+      recenter_y_pix:
+        required: false
+        type: str
+        manifest_option_key: recenter_y
+        emit_when:
+          param: recenter_refined_coordinates
+          equals: true
+      recenter_z_pix:
+        required: false
+        type: str
+        manifest_option_key: recenter_z
+        emit_when:
+          param: recenter_refined_coordinates
+          equals: true
+      box_size_pix:
+        required: true
+        type: int
+        manifest_option_key: extract_size
+      rescaled_size_pix:
+        required: false
+        type: int
+        manifest_option_key: rescale
+      use_float16:
+        required: false
+        type: bool
+        manifest_option_key: do_float16
+        default: true
+        format: yes_no
+      normalize_particles:
+        required: false
+        type: bool
+        manifest_option_key: do_norm
+        default: true
+        format: yes_no
+      background_diameter_pix:
+        required: false
+        type: int
+        manifest_option_key: bg_diameter
+      white_dust_stddev:
+        required: false
+        type: float
+        manifest_option_key: white_dust
+      black_dust_stddev:
+        required: false
+        type: float
+        manifest_option_key: black_dust
+      invert_contrast:
+        required: false
+        type: bool
+        manifest_option_key: do_invert
+        default: true
+        format: yes_no
+      rescale_particles:
+        required: false
+        type: bool
+        manifest_option_key: do_rescale
+        default: false
+        format: yes_no
+      use_autopick_fom_threshold:
+        required: false
+        type: bool
+        manifest_option_key: do_fom_threshold
+        default: false
+        format: yes_no
+      minimum_autopick_fom:
+        required: false
+        type: float
+        manifest_option_key: minimum_pick_fom
+      number_of_mpi:
+        required: false
+        type: int
+        manifest_option_key: nr_mpi
+        default: 1
+      submit_to_queue:
+        required: false
+        type: bool
+        manifest_option_key: do_queue
+        default: false
+        format: yes_no
+    expected_results:
+      - extracted_particles
+
+  particle_selection:
+    relion_job_type: Select
+    manifest_job_type: Select
+    support_level: schedule_mappable
+    description: Select particles or classes from existing RELION outputs.
+    inputs:
+      particles:
+        required: false
+        accepted_result_types:
+          - extracted_particles
+          - selected_particles
+          - classified_particles
+        manifest_option_key: fn_data
+      classes:
+        required: false
+        accepted_result_types:
+          - two_d_classes
+          - refined_volume
+        manifest_option_key: fn_model
+    params:
+      auto_select_2d_classes:
+        required: false
+        type: bool
+        manifest_option_key: do_class_ranker
+        format: yes_no
+      minimum_selection_score:
+        required: false
+        type: float
+        manifest_option_key: rank_threshold
+      select_by_metadata_values:
+        required: false
+        type: bool
+        manifest_option_key: do_select_values
+        format: yes_no
+      selection_label:
+        required: false
+        type: str
+        manifest_option_key: select_label
+      selection_minimum:
+        required: false
+        type: int
+        manifest_option_key: select_minval
+      selection_maximum:
+        required: false
+        type: int
+        manifest_option_key: select_maxval
+      recenter_class_averages:
+        required: false
+        type: bool
+        manifest_option_key: do_recenter
+        default: false
+        format: yes_no
+    expected_results:
+      - selected_particles
+
+  two_d_classification:
+    relion_job_type: Class2D
+    manifest_job_type: Class2D
+    support_level: schedule_mappable
+    description: Reference-free 2D classification.
+    inputs:
+      particles:
+        required: true
+        accepted_result_types:
+          - extracted_particles
+          - selected_particles
+          - classified_particles
+        manifest_option_key: fn_img
+    params:
+      num_classes:
+        required: true
+        type: int
+        manifest_option_key: nr_classes
+      mask_diameter_A:
+        required: true
+        type: float
+        manifest_option_key: particle_diameter
+      number_of_iterations:
+        required: false
+        type: int
+        manifest_option_key: nr_iter_em
+      use_em_algorithm:
+        required: false
+        type: bool
+        manifest_option_key: do_em
+        format: yes_no
+      use_vdam_algorithm:
+        required: false
+        type: bool
+        manifest_option_key: do_grad
+        format: yes_no
+      number_of_vdam_mini_batches:
+        required: false
+        type: int
+        manifest_option_key: nr_iter_grad
+      preread_images:
+        required: false
+        type: bool
+        manifest_option_key: do_preread_images
+        format: yes_no
+      scratch_directory:
+        required: false
+        type: absolute_runtime_path
+        manifest_option_key: scratch_dir
+      pooled_particles:
+        required: false
+        type: int
+        manifest_option_key: nr_pool
+      do_ctf_correction:
+        required: false
+        type: bool
+        manifest_option_key: do_ctf_correction
+        format: yes_no
+      regularisation_parameter:
+        required: false
+        type: float
+        manifest_option_key: tau_fudge
+      e_step_resolution_limit_A:
+        required: false
+        type: float
+        manifest_option_key: highres_limit
+      zero_mask_particles:
+        required: false
+        type: bool
+        manifest_option_key: do_zero_mask
+        format: yes_no
+      center_classes:
+        required: false
+        type: bool
+        manifest_option_key: do_center
+        format: yes_no
+      inplane_angular_sampling_deg:
+        required: false
+        type: float
+        manifest_option_key: psi_sampling
+      offset_search_range_pix:
+        required: false
+        type: float
+        manifest_option_key: offset_range
+      offset_search_step_pix:
+        required: false
+        type: float
+        manifest_option_key: offset_step
+      number_of_mpi:
+        required: false
+        type: int
+        manifest_option_key: nr_mpi
+        default: 1
+      number_of_threads:
+        required: false
+        type: int
+        manifest_option_key: nr_threads
+        default: 4
+      use_gpu:
+        required: false
+        type: bool
+        manifest_option_key: use_gpu
+        default: false
+        format: yes_no
+      gpu_ids:
+        required: false
+        type: str
+        manifest_option_key: gpu_ids
+      submit_to_queue:
+        required: false
+        type: bool
+        manifest_option_key: do_queue
+        default: false
+        format: yes_no
+    expected_results:
+      - selected_particles
+      - two_d_classes
+
+  initial_model:
+    relion_job_type: InitialModel
+    manifest_job_type: InitialModel
+    support_level: schedule_mappable
+    description: Generate a de novo initial 3D model.
+    inputs:
+      particles:
+        required: true
+        accepted_result_types:
+          - extracted_particles
+          - selected_particles
+        manifest_option_key: fn_img
+    params:
+      num_classes:
+        required: true
+        type: int
+        manifest_option_key: nr_classes
+      symmetry:
+        required: true
+        type: symmetry
+        manifest_option_key: sym_name
+      mask_diameter_A:
+        required: true
+        type: float
+        manifest_option_key: particle_diameter
+      number_of_vdam_mini_batches:
+        required: false
+        type: int
+        manifest_option_key: nr_iter
+      regularisation_parameter:
+        required: false
+        type: float
+        manifest_option_key: tau_fudge
+      run_in_c1_and_apply_symmetry:
+        required: false
+        type: bool
+        manifest_option_key: do_run_C1
+        format: yes_no
+      flatten_solvent:
+        required: false
+        type: bool
+        manifest_option_key: do_solvent
+        format: yes_no
+      do_ctf_correction:
+        required: false
+        type: bool
+        manifest_option_key: do_ctf_correction
+        format: yes_no
+      use_parallel_disc_io:
+        required: false
+        type: bool
+        manifest_option_key: do_parallel_discio
+        format: yes_no
+      pooled_particles:
+        required: false
+        type: int
+        manifest_option_key: nr_pool
+      preread_images:
+        required: false
+        type: bool
+        manifest_option_key: do_preread_images
+        format: yes_no
+      scratch_directory:
+        required: false
+        type: absolute_runtime_path
+        manifest_option_key: scratch_dir
+      combine_iterations_through_disc:
+        required: false
+        type: bool
+        manifest_option_key: do_combine_thru_disc
+        format: yes_no
+      use_gpu:
+        required: false
+        type: bool
+        manifest_option_key: use_gpu
+        default: false
+        format: yes_no
+      gpu_ids:
+        required: false
+        type: str
+        manifest_option_key: gpu_ids
+      number_of_mpi:
+        required: false
+        type: int
+        manifest_option_key: nr_mpi
+        default: 1
+      number_of_threads:
+        required: false
+        type: int
+        manifest_option_key: nr_threads
+        default: 4
+      submit_to_queue:
+        required: false
+        type: bool
+        manifest_option_key: do_queue
+        default: false
+        format: yes_no
+    expected_results:
+      - initial_volume
+
+  three_d_classification:
+    relion_job_type: Class3D
+    manifest_job_type: Class3D
+    support_level: schedule_mappable
+    description: Separate particles into 3D classes.
+    inputs:
+      particles:
+        required: true
+        accepted_result_types:
+          - extracted_particles
+          - selected_particles
+        manifest_option_key: fn_img
+      reference_volume:
+        required: true
+        accepted_result_types:
+          - initial_volume
+          - refined_volume
+        manifest_option_key: fn_ref
+      reference_mask:
+        required: false
+        accepted_result_types:
+          - mask
+        manifest_option_key: fn_mask
+    params:
+      num_classes:
+        required: true
+        type: int
+        manifest_option_key: nr_classes
+      symmetry:
+        required: true
+        type: symmetry
+        manifest_option_key: sym_name
+      mask_diameter_A:
+        required: true
+        type: float
+        manifest_option_key: particle_diameter
+      initial_lowpass_A:
+        required: false
+        type: float
+        manifest_option_key: ini_high
+      reference_map_absolute_greyscale:
+        required: false
+        type: bool
+        manifest_option_key: ref_correct_greyscale
+        format: yes_no
+      resize_reference_if_needed:
+        required: false
+        type: bool
+        manifest_option_key: trust_ref_size
+        format: yes_no
+      number_of_iterations:
+        required: false
+        type: int
+        manifest_option_key: nr_iter
+      regularisation_parameter:
+        required: false
+        type: float
+        manifest_option_key: tau_fudge
+      e_step_resolution_limit_A:
+        required: false
+        type: float
+        manifest_option_key: highres_limit
+      use_blush_regularisation:
+        required: false
+        type: bool
+        manifest_option_key: do_blush
+        format: yes_no
+      alignment:
+        required: false
+        type: bool
+        manifest_option_key: dont_skip_align
+        format: yes_no
+      zero_mask_particles:
+        required: false
+        type: bool
+        manifest_option_key: do_zero_mask
+        format: yes_no
+      do_ctf_correction:
+        required: false
+        type: bool
+        manifest_option_key: do_ctf_correction
+        format: yes_no
+      initial_angular_sampling:
+        required: false
+        type: enum
+        manifest_option_key: sampling
+      initial_offset_range_pix:
+        required: false
+        type: float
+        manifest_option_key: offset_range
+      initial_offset_step_pix:
+        required: false
+        type: float
+        manifest_option_key: offset_step
+      use_parallel_disc_io:
+        required: false
+        type: bool
+        manifest_option_key: do_parallel_discio
+        format: yes_no
+      skip_padding:
+        required: false
+        type: bool
+        manifest_option_key: do_pad1
+        format: yes_no
+      pooled_particles:
+        required: false
+        type: int
+        manifest_option_key: nr_pool
+      preread_images:
+        required: false
+        type: bool
+        manifest_option_key: do_preread_images
+        format: yes_no
+      scratch_directory:
+        required: false
+        type: absolute_runtime_path
+        manifest_option_key: scratch_dir
+      number_of_mpi:
+        required: false
+        type: int
+        manifest_option_key: nr_mpi
+        default: 1
+      number_of_threads:
+        required: false
+        type: int
+        manifest_option_key: nr_threads
+        default: 4
+      use_gpu:
+        required: false
+        type: bool
+        manifest_option_key: use_gpu
+        default: false
+        format: yes_no
+      gpu_ids:
+        required: false
+        type: str
+        manifest_option_key: gpu_ids
+      submit_to_queue:
+        required: false
+        type: bool
+        manifest_option_key: do_queue
+        default: false
+        format: yes_no
+    expected_results:
+      - classified_particles
+      - refined_volume
+
+  refine3d:
+    relion_job_type: Refine3D
+    manifest_job_type: Refine3D
+    support_level: schedule_mappable
+    description: 3D auto-refine selected particles against a reference.
+    inputs:
+      particles:
+        required: true
+        accepted_result_types:
+          - extracted_particles
+          - selected_particles
+          - classified_particles
+          - refine3d_particles
+          - ctf_refined_particles
+          - polished_particles
+        manifest_option_key: fn_img
+      reference_volume:
+        required: true
+        accepted_result_types:
+          - initial_volume
+          - refined_volume
+        manifest_option_key: fn_ref
+      mask:
+        required: false
+        accepted_result_types:
+          - mask
+        manifest_option_key: fn_mask
+    params:
+      symmetry:
+        required: true
+        type: symmetry
+        manifest_option_key: sym_name
+      mask_diameter_A:
+        required: true
+        type: float
+        manifest_option_key: particle_diameter
+      initial_lowpass_A:
+        required: false
+        type: float
+        manifest_option_key: ini_high
+      reference_map_absolute_greyscale:
+        required: false
+        type: bool
+        manifest_option_key: ref_correct_greyscale
+        format: yes_no
+      resize_reference_if_needed:
+        required: false
+        type: bool
+        manifest_option_key: trust_ref_size
+        format: yes_no
+      do_ctf_correction:
+        required: false
+        type: bool
+        manifest_option_key: do_ctf_correction
+        format: yes_no
+      zero_mask_particles:
+        required: false
+        type: bool
+        manifest_option_key: do_zero_mask
+        format: yes_no
+      solvent_correct_fsc:
+        required: false
+        type: bool
+        manifest_option_key: do_solvent_fsc
+        format: yes_no
+      initial_angular_sampling:
+        required: false
+        type: enum
+        manifest_option_key: sampling
+      local_search_from_auto_sampling:
+        required: false
+        type: enum
+        manifest_option_key: auto_local_sampling
+      initial_offset_range_pix:
+        required: false
+        type: float
+        manifest_option_key: offset_range
+      initial_offset_step_pix:
+        required: false
+        type: float
+        manifest_option_key: offset_step
+      use_finer_angular_sampling_faster:
+        required: false
+        type: bool
+        manifest_option_key: auto_faster
+        format: yes_no
+      use_parallel_disc_io:
+        required: false
+        type: bool
+        manifest_option_key: do_parallel_discio
+        format: yes_no
+      skip_padding:
+        required: false
+        type: bool
+        manifest_option_key: do_pad1
+        format: yes_no
+      pooled_particles:
+        required: false
+        type: int
+        manifest_option_key: nr_pool
+      preread_images:
+        required: false
+        type: bool
+        manifest_option_key: do_preread_images
+        format: yes_no
+      scratch_directory:
+        required: false
+        type: absolute_runtime_path
+        manifest_option_key: scratch_dir
+      combine_iterations_through_disc:
+        required: false
+        type: bool
+        manifest_option_key: do_combine_thru_disc
+        format: yes_no
+      number_of_mpi:
+        required: false
+        type: int
+        manifest_option_key: nr_mpi
+        default: 1
+      number_of_threads:
+        required: false
+        type: int
+        manifest_option_key: nr_threads
+        default: 4
+      use_gpu:
+        required: false
+        type: bool
+        manifest_option_key: use_gpu
+        default: false
+        format: yes_no
+      gpu_ids:
+        required: false
+        type: str
+        manifest_option_key: gpu_ids
+      submit_to_queue:
+        required: false
+        type: bool
+        manifest_option_key: do_queue
+        default: false
+        format: yes_no
+    expected_results:
+      - refined_volume
+      - refine3d_particles
+      - half_maps
+
+  multibody_refinement:
+    relion_job_type: MultiBody
+    manifest_job_type: MultiBody
+    support_level: mapped_optional
+    description: Partial multi-body refinement mapping; not scheduleable until EMClaw has optimiser and body STAR JobResult types.
+    inputs:
+      consensus_optimiser:
+        required: true
+        accepted_result_types:
+          - refined_volume
+          - selected_particles
+        manifest_option_key: fn_in
+      body_star:
+        required: true
+        accepted_result_types:
+          - selected_particles
+        manifest_option_key: fn_bodies
+      continue_optimiser:
+        required: false
+        accepted_result_types:
+          - refined_volume
+          - selected_particles
+        manifest_option_key: fn_cont
+    params:
+      reconstruct_subtracted_bodies:
+        required: false
+        type: bool
+        manifest_option_key: do_subtracted_bodies
+        default: true
+        format: yes_no
+      use_blush_regularisation:
+        required: false
+        type: bool
+        manifest_option_key: do_blush
+        default: false
+        format: yes_no
+      initial_angular_sampling:
+        required: false
+        type: enum
+        manifest_option_key: sampling
+      initial_offset_range_pix:
+        required: false
+        type: float
+        manifest_option_key: offset_range
+      initial_offset_step_pix:
+        required: false
+        type: float
+        manifest_option_key: offset_step
+      run_flexibility_analysis:
+        required: false
+        type: bool
+        manifest_option_key: do_analyse
+        default: true
+        format: yes_no
+      number_of_eigenvector_movies:
+        required: false
+        type: int
+        manifest_option_key: nr_movies
+      select_particles_by_eigenvalue:
+        required: false
+        type: bool
+        manifest_option_key: do_select
+        default: false
+        format: yes_no
+      eigenvalue_index:
+        required: false
+        type: int
+        manifest_option_key: select_eigenval
+      eigenvalue_min:
+        required: false
+        type: float
+        manifest_option_key: eigenval_min
+      eigenvalue_max:
+        required: false
+        type: float
+        manifest_option_key: eigenval_max
+      number_of_mpi:
+        required: false
+        type: int
+        manifest_option_key: nr_mpi
+        default: 1
+      number_of_threads:
+        required: false
+        type: int
+        manifest_option_key: nr_threads
+        default: 4
+      use_gpu:
+        required: false
+        type: bool
+        manifest_option_key: use_gpu
+        default: false
+        format: yes_no
+      gpu_ids:
+        required: false
+        type: str
+        manifest_option_key: gpu_ids
+    expected_results: []
+    warnings:
+      - MultiBody requires RELION optimiser/body STAR inputs that are not first-class JobResult types yet.
+
+  mask_creation:
+    relion_job_type: MaskCreate
+    manifest_job_type: MaskCreate
+    support_level: schedule_mappable
+    description: Create a 3D mask from a map.
+    inputs:
+      input_map:
+        required: true
+        accepted_result_types:
+          - initial_volume
+          - refined_volume
+        manifest_option_key: fn_in
+    params:
+      pixel_size_A:
+        required: false
+        type: float
+        manifest_option_key: angpix
+      lowpass_filter_A:
+        required: false
+        type: float
+        manifest_option_key: lowpass_filter
+        default: 15
+      initial_binarisation_threshold:
+        required: false
+        type: float
+        manifest_option_key: inimask_threshold
+      extend_binary_map_pixels:
+        required: false
+        type: int
+        manifest_option_key: extend_inimask
+      soft_edge_width_pixels:
+        required: false
+        type: int
+        manifest_option_key: width_mask_edge
+      number_of_threads:
+        required: false
+        type: int
+        manifest_option_key: nr_threads
+        default: 4
+    expected_results:
+      - mask
+
+  join_star:
+    relion_job_type: JoinStar
+    manifest_job_type: JoinStar
+    support_level: schedule_mappable
+    description: Combine two to four particle, micrograph, or movie STAR files in one validated mode.
+    inputs:
+      particle_star_1:
+        required: false
+        accepted_result_types:
+          - extracted_particles
+          - selected_particles
+          - classified_particles
+        manifest_option_key: fn_part1
+      particle_star_2:
+        required: false
+        accepted_result_types:
+          - extracted_particles
+          - selected_particles
+          - classified_particles
+        manifest_option_key: fn_part2
+      particle_star_3:
+        required: false
+        accepted_result_types:
+          - extracted_particles
+          - selected_particles
+          - classified_particles
+        manifest_option_key: fn_part3
+      particle_star_4:
+        required: false
+        accepted_result_types:
+          - extracted_particles
+          - selected_particles
+          - classified_particles
+        manifest_option_key: fn_part4
+      micrograph_star_1:
+        required: false
+        accepted_result_types:
+          - motion_corrected_micrographs
+          - ctf_estimates
+        manifest_option_key: fn_mic1
+      micrograph_star_2:
+        required: false
+        accepted_result_types:
+          - motion_corrected_micrographs
+          - ctf_estimates
+        manifest_option_key: fn_mic2
+      micrograph_star_3:
+        required: false
+        accepted_result_types:
+          - motion_corrected_micrographs
+          - ctf_estimates
+        manifest_option_key: fn_mic3
+      micrograph_star_4:
+        required: false
+        accepted_result_types:
+          - motion_corrected_micrographs
+          - ctf_estimates
+        manifest_option_key: fn_mic4
+      movie_star_1:
+        required: false
+        accepted_result_types:
+          - imported_movies
+        manifest_option_key: fn_mov1
+      movie_star_2:
+        required: false
+        accepted_result_types:
+          - imported_movies
+        manifest_option_key: fn_mov2
+      movie_star_3:
+        required: false
+        accepted_result_types:
+          - imported_movies
+        manifest_option_key: fn_mov3
+      movie_star_4:
+        required: false
+        accepted_result_types:
+          - imported_movies
+        manifest_option_key: fn_mov4
+    params:
+      combine_particles:
+        required: false
+        type: bool
+        manifest_option_key: do_part
+        default: false
+        format: yes_no
+      combine_micrographs:
+        required: false
+        type: bool
+        manifest_option_key: do_mic
+        default: false
+        format: yes_no
+      combine_movies:
+        required: false
+        type: bool
+        manifest_option_key: do_mov
+        default: false
+        format: yes_no
+    expected_results: []
+    warnings:
+      - Exactly one combine mode and two to four inputs of that mode are required.
+
+  particle_subtraction:
+    relion_job_type: Subtract
+    manifest_job_type: Subtract
+    support_level: mapped_optional
+    description: Partial particle subtraction mapping; not scheduleable until optimiser metadata JobResult handling is added.
+    inputs:
+      optimiser:
+        required: true
+        accepted_result_types:
+          - refined_volume
+          - selected_particles
+        manifest_option_key: fn_opt
+      mask:
+        required: true
+        accepted_result_types:
+          - mask
+        manifest_option_key: fn_mask
+      particles:
+        required: false
+        accepted_result_types:
+          - extracted_particles
+          - selected_particles
+        manifest_option_key: fn_data
+      revert_particles:
+        required: false
+        accepted_result_types:
+          - extracted_particles
+          - selected_particles
+        manifest_option_key: fn_fliplabel
+    params:
+      use_different_particles:
+        required: false
+        type: bool
+        manifest_option_key: do_data
+        default: false
+        format: yes_no
+      write_float16:
+        required: false
+        type: bool
+        manifest_option_key: do_float16
+        default: true
+        format: yes_no
+      revert_to_original_particles:
+        required: false
+        type: bool
+        manifest_option_key: do_fliplabel
+        default: false
+        format: yes_no
+      center_on_mask:
+        required: false
+        type: bool
+        manifest_option_key: do_center_mask
+        default: true
+        format: yes_no
+      center_on_coordinates:
+        required: false
+        type: bool
+        manifest_option_key: do_center_xyz
+        default: false
+        format: yes_no
+      center_x_pix:
+        required: false
+        type: str
+        manifest_option_key: center_x
+      center_y_pix:
+        required: false
+        type: str
+        manifest_option_key: center_y
+      center_z_pix:
+        required: false
+        type: str
+        manifest_option_key: center_z
+      new_box_size_pix:
+        required: false
+        type: int
+        manifest_option_key: new_box
+      number_of_mpi:
+        required: false
+        type: int
+        manifest_option_key: nr_mpi
+        default: 1
+    expected_results: []
+    warnings:
+      - Particle subtraction requires optimiser metadata that is not a first-class JobResult type yet.
+
+  postprocess:
+    relion_job_type: PostProcess
+    manifest_job_type: PostProcess
+    support_level: schedule_mappable
+    description: RELION post-processing using half maps and a solvent mask.
+    inputs:
+      half_map:
+        required: true
+        accepted_result_types:
+          - half_maps
+        manifest_option_key: fn_in
+      mask:
+        required: true
+        accepted_result_types:
+          - mask
+        manifest_option_key: fn_mask
+    params:
+      pixel_size_A:
+        required: false
+        type: float
+        manifest_option_key: angpix
+      mtf_file:
+        required: false
+        type: str
+        manifest_option_key: fn_mtf
+      mtf_pixel_size_A:
+        required: false
+        type: float
+        manifest_option_key: mtf_angpix
+      estimate_bfactor_automatically:
+        required: false
+        type: bool
+        manifest_option_key: do_auto_bfac
+        format: yes_no
+      lowest_resolution_for_auto_bfit_A:
+        required: false
+        type: float
+        manifest_option_key: autob_lowres
+    expected_results:
+      - refined_volume
+      - fsc_curve
+
+  local_resolution:
+    relion_job_type: LocalRes
+    manifest_job_type: LocalRes
+    support_level: schedule_mappable
+    description: Estimate local resolution from half maps.
+    inputs:
+      half_map:
+        required: true
+        accepted_result_types:
+          - half_maps
+        manifest_option_key: fn_in
+      mask:
+        required: false
+        accepted_result_types:
+          - mask
+        manifest_option_key: fn_mask
+    params:
+      pixel_size_A:
+        required: false
+        type: float
+        manifest_option_key: angpix
+      use_relion_local_resolution:
+        required: false
+        type: bool
+        manifest_option_key: do_relion_locres
+        format: yes_no
+      use_resmap:
+        required: false
+        type: bool
+        manifest_option_key: do_resmap_locres
+        format: yes_no
+      user_provided_bfactor:
+        required: false
+        type: float
+        manifest_option_key: adhoc_bfac
+      mtf_file:
+        required: false
+        type: str
+        manifest_option_key: fn_mtf
+    expected_results:
+      - local_resolution_map
+
+  polish:
+    relion_job_type: Polish
+    manifest_job_type: Polish
+    support_level: schedule_mappable
+    description: Bayesian particle polishing.
+    inputs:
+      micrographs:
+        required: true
+        accepted_result_types:
+          - motion_corrected_micrographs
+        manifest_option_key: fn_mic
+      particles:
+        required: true
+        accepted_result_types:
+          - refine3d_particles
+          - ctf_refined_particles
+          - selected_particles
+          - extracted_particles
+        manifest_option_key: fn_data
+      postprocess:
+        required: true
+        accepted_result_types:
+          - fsc_curve
+        manifest_option_key: fn_post
+      polishing_parameters:
+        required: false
+        accepted_result_types:
+          - polishing_parameters
+        manifest_option_key: opt_params
+    params:
+      write_float16:
+        required: false
+        type: bool
+        manifest_option_key: do_float16
+        format: yes_no
+      first_frame:
+        required: false
+        type: int
+        manifest_option_key: first_frame
+      last_frame:
+        required: false
+        type: int
+        manifest_option_key: last_frame
+      train_optimal_parameters:
+        required: false
+        type: bool
+        manifest_option_key: do_param_optim
+        format: yes_no
+      perform_particle_polishing:
+        required: false
+        type: bool
+        manifest_option_key: do_polish
+        format: yes_no
+      minimum_particles_for_parameter_optimisation:
+        required: false
+        type: int
+        manifest_option_key: optim_min_part
+      evaluation_fraction:
+        required: false
+        type: float
+        manifest_option_key: eval_frac
+      minimum_resolution_for_bfactor_fit_A:
+        required: false
+        type: float
+        manifest_option_key: minres
+      maximum_resolution_for_bfactor_fit_A:
+        required: false
+        type: float
+        manifest_option_key: maxres
+      number_of_mpi:
+        required: false
+        type: int
+        manifest_option_key: nr_mpi
+        default: 1
+      number_of_threads:
+        required: false
+        type: int
+        manifest_option_key: nr_threads
+        default: 4
+    expected_results:
+      - polished_particles
+      - polishing_parameters
+
+  ctf_refinement:
+    relion_job_type: CtfRefine
+    manifest_job_type: CtfRefine
+    support_level: schedule_mappable
+    description: Refine CTF-related particle metadata.
+    inputs:
+      particles:
+        required: true
+        accepted_result_types:
+          - refine3d_particles
+          - ctf_refined_particles
+          - selected_particles
+          - extracted_particles
+        manifest_option_key: fn_data
+      postprocess:
+        required: true
+        accepted_result_types:
+          - fsc_curve
+        manifest_option_key: fn_post
+    params:
+      fit_ctf:
+        required: false
+        type: bool
+        manifest_option_key: do_ctf
+        default: true
+        format: yes_no
+      fit_defocus:
+        required: false
+        type: enum
+        manifest_option_key: do_defocus
+      fit_astigmatism:
+        required: false
+        type: enum
+        manifest_option_key: do_astig
+      fit_beamtilt:
+        required: false
+        type: bool
+        manifest_option_key: do_tilt
+        default: false
+        format: yes_no
+      fit_anisotropic_magnification:
+        required: false
+        type: bool
+        manifest_option_key: do_aniso_mag
+        format: yes_no
+      fit_trefoil:
+        required: false
+        type: bool
+        manifest_option_key: do_trefoil
+        format: yes_no
+      fit_fourth_order_aberrations:
+        required: false
+        type: bool
+        manifest_option_key: do_4thorder
+        format: yes_no
+      number_of_mpi:
+        required: false
+        type: int
+        manifest_option_key: nr_mpi
+        default: 1
+      number_of_threads:
+        required: false
+        type: int
+        manifest_option_key: nr_threads
+        default: 4
+    expected_results:
+      - ctf_refined_particles
+
+  dynamight:
+    relion_job_type: DynaMight
+    manifest_job_type: DynaMight
+    support_level: manifest_only
+    description: Known RELION modelling job type; EMClaw mapping not yet approved.
+    inputs:
+      particles:
+        required: true
+        accepted_result_types:
+          - refine3d_particles
+          - selected_particles
+        manifest_option_key: fn_star
+      reference_volume:
+        required: true
+        accepted_result_types:
+          - refined_volume
+        manifest_option_key: fn_map
+    params:
+      n_gaussians:
+        required: false
+        type: int
+        manifest_option_key: nr_gaussians
+      initial_threshold:
+        required: false
+        type: float
+        manifest_option_key: initial_threshold
+      regularization_factor:
+        required: false
+        type: float
+        manifest_option_key: reg_factor
+      number_of_threads:
+        required: false
+        type: int
+        manifest_option_key: nr_threads
+      preload_images:
+        required: false
+        type: bool
+        manifest_option_key: do_preload
+        format: yes_no
+      gpu_id:
+        required: false
+        type: str
+        manifest_option_key: gpu_id
+      run_inverse_deformations:
+        required: false
+        type: bool
+        manifest_option_key: do_inverse
+        format: yes_no
+      number_of_epochs:
+        required: false
+        type: int
+        manifest_option_key: nr_epochs
+      run_latent_space_exploration:
+        required: false
+        type: bool
+        manifest_option_key: do_visualize
+        format: yes_no
+      halfset:
+        required: false
+        type: int
+        manifest_option_key: halfset
+      run_deformed_backprojection:
+        required: false
+        type: bool
+        manifest_option_key: do_reconstruct
+        format: yes_no
+      backprojection_batchsize:
+        required: false
+        type: int
+        manifest_option_key: backproject_batchsize
+      checkpoint_file:
+        required: false
+        type: str
+        manifest_option_key: fn_checkpoint
+    expected_results: []
+
+  modelangelo:
+    relion_job_type: ModelAngelo
+    manifest_job_type: ModelAngelo
+    support_level: dry_run_mappable
+    description: Build an atomic model with ModelAngelo from a sharpened map.
+    inputs:
+      map:
+        required: true
+        accepted_result_types:
+          - refined_volume
+        manifest_option_key: fn_map
+    params:
+      protein_fasta:
+        required: false
+        type: str
+        manifest_option_key: p_seq
+      gpu_ids:
+        required: false
+        type: str
+        manifest_option_key: gpu_id
+    expected_results: []
+
+  tomo_import:
+    relion_job_type: Import
+    manifest_job_type: TomoImport
+    support_level: manifest_only
+    description: Tomography RELION job type; outside current SPA mapping scope.
+    inputs: {}
+    params: {}
+    expected_results: []
+
+  tomo_exclude_tilt_images:
+    relion_job_type: ExcludeTiltImages
+    manifest_job_type: TomoExcludeTiltImages
+    support_level: manifest_only
+    description: Tomography RELION job type; outside current SPA mapping scope.
+    inputs: {}
+    params: {}
+    expected_results: []
+
+  tomo_align_tiltseries:
+    relion_job_type: AlignTiltSeries
+    manifest_job_type: TomoAlignTiltseries
+    support_level: manifest_only
+    description: Tomography RELION job type; outside current SPA mapping scope.
+    inputs: {}
+    params: {}
+    expected_results: []
+
+  tomo_reconstruct_tomogram:
+    relion_job_type: Tomograms
+    manifest_job_type: TomoReconstructTomogram
+    support_level: manifest_only
+    description: Tomography RELION job type; outside current SPA mapping scope.
+    inputs: {}
+    params: {}
+    expected_results: []
+
+  tomo_denoise_tomogram:
+    relion_job_type: TOMO_DENOISE_TOMOGRAM
+    manifest_job_type: TomoDenoiseTomogram
+    support_level: manifest_only
+    description: Tomography RELION job type; outside current SPA mapping scope.
+    inputs: {}
+    params: {}
+    expected_results: []
+
+  tomo_pick_tomogram:
+    relion_job_type: TOMO_PICK_TOMOGRAM
+    manifest_job_type: TomoPickTomogram
+    support_level: manifest_only
+    description: Tomography RELION job type; outside current SPA mapping scope.
+    inputs: {}
+    params: {}
+    expected_results: []
+
+  tomo_subtomo:
+    relion_job_type: Extract
+    manifest_job_type: TomoSubtomo
+    support_level: manifest_only
+    description: Tomography RELION job type; outside current SPA mapping scope.
+    inputs: {}
+    params: {}
+    expected_results: []
+
+  tomo_ctf_refine:
+    relion_job_type: CtfRefine
+    manifest_job_type: TomoCtfrefine
+    support_level: manifest_only
+    description: Tomography RELION job type; outside current SPA mapping scope.
+    inputs: {}
+    params: {}
+    expected_results: []
+
+  tomo_align:
+    relion_job_type: Polish
+    manifest_job_type: TomoAlign
+    support_level: manifest_only
+    description: Tomography RELION job type; outside current SPA mapping scope.
+    inputs: {}
+    params: {}
+    expected_results: []
+
+  tomo_reconstruct:
+    relion_job_type: Reconstruct
+    manifest_job_type: TomoReconstruct
+    support_level: manifest_only
+    description: Tomography RELION job type; outside current SPA mapping scope.
+    inputs: {}
+    params: {}
+    expected_results: []
+
+  external:
+    relion_job_type: External
+    manifest_job_type: External
+    support_level: unsupported
+    description: External scripts are intentionally unsupported for safe mapping.
+    inputs: {}
+    params: {}
+    expected_results: []

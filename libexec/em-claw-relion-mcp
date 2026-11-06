@@ -1,0 +1,183 @@
+#!/usr/bin/env bash
+# Start the vendored RELION MCP server with an isolated compatible runtime.
+
+set -euo pipefail
+
+readonly EMCLAW_ROOT="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")/.." && pwd -P)"
+readonly EXIT_BLOCKED=2
+readonly EXIT_USAGE=64
+
+fail() {
+  local message=$1
+  local code=${2:-$EXIT_BLOCKED}
+  printf 'em-claw-relion-mcp: %s\n' "$message" >&2
+  exit "$code"
+}
+
+require_absolute_path() {
+  local path=$1
+  local label=$2
+  [[ "$path" == /* ]] || fail "$label must be an absolute path"
+}
+
+resolve_executable() {
+  local configured=$1
+  if [[ "$configured" == */* ]]; then
+    [[ -x "$configured" && -f "$configured" ]] || return 1
+    readlink -f -- "$configured"
+  else
+    command -v -- "$configured"
+  fi
+}
+
+unset_environment_prefix() {
+  local prefix=$1
+  local name
+
+  while IFS='=' read -r name _; do
+    if [[ "$name" == "$prefix"* ]]; then
+      unset "$name"
+    fi
+  done < <(env)
+}
+
+load_relion_environment() {
+  local path=$1
+  local name
+  declare -A inherited=()
+  declare -A inherited_values=()
+
+  # Preserve explicit caller/launcher RELION_* values while allowing this
+  # server's env file to supply backend-private PATH/library settings.
+  while IFS='=' read -r name _; do
+    if [[ "$name" == RELION_* ]]; then
+      inherited[$name]=1
+      inherited_values[$name]=${!name}
+    fi
+  done < <(env)
+
+  set -a
+  # shellcheck disable=SC1090
+  source "$path" >/dev/null
+  set +a
+
+  for name in "${!inherited[@]}"; do
+    printf -v "$name" '%s' "${inherited_values[$name]}"
+    export "$name"
+  done
+}
+
+(($# == 0)) || fail "this bootstrap takes no arguments" "$EXIT_USAGE"
+
+combined_route=${EMCLAW_COMBINED_ROUTE:-}
+case "$combined_route" in
+  ""|0) live_project_inventory_json="" ;;
+  1)
+    cryosparc_helper="$EMCLAW_ROOT/libexec/em-claw-cryosparc-mcp"
+    [[ -f "$cryosparc_helper" && -x "$cryosparc_helper" ]] || \
+      fail "CryoSPARC project-discovery helper is unavailable"
+    if ! live_project_inventory_json=$(
+      "$cryosparc_helper" --list-projects 2>/dev/null
+    ); then
+      fail "could not query the active CryoSPARC project inventory"
+    fi
+    ((${#live_project_inventory_json} <= 65536)) || \
+      fail "active CryoSPARC project inventory is unexpectedly large"
+    ;;
+  *) fail "EMCLAW_COMBINED_ROUTE has an invalid value" "$EXIT_USAGE" ;;
+esac
+
+if [[ -v EMCLAW_RELION_ENV_FILE ]]; then
+  # An explicitly empty value disables default-file discovery. This lets a
+  # RELION-only session use the backend's built-in defaults without any .env.
+  if [[ -n "$EMCLAW_RELION_ENV_FILE" ]]; then
+    require_absolute_path "$EMCLAW_RELION_ENV_FILE" "EMCLAW_RELION_ENV_FILE"
+    [[ -f "$EMCLAW_RELION_ENV_FILE" && -r "$EMCLAW_RELION_ENV_FILE" ]] || \
+      fail "RELION environment file is unavailable"
+    load_relion_environment "$EMCLAW_RELION_ENV_FILE"
+  fi
+elif [[ -f "$EMCLAW_ROOT/profiles/relion/.env" ]]; then
+  load_relion_environment "$EMCLAW_ROOT/profiles/relion/.env"
+fi
+# Never expose CryoSPARC credentials or its env-file path to the RELION server
+# or to RELION child jobs. The authenticated, UID/path live project inventory
+# is the sole cross-backend exception and is removed from RELION child jobs.
+unset_environment_prefix CRYOSPARC_
+unset_environment_prefix EMCLAW_CRYOSPARC_
+if [[ "$combined_route" == 1 ]]; then
+  export EMCLAW_CRYOSPARC_PROJECT_INVENTORY_JSON="$live_project_inventory_json"
+fi
+unset EMCLAW_COMBINED_ROUTE
+
+repo=${RELION_MCP_REPO:-$EMCLAW_ROOT/profiles/relion/backend}
+[[ -d "$repo/src/relion_mcp" ]] || fail "RELION MCP Python package is unavailable"
+repo=$(cd -- "$repo" && pwd -P)
+export RELION_MCP_REPO="$repo"
+export PYTHONPATH="$repo/src"
+
+# The backend's default class selector is a package entry point, but this
+# bootstrap runs the package in place instead of installing it. Bind that
+# default to a stable profile-owned shim while preserving explicit overrides.
+selector="$EMCLAW_ROOT/profiles/relion/bin/relion-mcp-class-select"
+configured_selector=${RELION_CLASS_SELECTOR:-relion-mcp-class-select}
+if [[ "$configured_selector" == relion-mcp-class-select ]]; then
+  [[ -f "$selector" && -x "$selector" ]] ||
+    fail "the class-selection shim is missing or not executable: $selector"
+  configured_selector=$selector
+fi
+export RELION_CLASS_SELECTOR="$configured_selector"
+
+runtime=${EMCLAW_RUNTIME_DIR:-${XDG_CACHE_HOME:-${HOME:-/tmp}/.cache}/em-claw}
+configured_python=${EMCLAW_RELION_MCP_PYTHON:-}
+runtime_python=${EMCLAW_RELION_RUNTIME_PYTHON:-3.11}
+uv_bin=${EMCLAW_UV_BIN:-uv}
+
+export MPLCONFIGDIR="${MPLCONFIGDIR:-$runtime/matplotlib}"
+export PYTHONDONTWRITEBYTECODE=1
+require_absolute_path "$runtime" "EMCLAW_RUNTIME_DIR"
+require_absolute_path "$MPLCONFIGDIR" "MPLCONFIGDIR"
+mkdir -p -- "$MPLCONFIGDIR"
+
+if [[ -n "$configured_python" ]]; then
+  require_absolute_path "$configured_python" "EMCLAW_RELION_MCP_PYTHON"
+  [[ -x "$configured_python" && -f "$configured_python" ]] || \
+    fail "EMCLAW_RELION_MCP_PYTHON is not executable"
+  configured_python=$(readlink -f -- "$configured_python")
+  export EMCLAW_RELION_MCP_PYTHON="$configured_python"
+  exec "$configured_python" -m relion_mcp.server
+fi
+
+uv_cache=${UV_CACHE_DIR:-$runtime/uv-cache}
+require_absolute_path "$uv_cache" "UV_CACHE_DIR"
+export UV_CACHE_DIR="$uv_cache"
+mkdir -p -- "$UV_CACHE_DIR"
+
+uv_path=$(resolve_executable "$uv_bin") || \
+  fail "uv is unavailable for the RELION MCP bootstrap"
+
+# RELION child jobs inherit this process's environment. Hand the class-selection
+# shim the resolved uv executable so it still works when a queued job runs with
+# a PATH that no longer reaches uv.
+export EMCLAW_UV_BIN="$uv_path"
+
+# These versions retain manylinux2014 wheels for this host's older glibc/GCC.
+# Keep the vendored backend and its lockfile untouched.
+uv_args=(
+  run
+  --no-project
+  --python "$runtime_python"
+  --with 'mcp[cli]==2.0.0'
+  --with 'PyYAML==6.0.2'
+  --with 'numpy==1.26.4'
+  --with 'matplotlib==3.8.4'
+  --with 'contourpy==1.2.1'
+  --with 'mrcfile==1.5.4'
+  --with 'Pillow==10.4.0'
+  --with 'scipy==1.11.4'
+)
+if [[ ${UV_OFFLINE:-} != 1 ]] && \
+  UV_OFFLINE=1 "$uv_path" "${uv_args[@]}" python -c pass >/dev/null 2>&1; then
+  export UV_OFFLINE=1
+fi
+
+exec "$uv_path" "${uv_args[@]}" python -m relion_mcp.server

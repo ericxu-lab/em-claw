@@ -1,0 +1,1169 @@
+workflow_id: relion_5_spa_tutorial_v1
+version: 1
+description: >-
+  RELION 5.0 SPA dependency template using JobResult inputs and RELION pipeliner
+  mappings. Dataset-specific tutorial examples are non-executable and guarded
+  fields require explicit metadata-locked or derived overrides.
+status: approved_local
+workflow_type: processing
+backend: relion
+intended_for:
+  - relion_5_spa_tutorial
+  - single_particle_analysis
+avoid_when:
+  - missing_task_authorization
+authorization_required: true
+authorization_source: user_task_request
+requires_human_approval: false
+parameter_dependency_rules:
+  - rule_id: no_rescale_reextract_particles_native_pixel_size
+    description: Re-extracting refined particles without rescaling keeps native particle pixel size and original extraction box metadata, so downstream pixel-size and reference-map box parameters must follow that branch metadata.
+    source_step_id: reextract_refined_particles
+    source_param: rescale_particles
+    when:
+      equals: false
+    affected_output_metadata:
+      - particle_pixel_size_A
+      - box_size_px
+      - box_size_A
+      - rescaled
+    output_metadata:
+      particle_pixel_size_A:
+        source: input_metadata
+        step_id: reextract_refined_particles
+        input_role: micrographs
+        metadata_field: rlnMicrographPixelSize
+      box_size_px:
+        source: workflow_step_param
+        step_id: reextract_refined_particles
+        param_name: box_size_pix
+      rescaled:
+        source: constant
+        value: false
+    downstream_parameters:
+      - step_id: rescale_selected_3d_reference_map
+        param_name: output_pixel_size_A
+        metadata_field: particle_pixel_size_A
+      - step_id: rescale_selected_3d_reference_map
+        param_name: new_box_size_pix
+        metadata_field: box_size_px
+      - step_id: rescale_selected_3d_reference_map
+        param_name: output_suffix
+        metadata_field: box_size_px
+        transform: suffix_box
+      - operation: postprocessing
+        param_name: pixel_size_A
+        metadata_field: particle_pixel_size_A
+      - operation: local_resolution
+        param_name: pixel_size_A
+        metadata_field: particle_pixel_size_A
+steps:
+  - id: import_movies
+    operation: import_movies
+    backend: relion
+    inputs:
+      source_movies:
+        kind: external_input
+        role: raw_movies_placeholder
+        required: true
+        result_types:
+          - raw_movies
+    params: {}
+    explicit_param_overrides:
+      required:
+        - raw_movie_glob
+        - is_multiframe
+        - optics_group_name
+        - pixel_size_A
+        - voltage_kv
+        - spherical_aberration_mm
+        - amplitude_contrast
+      conditional: []
+    tutorial_example_params:
+      raw_movie_glob: Movies/*.tiff
+      is_multiframe: true
+      optics_group_name: opticsGroup1
+      pixel_size_A: 0.885
+      voltage_kv: 200.0
+      spherical_aberration_mm: 1.4
+      amplitude_contrast: 0.1
+    expected_results:
+      - imported_movies
+    quality_checkpoint: imported_movies_available
+
+  - id: motion_correction
+    operation: motion_correction
+    backend: relion
+    inputs:
+      movies:
+        role: imported_movies
+        required: true
+        result_types:
+          - imported_movies
+    params:
+      number_of_mpi: 1
+      number_of_threads: 12
+      submit_to_queue: false
+      patch_x: "5"
+      patch_y: "5"
+      gain_reference: Movies/gain.mrc
+      gain_rotation: 0
+      gain_flip: 0
+      dose_per_frame: 1.277
+    expected_results:
+      - motion_corrected_micrographs
+    quality_checkpoint: motion_corrected_micrographs_available
+
+  - id: ctf_estimation
+    operation: ctf_estimation
+    backend: relion
+    inputs:
+      micrographs:
+        role: motion_corrected_micrographs
+        required: true
+        result_types:
+          - motion_corrected_micrographs
+    params:
+      number_of_mpi: 6
+      submit_to_queue: false
+      box_size_pix: 512
+      min_resolution_A: 30
+      max_resolution_A: 5
+      min_defocus_A: 5000
+      max_defocus_A: 50000
+      defocus_step_A: 500
+      astigmatism_A: 100
+      use_power_spectra_from_motioncorr: true
+      ctffind_executable: ctffind
+      use_exhaustive_search: false
+    expected_results:
+      - ctf_estimates
+    quality_checkpoint: ctf_estimates_available
+
+  - id: manual_particle_picking
+    operation: manual_picking
+    backend: relion
+    enabled_by_default: false
+    activation_policy: explicit_user_request
+    inputs:
+      micrographs:
+        role: ctf_estimated_micrographs
+        required: true
+        result_types:
+          - ctf_estimates
+    params:
+      lowpass_filter_A: -1.0
+      micrograph_scale: 0.25
+      sigma_contrast: 3
+      black_value: 0
+      white_value: 0
+      use_topaz_denoise: true
+    explicit_param_overrides:
+      required:
+        - particle_diameter_A
+    tutorial_example_params:
+      particle_diameter_A: 200
+    expected_results:
+      - picked_particles
+    quality_checkpoint: manual_picks_available
+
+  - id: select_micrograph_subset_for_autopicking
+    operation: micrograph_subset_selection
+    backend: relion
+    inputs:
+      micrographs:
+        role: ctf_estimated_micrographs
+        required: true
+        result_types:
+          - ctf_estimates
+    params:
+      split_into_subsets: true
+      randomize_order: true
+      number_of_subsets: -1
+    explicit_param_overrides:
+      required:
+        - subset_size
+    tutorial_example_params:
+      subset_size: 10
+    expected_results:
+      - selected_micrographs
+    quality_checkpoint: selected_micrograph_subset_available
+    warnings:
+      - Native randomized splitting does not stratify acquisition conditions. Prefer relion_plan_micrograph_subset and relion_materialize_micrograph_subset, then bind the materialized selected_micrographs STAR explicitly to downstream picking and Topaz training.
+
+  - id: log_autopicking
+    operation: log_autopicking
+    backend: relion
+    inputs:
+      micrographs:
+        role: selected_micrographs_for_autopicking
+        required: true
+        result_types:
+          - selected_micrographs
+    params:
+      use_log: true
+      shrink_factor: 0
+      lowpass_filter_A: 20.0
+      log_adjust_threshold: 0
+      log_upper_threshold: 5
+      number_of_mpi: 1
+      submit_to_queue: false
+    explicit_param_overrides:
+      required:
+        - log_diameter_min_A
+        - log_diameter_max_A
+    tutorial_example_params:
+      log_diameter_min_A: 150
+      log_diameter_max_A: 180
+    expected_results:
+      - picked_particles
+    quality_checkpoint: autopicked_particles_available
+
+  - id: particle_extraction
+    operation: particle_extraction
+    backend: relion
+    inputs:
+      micrographs:
+        role: ctf_estimated_micrographs
+        required: true
+        result_types:
+          - ctf_estimates
+      coordinates:
+        role: picked_particles
+        required: true
+        result_types:
+          - picked_particles
+    params:
+      use_float16: true
+      normalize_particles: true
+      white_dust_stddev: -1
+      black_dust_stddev: -1
+      invert_contrast: true
+      number_of_mpi: 1
+      submit_to_queue: false
+    explicit_param_overrides:
+      required:
+        - box_size_pix
+        - rescale_particles
+      conditional:
+        - when:
+            param: rescale_particles
+            equals: true
+          required:
+            - rescaled_size_pix
+    tutorial_example_params:
+      box_size_pix: 256
+      rescaled_size_pix: 64
+      background_diameter_pix: 200
+      rescale_particles: true
+    expected_results:
+      - extracted_particles
+    quality_checkpoint: extracted_particles_available
+
+  - id: two_d_classification
+    operation: two_d_classification
+    backend: relion
+    inputs:
+      particles:
+        role: extracted_particles
+        required: true
+        result_types:
+          - extracted_particles
+    params:
+      num_classes: 50
+      number_of_iterations: 25
+      use_em_algorithm: true
+      use_vdam_algorithm: false
+      preread_images: true
+      pooled_particles: 30
+      do_ctf_correction: true
+      regularisation_parameter: 2
+      zero_mask_particles: true
+      center_classes: true
+      inplane_angular_sampling_deg: 6
+      offset_search_range_pix: 5
+      offset_search_step_pix: 1
+      number_of_mpi: 3
+      number_of_threads: 8
+      use_gpu: true
+      gpu_ids: "0:1"
+      submit_to_queue: false
+    explicit_param_overrides:
+      required:
+        - mask_diameter_A
+    tutorial_example_params:
+      mask_diameter_A: 200
+    expected_results:
+      - selected_particles
+      - two_d_classes
+    quality_checkpoint: two_d_classes_available
+
+  - id: particle_selection_from_2d
+    operation: particle_selection
+    backend: relion
+    inputs:
+      classes:
+        role: selected_particles_from_2d_classes
+        required: true
+        result_types:
+          - two_d_classes
+    params:
+      auto_select_2d_classes: true
+      minimum_selection_score: 0.05
+    expected_results:
+      - selected_particles
+    quality_checkpoint: selected_2d_particles_available
+
+  - id: topaz_training
+    operation: topaz_training
+    backend: relion
+    inputs:
+      micrographs:
+        role: selected_micrographs_for_topaz_training
+        required: true
+        result_types:
+          - selected_micrographs
+      particles:
+        role: selected_particles_for_topaz_training
+        required: true
+        result_types:
+          - selected_particles
+    params:
+      use_topaz: true
+      perform_topaz_training: true
+      train_on_particles: true
+      perform_topaz_picking: false
+      use_gpu: true
+      gpu_ids: "1"
+      submit_to_queue: false
+    explicit_param_overrides:
+      required:
+        - topaz_particle_diameter_A
+    tutorial_example_params:
+      topaz_particle_diameter_A: 180
+    expected_results:
+      - topaz_model
+    quality_checkpoint: topaz_model_available
+
+  - id: topaz_picking
+    operation: topaz_picking
+    backend: relion
+    inputs:
+      micrographs:
+        role: ctf_estimated_micrographs_for_topaz_picking
+        required: true
+        result_types:
+          - ctf_estimates
+      model:
+        role: retrained_topaz_model
+        required: true
+        result_types:
+          - topaz_model
+    params:
+      use_topaz: true
+      perform_topaz_training: false
+      perform_topaz_picking: true
+      use_gpu: true
+      gpu_ids: "1"
+      submit_to_queue: false
+    explicit_param_overrides:
+      required:
+        - topaz_particle_diameter_A
+    tutorial_example_params:
+      topaz_particle_diameter_A: 180
+    expected_results:
+      - picked_particles
+    quality_checkpoint: topaz_picks_available
+
+  - id: topaz_particle_extraction
+    operation: particle_extraction
+    backend: relion
+    inputs:
+      micrographs:
+        role: ctf_estimated_micrographs_for_topaz_extraction
+        required: true
+        result_types:
+          - ctf_estimates
+      coordinates:
+        role: topaz_picked_particles
+        required: true
+        result_types:
+          - picked_particles
+    params:
+      use_float16: true
+      normalize_particles: true
+      white_dust_stddev: -1
+      black_dust_stddev: -1
+      invert_contrast: true
+      use_autopick_fom_threshold: true
+      minimum_autopick_fom: -3
+      number_of_mpi: 4
+      submit_to_queue: false
+    explicit_param_overrides:
+      required:
+        - box_size_pix
+        - rescale_particles
+      conditional:
+        - when:
+            param: rescale_particles
+            equals: true
+          required:
+            - rescaled_size_pix
+    tutorial_example_params:
+      box_size_pix: 256
+      rescaled_size_pix: 64
+      background_diameter_pix: 200
+      rescale_particles: true
+    expected_results:
+      - extracted_particles
+    quality_checkpoint: topaz_extracted_particles_available
+
+  - id: topaz_two_d_classification
+    operation: two_d_classification
+    backend: relion
+    inputs:
+      particles:
+        role: topaz_extracted_particles
+        required: true
+        result_types:
+          - extracted_particles
+    params:
+      num_classes: 100
+      number_of_vdam_mini_batches: 100
+      use_em_algorithm: false
+      use_vdam_algorithm: true
+      preread_images: true
+      pooled_particles: 30
+      do_ctf_correction: true
+      regularisation_parameter: 2
+      zero_mask_particles: true
+      center_classes: true
+      inplane_angular_sampling_deg: 6
+      offset_search_range_pix: 5
+      offset_search_step_pix: 1
+      number_of_mpi: 1
+      number_of_threads: 12
+      use_gpu: true
+      gpu_ids: "0,1,2,3"
+      submit_to_queue: false
+    explicit_param_overrides:
+      required:
+        - mask_diameter_A
+    tutorial_example_params:
+      mask_diameter_A: 200
+    expected_results:
+      - selected_particles
+      - two_d_classes
+    quality_checkpoint: topaz_two_d_classes_available
+
+  - id: topaz_particle_selection_from_2d
+    operation: particle_selection
+    backend: relion
+    inputs:
+      classes:
+        role: selected_particles_from_topaz_2d_classes
+        required: true
+        result_types:
+          - two_d_classes
+    params:
+      auto_select_2d_classes: true
+      minimum_selection_score: 0.05
+    expected_results:
+      - selected_particles
+    quality_checkpoint: topaz_selected_2d_particles_available
+
+  - id: de_novo_initial_model
+    operation: initial_model
+    backend: relion
+    inputs:
+      particles:
+        role: selected_particles_from_topaz_2d_classes
+        required: true
+        result_types:
+          - selected_particles
+    params:
+      num_classes: 1
+      symmetry: C1
+      number_of_vdam_mini_batches: 100
+      regularisation_parameter: 4
+      run_in_c1_and_apply_symmetry: true
+      flatten_solvent: true
+      do_ctf_correction: true
+      use_parallel_disc_io: true
+      pooled_particles: 3
+      preread_images: false
+      combine_iterations_through_disc: false
+      number_of_mpi: 1
+      number_of_threads: 12
+      use_gpu: true
+      gpu_ids: "0,1,2,3"
+      submit_to_queue: false
+    explicit_param_overrides:
+      required:
+        - mask_diameter_A
+    tutorial_example_params:
+      mask_diameter_A: 200
+    expected_results:
+      - initial_volume
+    quality_checkpoint: initial_model_accepted
+
+  - id: three_d_classification
+    operation: three_d_classification
+    backend: relion
+    launch_gate: initial_model_acceptance
+    inputs:
+      particles:
+        role: selected_particles
+        required: true
+        result_types:
+          - selected_particles
+      reference_volume:
+        role: initial_volume
+        required: true
+        result_types:
+          - initial_volume
+    params:
+      num_classes: 4
+      symmetry: C1
+      initial_lowpass_A: 50
+      reference_map_absolute_greyscale: true
+      resize_reference_if_needed: false
+      number_of_iterations: 25
+      regularisation_parameter: 4
+      use_blush_regularisation: true
+      zero_mask_particles: true
+      do_ctf_correction: true
+      initial_angular_sampling: "7.5 degrees"
+      initial_offset_range_pix: 5
+      initial_offset_step_pix: 1
+      use_parallel_disc_io: true
+      skip_padding: true
+      pooled_particles: 30
+      preread_images: true
+      number_of_mpi: 5
+      number_of_threads: 6
+      use_gpu: true
+      gpu_ids: "0:1:2:3"
+      submit_to_queue: false
+    explicit_param_overrides:
+      required:
+        - mask_diameter_A
+    tutorial_example_params:
+      mask_diameter_A: 200
+    expected_results:
+      - classified_particles
+      - refined_volume
+    quality_checkpoint: three_d_classes_available
+
+  - id: particle_selection_from_3d
+    operation: particle_selection
+    backend: relion
+    inputs:
+      classes:
+        role: selected_particles_from_3d_classes
+        required: true
+        result_types:
+          - refined_volume
+    params: {}
+    expected_results:
+      - selected_particles
+    quality_checkpoint: selected_3d_particles_available
+
+  - id: reextract_refined_particles
+    operation: particle_extraction
+    backend: relion
+    inputs:
+      micrographs:
+        role: ctf_estimated_micrographs_for_reextraction
+        required: true
+        result_types:
+          - ctf_estimates
+      refined_particles:
+        role: selected_particles_from_3d_classes
+        required: true
+        result_types:
+          - refine3d_particles
+          - selected_particles
+    params:
+      reextract_refined_particles: true
+      recenter_refined_coordinates: true
+      use_float16: true
+      normalize_particles: true
+      white_dust_stddev: -1
+      black_dust_stddev: -1
+      invert_contrast: true
+      use_autopick_fom_threshold: true
+      minimum_autopick_fom: -3
+      number_of_mpi: 4
+      submit_to_queue: false
+    explicit_param_overrides:
+      required:
+        - box_size_pix
+        - rescale_particles
+      conditional:
+        - when:
+            param: rescale_particles
+            equals: true
+          required:
+            - rescaled_size_pix
+      constraints:
+        - param: rescale_particles
+          equals: false
+          message: >-
+            Final high-resolution re-extraction requires native sampling; use
+            a separately recorded exploratory Nyquist-safe branch for any
+            downsampling.
+    tutorial_example_params:
+      box_size_pix: 360
+      rescaled_size_pix: 256
+      background_diameter_pix: 200
+      rescale_particles: true
+    expected_results:
+      - extracted_particles
+    quality_checkpoint: reextracted_refined_particles_available
+
+  - id: rescale_selected_3d_reference_map
+    operation: rescale_map
+    backend: relion
+    inputs:
+      input_map:
+        role: selected_3d_reference_volume
+        required: true
+        result_types:
+          - refined_volume
+    params: {}
+    explicit_param_overrides:
+      required:
+        - input_pixel_size_A
+        - output_pixel_size_A
+        - new_box_size_pix
+        - output_suffix
+      conditional: []
+    tutorial_example_params:
+      input_pixel_size_A: 3.54
+      output_pixel_size_A: 1.244
+      new_box_size_pix: 256
+      output_suffix: _box256
+    expected_results:
+      - refined_volume
+    quality_checkpoint: rescaled_3d_reference_map_available
+
+  - id: refine3d
+    operation: refine3d
+    backend: relion
+    inputs:
+      particles:
+        role: reextracted_refined_particles
+        required: true
+        result_types:
+          - extracted_particles
+      reference_volume:
+        role: rescaled_3d_reference_volume
+        required: true
+        result_types:
+          - refined_volume
+    params:
+      symmetry: C1
+      initial_lowpass_A: 50
+      reference_map_absolute_greyscale: false
+      resize_reference_if_needed: false
+      do_ctf_correction: true
+      zero_mask_particles: true
+      initial_angular_sampling: "7.5 degrees"
+      local_search_from_auto_sampling: "1.8 degrees"
+      initial_offset_range_pix: 5
+      initial_offset_step_pix: 1
+      use_finer_angular_sampling_faster: true
+      use_parallel_disc_io: true
+      skip_padding: true
+      pooled_particles: 30
+      preread_images: true
+      combine_iterations_through_disc: false
+      number_of_mpi: 5
+      number_of_threads: 6
+      use_gpu: true
+      gpu_ids: "0:1:2:3"
+      submit_to_queue: false
+    explicit_param_overrides:
+      required:
+        - mask_diameter_A
+    tutorial_example_params:
+      mask_diameter_A: 200.0
+    expected_results:
+      - refined_volume
+      - refine3d_particles
+      - half_maps
+    quality_checkpoint: refined_half_maps_available
+
+  - id: mask_creation
+    operation: mask_creation
+    backend: relion
+    inputs:
+      input_map:
+        role: refined_volume
+        required: true
+        result_types:
+          - refined_volume
+    params:
+      pixel_size_A: -1.0
+      lowpass_filter_A: 15.0
+      initial_binarisation_threshold: 0.01
+      extend_binary_map_pixels: 3
+      soft_edge_width_pixels: 8
+      number_of_threads: 12
+    expected_results:
+      - mask
+    quality_checkpoint: mask_available
+
+  - id: postprocessing
+    operation: postprocessing
+    backend: relion
+    inputs:
+      half_map:
+        role: half_maps
+        required: true
+        result_types:
+          - half_maps
+      mask:
+        role: solvent_mask
+        required: true
+        result_types:
+          - mask
+    params:
+      estimate_bfactor_automatically: true
+      lowest_resolution_for_auto_bfit_A: 10
+    explicit_param_overrides:
+      required:
+        - pixel_size_A
+      conditional: []
+    tutorial_example_params:
+      pixel_size_A: 1.244
+      mtf_file: mtf_k2_200kV.star
+      mtf_pixel_size_A: 0.885
+    expected_results:
+      - refined_volume
+      - fsc_curve
+    quality_checkpoint: postprocess_results_available
+
+  - id: ctf_refinement_aberrations
+    operation: ctf_refinement
+    backend: relion
+    inputs:
+      particles:
+        role: refined_particles
+        required: true
+        result_types:
+          - refine3d_particles
+      postprocess:
+        role: postprocess_fsc_curve
+        required: true
+        result_types:
+          - fsc_curve
+    params:
+      fit_ctf: false
+      fit_beamtilt: true
+      fit_trefoil: true
+      fit_fourth_order_aberrations: true
+      number_of_mpi: 1
+      number_of_threads: 12
+    expected_results:
+      - ctf_refined_particles
+    quality_checkpoint: aberration_refined_particles_available
+
+  - id: ctf_refinement_anisotropic_magnification
+    operation: ctf_refinement
+    backend: relion
+    inputs:
+      particles:
+        role: aberration_refined_particles
+        required: true
+        result_types:
+          - ctf_refined_particles
+      postprocess:
+        role: postprocess_fsc_curve
+        required: true
+        result_types:
+          - fsc_curve
+    params:
+      fit_ctf: false
+      fit_beamtilt: false
+      fit_anisotropic_magnification: true
+      number_of_mpi: 1
+      number_of_threads: 12
+    expected_results:
+      - ctf_refined_particles
+    quality_checkpoint: magnification_refined_particles_available
+
+  - id: ctf_refinement_per_particle_defocus
+    operation: ctf_refinement
+    backend: relion
+    inputs:
+      particles:
+        role: magnification_refined_particles
+        required: true
+        result_types:
+          - ctf_refined_particles
+      postprocess:
+        role: postprocess_fsc_curve
+        required: true
+        result_types:
+          - fsc_curve
+    params:
+      fit_ctf: true
+      fit_defocus: Per-particle
+      fit_astigmatism: Per-micrograph
+      fit_beamtilt: false
+      number_of_mpi: 1
+      number_of_threads: 12
+    expected_results:
+      - ctf_refined_particles
+    quality_checkpoint: defocus_refined_particles_available
+
+  - id: refine3d_after_ctf_refinement
+    operation: refine3d
+    backend: relion
+    inputs:
+      particles:
+        role: ctf_refined_particles
+        required: true
+        result_types:
+          - ctf_refined_particles
+      reference_volume:
+        role: refined_volume_before_ctf_refinement
+        required: true
+        result_types:
+          - refined_volume
+    params:
+      symmetry: C1
+      initial_lowpass_A: 50
+      reference_map_absolute_greyscale: true
+      resize_reference_if_needed: false
+      do_ctf_correction: true
+      zero_mask_particles: true
+      initial_angular_sampling: "7.5 degrees"
+      local_search_from_auto_sampling: "1.8 degrees"
+      initial_offset_range_pix: 5
+      initial_offset_step_pix: 1
+      use_finer_angular_sampling_faster: true
+      use_parallel_disc_io: true
+      skip_padding: true
+      pooled_particles: 30
+      preread_images: true
+      combine_iterations_through_disc: false
+      number_of_mpi: 5
+      number_of_threads: 6
+      use_gpu: true
+      gpu_ids: "0:1:2:3"
+      submit_to_queue: false
+    explicit_param_overrides:
+      required:
+        - mask_diameter_A
+    tutorial_example_params:
+      mask_diameter_A: 200.0
+    expected_results:
+      - refined_volume
+      - refine3d_particles
+      - half_maps
+    quality_checkpoint: ctf_refined_refinement_available
+
+  - id: postprocess_after_ctf_refinement
+    operation: postprocessing
+    backend: relion
+    inputs:
+      half_map:
+        role: ctf_refined_half_maps
+        required: true
+        result_types:
+          - half_maps
+      mask:
+        role: solvent_mask
+        required: true
+        result_types:
+          - mask
+    params:
+      estimate_bfactor_automatically: true
+      lowest_resolution_for_auto_bfit_A: 10
+    explicit_param_overrides:
+      required:
+        - pixel_size_A
+      conditional: []
+    tutorial_example_params:
+      pixel_size_A: 1.244
+      mtf_file: mtf_k2_200kV.star
+      mtf_pixel_size_A: 0.885
+    expected_results:
+      - refined_volume
+      - fsc_curve
+    quality_checkpoint: ctf_refined_postprocess_available
+
+  - id: bayesian_polishing_training
+    operation: bayesian_polishing
+    backend: relion
+    inputs:
+      micrographs:
+        role: motion_corrected_micrographs
+        required: true
+        result_types:
+          - motion_corrected_micrographs
+      particles:
+        role: ctf_refined_refinement_particles
+        required: true
+        result_types:
+          - refine3d_particles
+      postprocess:
+        role: ctf_refined_postprocess_fsc_curve
+        required: true
+        result_types:
+          - fsc_curve
+    params:
+      write_float16: true
+      first_frame: 1
+      last_frame: -1
+      train_optimal_parameters: true
+      perform_particle_polishing: false
+      minimum_particles_for_parameter_optimisation: 3000
+      evaluation_fraction: 0.5
+      number_of_mpi: 1
+      number_of_threads: 24
+    expected_results:
+      - polishing_parameters
+    quality_checkpoint: polishing_training_particles_available
+
+  - id: bayesian_polishing
+    operation: bayesian_polishing
+    backend: relion
+    inputs:
+      micrographs:
+        role: motion_corrected_micrographs
+        required: true
+        result_types:
+          - motion_corrected_micrographs
+      particles:
+        role: ctf_refined_refinement_particles
+        required: true
+        result_types:
+          - refine3d_particles
+      postprocess:
+        role: ctf_refined_postprocess_fsc_curve
+        required: true
+        result_types:
+          - fsc_curve
+      polishing_parameters:
+        role: polishing_parameters
+        required: true
+        result_types:
+          - polishing_parameters
+    params:
+      write_float16: true
+      first_frame: 1
+      last_frame: -1
+      train_optimal_parameters: false
+      perform_particle_polishing: true
+      minimum_resolution_for_bfactor_fit_A: 20
+      maximum_resolution_for_bfactor_fit_A: -1
+      number_of_mpi: 3
+      number_of_threads: 8
+    expected_results:
+      - polished_particles
+    quality_checkpoint: polished_particles_available
+
+  - id: refined_after_polishing
+    operation: refine3d
+    backend: relion
+    inputs:
+      particles:
+        role: polished_particles
+        required: true
+        result_types:
+          - polished_particles
+      reference_volume:
+        role: refined_volume_before_polishing
+        required: true
+        result_types:
+          - refined_volume
+      mask:
+        role: solvent_mask
+        required: true
+        result_types:
+          - mask
+    params:
+      symmetry: C1
+      initial_lowpass_A: 8
+      reference_map_absolute_greyscale: true
+      resize_reference_if_needed: false
+      do_ctf_correction: true
+      zero_mask_particles: true
+      solvent_correct_fsc: true
+      initial_angular_sampling: "7.5 degrees"
+      local_search_from_auto_sampling: "1.8 degrees"
+      initial_offset_range_pix: 5
+      initial_offset_step_pix: 1
+      use_finer_angular_sampling_faster: false
+      use_parallel_disc_io: true
+      skip_padding: false
+      pooled_particles: 30
+      preread_images: true
+      combine_iterations_through_disc: false
+      number_of_mpi: 5
+      number_of_threads: 6
+      use_gpu: true
+      gpu_ids: "0:1:2:3"
+      submit_to_queue: false
+    explicit_param_overrides:
+      required:
+        - mask_diameter_A
+    tutorial_example_params:
+      mask_diameter_A: 200.0
+    expected_results:
+      - refined_volume
+      - refine3d_particles
+      - half_maps
+    quality_checkpoint: polished_refinement_available
+
+  - id: postprocess_after_polishing
+    operation: postprocessing
+    backend: relion
+    inputs:
+      half_map:
+        role: polished_half_maps
+        required: true
+        result_types:
+          - half_maps
+      mask:
+        role: solvent_mask
+        required: true
+        result_types:
+          - mask
+    params:
+      estimate_bfactor_automatically: true
+      lowest_resolution_for_auto_bfit_A: 10
+    explicit_param_overrides:
+      required:
+        - pixel_size_A
+      conditional: []
+    tutorial_example_params:
+      pixel_size_A: 1.244
+      mtf_file: mtf_k2_200kV.star
+      mtf_pixel_size_A: 0.885
+    expected_results:
+      - refined_volume
+      - fsc_curve
+    quality_checkpoint: polished_postprocess_available
+
+  - id: local_resolution
+    operation: local_resolution
+    backend: relion
+    optional: true
+    enabled_by_default: false
+    activation_policy: final_best_map_selected_or_explicit_user_request
+    inputs:
+      half_map:
+        role: polished_half_maps
+        required: true
+        result_types:
+          - half_maps
+      mask:
+        role: solvent_mask
+        required: false
+        result_types:
+          - mask
+    params:
+      use_relion_local_resolution: true
+      use_resmap: false
+      user_provided_bfactor: -30
+    explicit_param_overrides:
+      required:
+        - pixel_size_A
+      conditional: []
+    tutorial_example_params:
+      pixel_size_A: 1.244
+      mtf_file: mtf_k2_200kV.star
+    expected_results:
+      - local_resolution_map
+    quality_checkpoint: local_resolution_available
+    warnings:
+      - >-
+        Deferred until one best/final deliverable map is selected unless the
+        user explicitly requests an earlier LocalRes run.
+
+  - id: modelangelo_atomic_modelling
+    operation: modelangelo
+    backend: relion
+    optional: true
+    inputs:
+      map:
+        role: polished_postprocessed_map
+        required: true
+        result_types:
+          - refined_volume
+    params:
+      protein_fasta: betagal.fasta
+      gpu_ids: "0,1,2,3"
+    expected_results: []
+    warnings:
+      - Optional advanced tutorial stage; current mapping can dry-run the ModelAngelo request but does not register atomic-model JobResults.
+
+  - id: dynamight_motion_exploration
+    operation: dynamight
+    backend: relion
+    optional: true
+    inputs:
+      particles:
+        role: polished_refinement_particles
+        required: true
+        result_types:
+          - refine3d_particles
+      reference_volume:
+        role: polished_refined_volume
+        required: true
+        result_types:
+          - refined_volume
+    params:
+      n_gaussians: 8000
+      initial_threshold: 0.015
+      regularization_factor: 1
+      number_of_threads: 1
+      preload_images: true
+      gpu_id: "0"
+      run_inverse_deformations: true
+      number_of_epochs: 200
+      run_latent_space_exploration: true
+      halfset: 1
+      run_deformed_backprojection: true
+      backprojection_batchsize: 2
+      checkpoint_file: DynaMight/job034/forward_deformations/checkpoints/checkpoint_final.pth
+    expected_results: []
+    warnings:
+      - Optional advanced tutorial stage; RELION DynaMight is manifest-only and not approved for request building yet.
+
+  - id: postprocess_after_dynamight
+    operation: postprocessing
+    backend: relion
+    optional: true
+    inputs:
+      half_map:
+        role: dynamight_backprojection_half_maps
+        required: true
+        result_types:
+          - half_maps
+      mask:
+        role: solvent_mask
+        required: true
+        result_types:
+          - mask
+    params:
+      estimate_bfactor_automatically: true
+      lowest_resolution_for_auto_bfit_A: 10
+    explicit_param_overrides:
+      required:
+        - pixel_size_A
+      conditional: []
+    tutorial_example_params:
+      pixel_size_A: 1.244
+      mtf_file: mtf_k2_200kV.star
+      mtf_pixel_size_A: 0.885
+    expected_results:
+      - refined_volume
+      - fsc_curve
+    warnings:
+      - Optional advanced tutorial stage; depends on DynaMight backprojection outputs that are not registered as JobResults yet.

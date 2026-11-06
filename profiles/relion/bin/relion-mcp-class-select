@@ -1,0 +1,90 @@
+#!/usr/bin/env bash
+# Provide the relion-mcp-class-select entry point without installing the package.
+#
+# relion-mcp-class-select is declared in the vendored backend's pyproject.toml as
+# a [project.scripts] entry point, so it only becomes an executable when that
+# package is installed. em-claw-relion-mcp deliberately does not install it: it
+# runs the server in place as `python -m relion_mcp.server` over PYTHONPATH, and
+# the vendored backend must stay byte-identical to backend.provenance.json.
+#
+# The bootstrap replaces the default bare RELION_CLASS_SELECTOR name with this
+# shim's stable absolute path. The MCP then records that path in the RELION
+# External job instead of relying on an entry point inside a transient uv cache.
+#
+# relion_mcp.class_select and its only import (relion_mcp.star) are stdlib-only,
+# so this needs nothing but Python >= 3.11 (tomllib) and PYTHONPATH.
+#
+# RELION invokes it from the project directory as:
+#   relion-mcp-class-select --o External/jobNNN/ --in_parts <star> \
+#       --classes 1,9,16 [--expected-particles N] [--class-model <star>] --j <n>
+
+set -euo pipefail
+
+readonly EMCLAW_ROOT="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")/../../.." && pwd -P)"
+
+fail() {
+  printf 'relion-mcp-class-select: %s\n' "$1" >&2
+  exit 1
+}
+
+require_absolute_path() {
+  local path=$1
+  local label=$2
+  [[ "$path" == /* ]] || fail "$label must be an absolute path"
+}
+
+repo=${RELION_MCP_REPO:-$EMCLAW_ROOT/profiles/relion/backend}
+[[ -f "$repo/src/relion_mcp/class_select.py" ]] ||
+  fail "the RELION MCP Python package is unavailable under '$repo'"
+repo=$(cd -- "$repo" && pwd -P)
+
+export RELION_MCP_REPO="$repo"
+export PYTHONPATH="$repo/src"
+export PYTHONDONTWRITEBYTECODE=1
+
+# tomllib in relion_mcp/__init__.py sets the floor at 3.11.
+usable_python() {
+  local candidate=${1:-}
+  [[ -n "$candidate" && -f "$candidate" && -x "$candidate" ]] || return 1
+  "$candidate" -I -c 'import sys; raise SystemExit(0 if sys.version_info >= (3, 11) else 1)' \
+    >/dev/null 2>&1
+}
+
+configured_python=${EMCLAW_RELION_MCP_PYTHON:-}
+if [[ -n "$configured_python" ]]; then
+  require_absolute_path "$configured_python" "EMCLAW_RELION_MCP_PYTHON"
+  if usable_python "$configured_python"; then
+    exec "$configured_python" -P -m relion_mcp.class_select "$@"
+  fi
+  fail "EMCLAW_RELION_MCP_PYTHON must name an executable Python >= 3.11"
+fi
+
+candidates=()
+for name in python3 python3.13 python3.12 python3.11 python; do
+  if resolved=$(command -v -- "$name" 2>/dev/null); then
+    candidates+=("$resolved")
+  fi
+done
+for candidate in ${candidates[@]+"${candidates[@]}"}; do
+  if usable_python "$candidate"; then
+    exec "$candidate" -P -m relion_mcp.class_select "$@"
+  fi
+done
+
+# Fall back to the same uv-provisioned runtime the server bootstrap uses. No
+# third-party packages are needed, so this stays offline once uv has a CPython.
+runtime=${EMCLAW_RUNTIME_DIR:-${XDG_CACHE_HOME:-${HOME:-/tmp}/.cache}/em-claw}
+runtime_python=${EMCLAW_RELION_RUNTIME_PYTHON:-3.11}
+uv_bin=${EMCLAW_UV_BIN:-uv}
+require_absolute_path "$runtime" "EMCLAW_RUNTIME_DIR"
+
+uv_path=$(command -v -- "$uv_bin" 2>/dev/null) ||
+  fail "no Python >= 3.11 was found and uv is unavailable; set EMCLAW_RELION_MCP_PYTHON"
+
+uv_cache=${UV_CACHE_DIR:-$runtime/uv-cache}
+require_absolute_path "$uv_cache" "UV_CACHE_DIR"
+export UV_CACHE_DIR="$uv_cache"
+mkdir -p -- "$UV_CACHE_DIR"
+exec "$uv_path" run --no-project --no-config --python-preference only-managed \
+  --python "$runtime_python" \
+  python -P -m relion_mcp.class_select "$@"

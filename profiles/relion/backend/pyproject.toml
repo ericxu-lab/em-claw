@@ -1,0 +1,35 @@
+[build-system]
+requires = ["hatchling>=1.25"]
+build-backend = "hatchling.build"
+
+[project]
+name = "relion-mcp"
+version = "0.5.0"
+description = "A safety-gated MCP server for planning and running RELION 5 workflows from Codex."
+readme = "README.md"
+requires-python = ">=3.11"
+license = { text = "MIT" }
+dependencies = [
+  "mcp[cli]>=2.0,<3.0",
+  "PyYAML>=6.0,<7.0",
+  "numpy>=1.26,<3.0",
+  "matplotlib>=3.8,<4.0",
+  "mrcfile>=1.5,<2.0",
+  "Pillow>=10.0,<13.0",
+  "scipy>=1.11,<2.0",
+]
+
+[project.optional-dependencies]
+test = ["pytest>=8.0,<10.0", "ruff>=0.9,<1.0"]
+
+[project.scripts]
+relion-mcp = "relion_mcp.server:main"
+relion-mcp-class-select = "relion_mcp.class_select:main"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/relion_mcp"]
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+testpaths = ["tests"]
+addopts = "-q"

@@ -1,0 +1,16 @@
+{
+  "mcpServers": {
+    "relion": {
+      "type": "stdio",
+      "command": "../../libexec/em-claw-relion-mcp",
+      "args": [],
+      "env": {
+        "EMCLAW_RELION_ENV_FILE": "${EMCLAW_RELION_ENV_FILE}",
+        "RELION_MCP_MODE": "${RELION_MCP_MODE:-run}",
+        "RELION_PROJECT_ROOTS": "${RELION_PROJECT_ROOTS}",
+        "RELION_SCRATCH_DIR": "${RELION_SCRATCH_DIR}"
+      },
+      "timeout": 1200000
+    }
+  }
+}

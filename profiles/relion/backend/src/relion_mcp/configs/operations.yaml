@@ -1,0 +1,4515 @@
+operations:
+  check_backend_available:
+    description: Check whether a backend environment appears available.
+    operation_type: backend_inspection
+    category: backend_inspection
+    supported_backends: [auto, mock, relion]
+    modifies_backend_project: false
+    creates_files: false
+    destructive: false
+    requires_human_approval: false
+    expected_output_type: backend_status_report
+    required_inputs: {}
+    params:
+      backend_name:
+        type: enum
+        allowed: [relion]
+        required: true
+        description: Backend environment to inspect.
+        exposure: workflow_default
+        source: workflow_default
+        param_id: backend_name
+        category: backend_option
+        allowed_sources: [workflow_default, project_bootstrap]
+        authority_order: [project_bootstrap, workflow_default]
+        dependency_scope: local
+        impacts: []
+    expected_results: []
+    backend_support:
+      relion:
+        supported: true
+
+  check_backend_project_state:
+    description: Check the readiness state of a native backend project workspace.
+    operation_type: backend_inspection
+    category: backend_inspection
+    supported_backends: [relion]
+    modifies_backend_project: false
+    creates_files: false
+    destructive: false
+    requires_human_approval: false
+    expected_output_type: backend_project_state_report
+    required_inputs: {}
+    params:
+      backend_project_id:
+        type: str
+        required: true
+        description: EMClaw backend project reference.
+        exposure: workflow_default
+        source: user_or_agent
+        param_id: backend_project_id
+        category: backend_option
+        allowed_sources: [workflow_default, project_bootstrap, user_override]
+        authority_order: [project_bootstrap, user_override, workflow_default]
+        dependency_scope: local
+        impacts: []
+      expected_state:
+        type: enum
+        allowed:
+          - directory_missing
+          - directory_exists_but_not_backend_project
+          - backend_project_exists
+          - backend_project_exists_but_invalid
+          - backend_project_ready
+        required: false
+        description: Expected backend project state.
+        exposure: workflow_default
+        source: workflow_default
+        param_id: expected_state
+        category: backend_option
+        allowed_sources: [workflow_default, project_bootstrap]
+        authority_order: [project_bootstrap, workflow_default]
+        dependency_scope: local
+        impacts: []
+    expected_results: []
+    backend_support:
+      relion:
+        supported: true
+
+  initialize_backend_project:
+    description: Initialize a native backend project workspace for an authorized task.
+    operation_type: backend_setup
+    category: backend_setup
+    supported_backends: [relion]
+    modifies_backend_project: true
+    creates_files: true
+    destructive: false
+    authorization_required: true
+    authorization_source: user_task_request
+    requires_human_approval: false
+    expected_output_type: backend_project
+    required_inputs: {}
+    params:
+      backend_project_id:
+        type: str
+        required: true
+        description: EMClaw backend project reference.
+        exposure: workflow_default
+        source: user_or_agent
+        param_id: backend_project_id
+        category: backend_option
+        allowed_sources: [workflow_default, project_bootstrap, user_override]
+        authority_order: [project_bootstrap, user_override, workflow_default]
+        dependency_scope: local
+        impacts: []
+      display_name:
+        type: str
+        required: false
+        description: Human-readable backend project name.
+        exposure: user_overridable
+        source: user_or_agent
+        param_id: display_name
+        category: backend_option
+        allowed_sources: [workflow_default, project_bootstrap, user_override]
+        authority_order: [project_bootstrap, user_override, workflow_default]
+        dependency_scope: local
+        impacts: []
+      pipeline_name:
+        type: str
+        required: false
+        description: Native backend pipeline name.
+        exposure: expert_only
+        source: workflow_default
+        param_id: pipeline_name
+        category: backend_option
+        allowed_sources: [workflow_default, project_bootstrap]
+        authority_order: [project_bootstrap, workflow_default]
+        dependency_scope: local
+        impacts: []
+    expected_results: []
+    backend_support:
+      relion:
+        supported: true
+
+  attach_backend_project:
+    description: Attach an existing native backend project workspace after approval.
+    operation_type: backend_setup
+    category: backend_setup
+    supported_backends: [relion]
+    modifies_backend_project: true
+    creates_files: false
+    destructive: false
+    authorization_required: true
+    authorization_source: user_task_request
+    requires_human_approval: false
+    expected_output_type: backend_project
+    required_inputs: {}
+    params:
+      backend_project_id:
+        type: str
+        required: true
+        description: EMClaw backend project reference.
+        exposure: workflow_default
+        source: user_or_agent
+        param_id: backend_project_id
+        category: backend_option
+        allowed_sources: [workflow_default, project_bootstrap, user_override]
+        authority_order: [project_bootstrap, user_override, workflow_default]
+        dependency_scope: local
+        impacts: []
+      display_name:
+        type: str
+        required: false
+        description: Human-readable backend project name.
+        exposure: user_overridable
+        source: user_or_agent
+        param_id: display_name
+        category: backend_option
+        allowed_sources: [workflow_default, project_bootstrap, user_override]
+        authority_order: [project_bootstrap, user_override, workflow_default]
+        dependency_scope: local
+        impacts: []
+      pipeline_name:
+        type: str
+        required: false
+        description: Native backend pipeline name.
+        exposure: expert_only
+        source: workflow_default
+        param_id: pipeline_name
+        category: backend_option
+        allowed_sources: [workflow_default, project_bootstrap]
+        authority_order: [project_bootstrap, workflow_default]
+        dependency_scope: local
+        impacts: []
+    expected_results: []
+    backend_support:
+      relion:
+        supported: true
+
+  scan_backend_project:
+    description: Read a native backend project and register discovered JobResults.
+    operation_type: backend_inspection
+    category: backend_inspection
+    supported_backends: [relion]
+    modifies_backend_project: false
+    creates_files: false
+    destructive: false
+    requires_human_approval: false
+    expected_output_type: job_result_registry
+    required_inputs: {}
+    params:
+      backend_project_id:
+        type: str
+        required: true
+        description: EMClaw backend project reference.
+        exposure: workflow_default
+        source: user_or_agent
+        param_id: backend_project_id
+        category: backend_option
+        allowed_sources: [workflow_default, project_bootstrap, user_override]
+        authority_order: [project_bootstrap, user_override, workflow_default]
+        dependency_scope: local
+        impacts: []
+    expected_results: []
+    backend_support:
+      relion:
+        supported: true
+
+  schedule_backend_job:
+    description: Schedule a validated backend job request after policy and approval checks.
+    operation_type: execution_control
+    category: execution_control
+    supported_backends: [relion]
+    modifies_backend_project: true
+    creates_files: true
+    destructive: false
+    authorization_required: true
+    authorization_source: user_task_request
+    requires_human_approval: false
+    expected_output_type: backend_run
+    required_inputs: {}
+    params:
+      backend_project_id:
+        type: str
+        required: true
+        description: EMClaw backend project reference.
+        exposure: mapped_internal
+        source: backend_policy
+        param_id: backend_project_id
+        category: backend_option
+        allowed_sources: [workflow_default, project_bootstrap, resource_allocator]
+        authority_order: [resource_allocator, project_bootstrap, workflow_default]
+        dependency_scope: local
+        impacts: []
+    expected_results: []
+    backend_support:
+      relion:
+        supported: true
+
+  run_backend_job:
+    description: Run a scheduled backend job after policy and approval checks.
+    operation_type: execution_control
+    category: execution_control
+    supported_backends: [relion]
+    modifies_backend_project: true
+    creates_files: true
+    destructive: false
+    authorization_required: true
+    authorization_source: user_task_request
+    requires_human_approval: false
+    expected_output_type: backend_run
+    required_inputs: {}
+    params:
+      backend_project_id:
+        type: str
+        required: true
+        description: EMClaw backend project reference.
+        exposure: mapped_internal
+        source: backend_policy
+        param_id: backend_project_id
+        category: backend_option
+        allowed_sources: [workflow_default, project_bootstrap, resource_allocator]
+        authority_order: [resource_allocator, project_bootstrap, workflow_default]
+        dependency_scope: local
+        impacts: []
+    expected_results: []
+    backend_support:
+      relion:
+        supported: true
+
+  check_backend_job_completion:
+    description: Check native backend job completion state without modifying outputs.
+    operation_type: execution_control
+    category: execution_control
+    supported_backends: [relion]
+    modifies_backend_project: false
+    creates_files: false
+    destructive: false
+    requires_human_approval: false
+    expected_output_type: backend_job_status
+    required_inputs: {}
+    params:
+      backend_project_id:
+        type: str
+        required: true
+        description: EMClaw backend project reference.
+        exposure: mapped_internal
+        source: backend_policy
+        param_id: backend_project_id
+        category: backend_option
+        allowed_sources: [workflow_default, project_bootstrap, resource_allocator]
+        authority_order: [resource_allocator, project_bootstrap, workflow_default]
+        dependency_scope: local
+        impacts: []
+    expected_results: []
+    backend_support:
+      relion:
+        supported: true
+
+  register_backend_job_results:
+    description: Register completed backend job outputs as EMClaw JobResults.
+    operation_type: execution_control
+    category: execution_control
+    supported_backends: [relion]
+    modifies_backend_project: false
+    creates_files: false
+    destructive: false
+    requires_human_approval: false
+    expected_output_type: job_result_registry
+    required_inputs: {}
+    params:
+      backend_project_id:
+        type: str
+        required: true
+        description: EMClaw backend project reference.
+        exposure: mapped_internal
+        source: backend_policy
+        param_id: backend_project_id
+        category: backend_option
+        allowed_sources: [workflow_default, project_bootstrap, resource_allocator]
+        authority_order: [resource_allocator, project_bootstrap, workflow_default]
+        dependency_scope: local
+        impacts: []
+    expected_results: []
+    backend_support:
+      relion:
+        supported: true
+
+  import_movies:
+    description: Import movie or micrograph input metadata into a backend project.
+    operation_type: transfer
+    category: transfer
+    supported_backends: [relion]
+    modifies_backend_project: true
+    creates_files: true
+    authorization_required: true
+    authorization_source: user_task_request
+    requires_human_approval: false
+    required_inputs:
+      source_movies:
+        result_types: [raw_movies]
+        required: true
+        description: Registered external raw movie or micrograph input.
+    params:
+      raw_movie_glob:
+        type: str
+        required: true
+        description: Workflow-relative raw movie glob for the RELION tutorial Import.
+        exposure: workflow_default
+        source: workflow_default
+        param_id: raw_movie_glob
+        category: input_binding
+        allowed_sources: [workflow_default, project_bootstrap, input_metadata]
+        authority_order: [input_metadata, project_bootstrap, workflow_default]
+        dependency_scope: local
+        impacts: []
+      is_multiframe:
+        type: bool
+        required: false
+        default: true
+        description: Whether the input images are multi-frame movies.
+        exposure: workflow_default
+        source: workflow_default
+        param_id: is_multiframe
+        category: processing_standard
+        allowed_sources: [input_metadata, project_bootstrap, workflow_default]
+        authority_order: [input_metadata, project_bootstrap, workflow_default]
+        dependency_scope: local
+        impacts: []
+      optics_group_name:
+        type: str
+        required: false
+        default: opticsGroup1
+        description: RELION optics group name for imported movies.
+        exposure: workflow_default
+        source: workflow_default
+        param_id: optics_group_name
+        category: microscopy_metadata
+        allowed_sources: [input_metadata, project_bootstrap, workflow_default]
+        authority_order: [input_metadata, project_bootstrap, workflow_default]
+        dependency_scope: project
+        impacts: []
+      pixel_size_A:
+        param_id: acquisition_pixel_size_A
+        type: float
+        category: microscopy_metadata
+        required: true
+        unit: angstrom
+        min: 0
+        description: Pixel size for imported movies.
+        exposure: user_overridable
+        source: workflow_default
+        allowed_sources: [input_metadata, project_bootstrap, workflow_default]
+        authority_order: [input_metadata, project_bootstrap, workflow_default]
+        dependency_scope: project
+        impacts: [particle_pixel_size_A, box_size_A]
+      voltage_kv:
+        param_id: microscope_voltage_kv
+        type: float
+        category: microscopy_metadata
+        required: false
+        unit: kV
+        min: 0
+        description: Microscope voltage.
+        exposure: workflow_default
+        source: workflow_default
+        allowed_sources: [input_metadata, project_bootstrap, workflow_default]
+        authority_order: [input_metadata, project_bootstrap, workflow_default]
+        dependency_scope: project
+        impacts: [ctf_metadata]
+      spherical_aberration_mm:
+        param_id: microscope_spherical_aberration_mm
+        type: float
+        category: microscopy_metadata
+        required: false
+        unit: mm
+        min: 0
+        description: Microscope spherical aberration.
+        exposure: workflow_default
+        source: workflow_default
+        allowed_sources: [input_metadata, project_bootstrap, workflow_default]
+        authority_order: [input_metadata, project_bootstrap, workflow_default]
+        dependency_scope: project
+        impacts: [ctf_metadata]
+      amplitude_contrast:
+        param_id: microscope_amplitude_contrast
+        type: float
+        category: microscopy_metadata
+        required: false
+        min: 0
+        max: 1
+        description: Amplitude contrast fraction.
+        exposure: workflow_default
+        source: workflow_default
+        allowed_sources: [input_metadata, project_bootstrap, workflow_default]
+        authority_order: [input_metadata, project_bootstrap, workflow_default]
+        dependency_scope: project
+        impacts: [ctf_metadata]
+    expected_results:
+      - result_type: imported_movies
+    backend_support:
+      relion:
+        supported: true
+        mapping_ref: import_movies
+        support_level: schedule_mappable
+
+  motion_correction:
+    description: Correct beam-induced motion in imported movie data.
+    operation_type: processing
+    category: processing
+    supported_backends: [relion]
+    modifies_backend_project: true
+    creates_files: true
+    authorization_required: true
+    authorization_source: user_task_request
+    requires_human_approval: false
+    required_inputs:
+      movies:
+        result_types: [imported_movies]
+        required: true
+        description: Imported movies to motion-correct.
+    params:
+      number_of_mpi:
+        type: int
+        required: false
+        min: 1
+        description: MPI process count.
+        exposure: expert_only
+        source: workflow_default
+        param_id: number_of_mpi
+        category: resource_request
+        allowed_sources: [workflow_default, user_override, resource_allocator]
+        authority_order: [resource_allocator, user_override, workflow_default]
+        dependency_scope: local
+        impacts: [runtime_resources]
+      number_of_threads:
+        type: int
+        required: false
+        min: 1
+        description: Thread count per process.
+        exposure: expert_only
+        source: workflow_default
+        param_id: number_of_threads
+        category: resource_request
+        allowed_sources: [workflow_default, user_override, resource_allocator]
+        authority_order: [resource_allocator, user_override, workflow_default]
+        dependency_scope: local
+        impacts: [runtime_resources]
+      submit_to_queue:
+        type: bool
+        required: false
+        default: false
+        description: Whether to submit through backend queue policy.
+        exposure: expert_only
+        source: backend_policy
+        param_id: submit_to_queue
+        category: resource_request
+        allowed_sources: [workflow_default, user_override, resource_allocator]
+        authority_order: [resource_allocator, user_override, workflow_default]
+        dependency_scope: local
+        impacts: [runtime_resources]
+      patch_x:
+        type: str
+        required: false
+        default: "1"
+        description: Number of motion-correction patches in X.
+        exposure: user_overridable
+        source: workflow_default
+        param_id: patch_x
+        category: processing_standard
+        allowed_sources: [workflow_default, user_override]
+        authority_order: [user_override, workflow_default]
+        dependency_scope: local
+        impacts: []
+      patch_y:
+        type: str
+        required: false
+        default: "1"
+        description: Number of motion-correction patches in Y.
+        exposure: user_overridable
+        source: workflow_default
+        param_id: patch_y
+        category: processing_standard
+        allowed_sources: [workflow_default, user_override]
+        authority_order: [user_override, workflow_default]
+        dependency_scope: local
+        impacts: []
+      gain_reference:
+        param_id: gain_reference
+        type: str
+        category: input_binding
+        required: false
+        description: Optional gain-reference image for motion correction.
+        exposure: user_overridable
+        source: user_or_agent
+        allowed_sources: [workflow_default, project_bootstrap, input_metadata, user_override]
+        authority_order: [input_metadata, project_bootstrap, user_override, workflow_default]
+        dependency_scope: local
+        impacts: []
+      gain_rotation:
+        type: int
+        required: false
+        default: 0
+        min: 0
+        max: 3
+        description: Gain-reference rotation in clockwise 90-degree steps.
+        exposure: user_overridable
+        source: workflow_default
+        param_id: gain_rotation
+        category: microscopy_metadata
+        allowed_sources: [input_metadata, project_bootstrap, workflow_default]
+        authority_order: [input_metadata, project_bootstrap, workflow_default]
+        dependency_scope: project
+        impacts: []
+      gain_flip:
+        type: int
+        required: false
+        default: 0
+        min: 0
+        max: 2
+        description: Gain-reference flip mode.
+        exposure: user_overridable
+        source: workflow_default
+        param_id: gain_flip
+        category: microscopy_metadata
+        allowed_sources: [input_metadata, project_bootstrap, workflow_default]
+        authority_order: [input_metadata, project_bootstrap, workflow_default]
+        dependency_scope: project
+        impacts: []
+      use_relion_own_motioncor:
+        type: bool
+        required: false
+        default: true
+        description: Whether to use RELION's own MotionCor implementation.
+        exposure: user_overridable
+        source: workflow_default
+        param_id: use_relion_own_motioncor
+        category: processing_standard
+        allowed_sources: [workflow_default, user_override]
+        authority_order: [user_override, workflow_default]
+        dependency_scope: local
+        impacts: []
+      motioncor2_executable:
+        type: str
+        required: false
+        description: Optional UCSF MotionCor2 executable path.
+        exposure: expert_only
+        source: project_bootstrap
+        param_id: motioncor2_executable
+        category: backend_option
+        allowed_sources: [workflow_default, project_bootstrap, explicit_runtime_override]
+        authority_order: [explicit_runtime_override, project_bootstrap, workflow_default]
+        dependency_scope: local
+        impacts: []
+      defect_file:
+        type: str
+        required: false
+        description: Optional defect file or defect map.
+        exposure: expert_only
+        source: user_or_agent
+        param_id: defect_file
+        category: input_binding
+        allowed_sources: [workflow_default, project_bootstrap, input_metadata, user_override]
+        authority_order: [input_metadata, project_bootstrap, user_override, workflow_default]
+        dependency_scope: local
+        impacts: []
+      gpu_ids:
+        type: str
+        category: resource_allocation
+        required: false
+        description: GPU IDs for UCSF MotionCor2 execution.
+        exposure: expert_only
+        source: resource_allocator
+        allowed_sources: [resource_allocator, explicit_runtime_override]
+        authority_order: [explicit_runtime_override, resource_allocator]
+        param_id: gpu_ids
+        dependency_scope: local
+        impacts: []
+      dose_per_frame:
+        param_id: dose_per_frame_e_per_A2
+        type: float
+        category: microscopy_metadata
+        required: false
+        min: 0
+        description: Electron dose per movie frame in electrons per square Angstrom.
+        exposure: user_overridable
+        source: workflow_default
+        allowed_sources: [input_metadata, project_bootstrap, workflow_default]
+        authority_order: [input_metadata, project_bootstrap, workflow_default]
+        dependency_scope: project
+        impacts: []
+    expected_results:
+      - result_type: motion_corrected_micrographs
+    backend_support:
+      relion:
+        supported: true
+        mapping_ref: motion_correction
+        support_level: schedule_mappable
+
+  ctf_estimation:
+    description: Estimate CTF parameters for motion-corrected micrographs.
+    operation_type: processing
+    category: processing
+    supported_backends: [relion]
+    modifies_backend_project: true
+    creates_files: true
+    authorization_required: true
+    authorization_source: user_task_request
+    requires_human_approval: false
+    required_inputs:
+      micrographs:
+        result_types: [motion_corrected_micrographs]
+        required: true
+        description: Motion-corrected micrographs.
+    params:
+      number_of_mpi:
+        type: int
+        required: false
+        min: 1
+        description: MPI process count.
+        exposure: expert_only
+        source: workflow_default
+        param_id: number_of_mpi
+        category: resource_request
+        allowed_sources: [workflow_default, user_override, resource_allocator]
+        authority_order: [resource_allocator, user_override, workflow_default]
+        dependency_scope: local
+        impacts: [runtime_resources]
+      submit_to_queue:
+        type: bool
+        required: false
+        default: false
+        description: Whether to submit through backend queue policy.
+        exposure: expert_only
+        source: backend_policy
+        param_id: submit_to_queue
+        category: resource_request
+        allowed_sources: [workflow_default, user_override, resource_allocator]
+        authority_order: [resource_allocator, user_override, workflow_default]
+        dependency_scope: local
+        impacts: [runtime_resources]
+      box_size_pix:
+        type: int
+        required: false
+        min: 1
+        default: 512
+        description: FFT box size for CTFFIND estimation in pixels.
+        exposure: user_overridable
+        source: workflow_default
+        param_id: box_size_pix
+        category: processing_standard
+        allowed_sources: [workflow_default, user_override]
+        authority_order: [user_override, workflow_default]
+        dependency_scope: local
+        impacts: [ctf_estimation_search]
+      min_resolution_A:
+        type: float
+        required: false
+        min: 0
+        default: 30
+        description: Minimum resolution for CTFFIND estimation.
+        exposure: user_overridable
+        source: workflow_default
+        param_id: min_resolution_A
+        category: processing_standard
+        allowed_sources: [workflow_default, user_override]
+        authority_order: [user_override, workflow_default]
+        dependency_scope: local
+        impacts: [local_processing_behavior]
+      max_resolution_A:
+        type: float
+        required: false
+        min: 0
+        default: 5
+        description: Maximum resolution for CTFFIND estimation.
+        exposure: user_overridable
+        source: workflow_default
+        param_id: max_resolution_A
+        category: processing_standard
+        allowed_sources: [workflow_default, user_override]
+        authority_order: [user_override, workflow_default]
+        dependency_scope: local
+        impacts: [local_processing_behavior]
+      min_defocus_A:
+        type: float
+        required: false
+        min: 0
+        default: 5000
+        description: Minimum defocus search value.
+        exposure: user_overridable
+        source: workflow_default
+        param_id: min_defocus_A
+        category: processing_standard
+        allowed_sources: [workflow_default, user_override]
+        authority_order: [user_override, workflow_default]
+        dependency_scope: local
+        impacts: [local_processing_behavior]
+      max_defocus_A:
+        type: float
+        required: false
+        min: 0
+        default: 50000
+        description: Maximum defocus search value.
+        exposure: user_overridable
+        source: workflow_default
+        param_id: max_defocus_A
+        category: processing_standard
+        allowed_sources: [workflow_default, user_override]
+        authority_order: [user_override, workflow_default]
+        dependency_scope: local
+        impacts: [local_processing_behavior]
+      defocus_step_A:
+        type: float
+        required: false
+        min: 0
+        default: 500
+        description: Defocus search step size.
+        exposure: user_overridable
+        source: workflow_default
+        param_id: defocus_step_A
+        category: processing_standard
+        allowed_sources: [workflow_default, user_override]
+        authority_order: [user_override, workflow_default]
+        dependency_scope: local
+        impacts: [local_processing_behavior]
+      astigmatism_A:
+        type: float
+        required: false
+        min: 0
+        default: 100
+        description: Amount of astigmatism for CTFFIND search.
+        exposure: user_overridable
+        source: workflow_default
+        param_id: astigmatism_A
+        category: processing_standard
+        allowed_sources: [workflow_default, user_override]
+        authority_order: [user_override, workflow_default]
+        dependency_scope: local
+        impacts: [local_processing_behavior]
+      ctf_window_size_pix:
+        type: int
+        required: false
+        default: -1
+        description: Window size for CTF estimation; negative uses the full micrograph.
+        exposure: user_overridable
+        source: workflow_default
+        param_id: ctf_window_size_pix
+        category: processing_standard
+        allowed_sources: [workflow_default, user_override]
+        authority_order: [user_override, workflow_default]
+        dependency_scope: local
+        impacts: [local_processing_behavior]
+      use_ctffind4:
+        type: bool
+        required: false
+        default: true
+        description: Whether to use CTFFIND-4.1 for CTF estimation. RELION requires an
+          explicit CTFFIND4-or-Gctf selection; Gctf is not exposed in this contract, so
+          this must default to true.
+        exposure: user_overridable
+        source: workflow_default
+        param_id: use_ctffind4
+        category: processing_standard
+        allowed_sources: [workflow_default, user_override]
+        authority_order: [user_override, workflow_default]
+        dependency_scope: local
+        impacts: []
+      use_power_spectra_from_motioncorr:
+        type: bool
+        required: false
+        default: true
+        description: Whether CTFFIND should reuse power spectra from MotionCorr.
+        exposure: user_overridable
+        source: workflow_default
+        param_id: use_power_spectra_from_motioncorr
+        category: processing_standard
+        allowed_sources: [workflow_default, user_override]
+        authority_order: [user_override, workflow_default]
+        dependency_scope: local
+        impacts: []
+      ctffind_executable:
+        type: str
+        required: false
+        description: CTFFIND executable path for RELION CtfFind jobs.
+        exposure: expert_only
+        source: project_bootstrap
+        param_id: ctffind_executable
+        category: backend_option
+        allowed_sources: [workflow_default, project_bootstrap, explicit_runtime_override]
+        authority_order: [explicit_runtime_override, project_bootstrap, workflow_default]
+        dependency_scope: local
+        impacts: []
+      use_exhaustive_search:
+        type: bool
+        required: false
+        default: false
+        description: Whether CTFFIND should use exhaustive search instead of fast search.
+        exposure: user_overridable
+        source: workflow_default
+        param_id: use_exhaustive_search
+        category: processing_standard
+        allowed_sources: [workflow_default, user_override]
+        authority_order: [user_override, workflow_default]
+        dependency_scope: local
+        impacts: []
+    expected_results:
+      - result_type: ctf_estimates
+    backend_support:
+      relion:
+        supported: true
+        mapping_ref: ctf_estimation
+        support_level: schedule_mappable
+
+  manual_picking:
+    description: Manually pick particles from micrographs.
+    operation_type: processing
+    category: processing
+    supported_backends: [relion]
+    modifies_backend_project: true
+    creates_files: true
+    authorization_required: true
+    authorization_source: user_task_request
+    authorization_note: Manual picking requires an explicit user request; that request satisfies approval without another prompt.
+    requires_human_approval: true
+    required_inputs:
+      micrographs:
+        result_types: [motion_corrected_micrographs, ctf_estimates]
+        required: true
+        description: Micrographs for manual particle picking.
+    params:
+      lowpass_filter_A:
+        type: float
+        required: false
+        unit: angstrom
+        description: Low-pass filter for picking display.
+        exposure: user_overridable
+        source: workflow_default
+        param_id: lowpass_filter_A
+        category: processing_standard
+        allowed_sources: [workflow_default, user_override]
+        authority_order: [user_override, workflow_default]
+        dependency_scope: local
+        impacts: [local_processing_behavior]
+      particle_diameter_A:
+        type: float
+        required: true
+        exclusive_min: 0
+        description: Particle diameter shown during manual picking.
+        exposure: user_overridable
+        source: derived_geometry
+        param_id: particle_diameter_A
+        category: sample_hypothesis
+        allowed_sources: [input_metadata, derived_geometry, sample_hypothesis, user_override]
+        authority_order: [user_override, derived_geometry, input_metadata, sample_hypothesis]
+        dependency_scope: local
+        impacts: [particle_geometry]
+      micrograph_scale:
+        type: float
+        required: false
+        min: 0
+        description: Display scale for micrographs during manual picking.
+        exposure: user_overridable
+        source: workflow_default
+        param_id: micrograph_scale
+        category: processing_standard
+        allowed_sources: [workflow_default, user_override]
+        authority_order: [user_override, workflow_default]
+        dependency_scope: local
+        impacts: []
+      sigma_contrast:
+        type: float
+        required: false
+        min: 0
+        description: Sigma contrast for manual picking display.
+        exposure: user_overridable
+        source: workflow_default
+        param_id: sigma_contrast
+        category: processing_standard
+        allowed_sources: [workflow_default, user_override]
+        authority_order: [user_override, workflow_default]
+        dependency_scope: local
+        impacts: []
+      black_value:
+        type: float
+        required: false
+        description: Black display value for manual picking.
+        exposure: user_overridable
+        source: workflow_default
+        param_id: black_value
+        category: processing_standard
+        allowed_sources: [workflow_default, user_override]
+        authority_order: [user_override, workflow_default]
+        dependency_scope: local
+        impacts: []
+      white_value:
+        type: float
+        required: false
+        description: White display value for manual picking.
+        exposure: user_overridable
+        source: workflow_default
+        param_id: white_value
+        category: processing_standard
+        allowed_sources: [workflow_default, user_override]
+        authority_order: [user_override, workflow_default]
+        dependency_scope: local
+        impacts: []
+      use_topaz_denoise:
+        type: bool
+        required: false
+        default: false
+        description: Whether manual picking display should use Topaz denoising.
+        exposure: user_overridable
+        source: workflow_default
+        param_id: use_topaz_denoise
+        category: processing_standard
+        allowed_sources: [workflow_default, user_override]
+        authority_order: [user_override, workflow_default]
+        dependency_scope: local
+        impacts: []
+    expected_results:
+      - result_type: picked_particles
+    backend_support:
+      relion:
+        supported: true
+        mapping_ref: manual_picking
+        support_level: schedule_mappable
+
+  micrograph_subset_selection:
+    description: Select or split a subset of micrographs for downstream picking.
+    operation_type: validation
+    category: validation
+    supported_backends: [relion]
+    modifies_backend_project: true
+    creates_files: true
+    authorization_required: true
+    authorization_source: user_task_request
+    requires_human_approval: false
+    required_inputs:
+      micrographs:
+        result_types: [ctf_estimates, motion_corrected_micrographs]
+        required: true
+        description: Micrograph JobResult to select or split.
+    params:
+      split_into_subsets:
+        type: bool
+        required: false
+        default: true
+        description: Whether to split the input micrographs into subset STAR files.
+        exposure: user_overridable
+        source: workflow_default
+        param_id: split_into_subsets
+        category: processing_standard
+        allowed_sources: [workflow_default, user_override]
+        authority_order: [user_override, workflow_default]
+        dependency_scope: local
+        impacts: []
+      randomize_order:
+        type: bool
+        required: false
+        default: true
+        description: Whether to randomize micrograph order before creating subsets.
+        exposure: user_overridable
+        source: workflow_default
+        param_id: randomize_order
+        category: processing_standard
+        allowed_sources: [workflow_default, user_override]
+        authority_order: [user_override, workflow_default]
+        dependency_scope: local
+        impacts: []
+      subset_size:
+        type: int
+        required: true
+        min: 1
+        description: Number of micrographs per subset.
+        exposure: user_overridable
+        source: user_or_agent
+        param_id: subset_size
+        category: processing_standard
+        strategy_selectable: true
+        allowed_sources: [strategy_intent, resource_allocator, user_override]
+        authority_order: [user_override, strategy_intent, resource_allocator]
+        dependency_scope: local
+        impacts: []
+      number_of_subsets:
+        type: int
+        required: false
+        default: -1
+        description: Number of subsets to create; -1 uses as many as needed.
+        exposure: user_overridable
+        source: workflow_default
+        param_id: number_of_subsets
+        category: processing_standard
+        allowed_sources: [workflow_default, user_override]
+        authority_order: [user_override, workflow_default]
+        dependency_scope: local
+        impacts: []
+    expected_results:
+      - result_type: selected_micrographs
+    backend_support:
+      relion:
+        supported: true
+        mapping_ref: micrograph_subset_selection
+        support_level: schedule_mappable
+
+  log_autopicking:
+    description: Automatically pick particles with a Laplacian-of-Gaussian strategy.
+    operation_type: processing
+    category: processing
+    supported_backends: [relion]
+    modifies_backend_project: true
+    creates_files: true
+    authorization_required: true
+    authorization_source: user_task_request
+    requires_human_approval: false
+    required_inputs:
+      micrographs:
+        result_types: [selected_micrographs, motion_corrected_micrographs, ctf_estimates]
+        required: true
+        description: Micrographs for LoG particle picking.
+    params:
+      use_log:
+        type: bool
+        required: false
+        default: true
+        description: Use LoG picking mode.
+        exposure: mapped_internal
+        source: workflow_default
+        param_id: use_log
+        category: backend_option
+        allowed_sources: [workflow_default, backend_default]
+        authority_order: [workflow_default, backend_default]
+        dependency_scope: local
+        impacts: []
+      lowpass_filter_A:
+        type: float
+        required: false
+        unit: angstrom
+        description: Low-pass filter before picking.
+        exposure: user_overridable
+        source: workflow_default
+        param_id: lowpass_filter_A
+        category: processing_standard
+        allowed_sources: [workflow_default, user_override]
+        authority_order: [user_override, workflow_default]
+        dependency_scope: local
+        impacts: [local_processing_behavior]
+      log_diameter_min_A:
+        type: float
+        required: true
+        exclusive_min: 0
+        description: Minimum particle diameter for LoG picking.
+        exposure: user_overridable
+        source: derived_geometry
+        param_id: log_diameter_min_A
+        category: processing_standard
+        allowed_sources: [input_metadata, derived_geometry, sample_hypothesis, user_override]
+        authority_order: [user_override, derived_geometry, input_metadata, sample_hypothesis]
+        dependency_scope: local
+        impacts: [local_processing_behavior]
+      log_diameter_max_A:
+        type: float
+        required: true
+        exclusive_min: 0
+        description: Maximum particle diameter for LoG picking.
+        exposure: user_overridable
+        source: derived_geometry
+        param_id: log_diameter_max_A
+        category: processing_standard
+        allowed_sources: [input_metadata, derived_geometry, sample_hypothesis, user_override]
+        authority_order: [user_override, derived_geometry, input_metadata, sample_hypothesis]
+        dependency_scope: local
+        impacts: [local_processing_behavior]
+      shrink_factor:
+        type: float
+        required: false
+        min: 0
+        description: Shrink factor for autopicking; 0 lets RELION choose the LoG behavior.
+        exposure: user_overridable
+        source: workflow_default
+        param_id: shrink_factor
+        category: processing_standard
+        allowed_sources: [workflow_default, user_override]
+        authority_order: [user_override, workflow_default]
+        dependency_scope: local
+        impacts: []
+      log_adjust_threshold:
+        type: float
+        required: false
+        description: LoG threshold adjustment in standard deviations.
+        exposure: user_overridable
+        source: workflow_default
+        param_id: log_adjust_threshold
+        category: processing_standard
+        allowed_sources: [workflow_default, user_override]
+        authority_order: [user_override, workflow_default]
+        dependency_scope: local
+        impacts: [local_processing_behavior]
+      log_upper_threshold:
+        type: float
+        required: false
+        description: LoG upper threshold in standard deviations.
+        exposure: user_overridable
+        source: workflow_default
+        param_id: log_upper_threshold
+        category: processing_standard
+        allowed_sources: [workflow_default, user_override]
+        authority_order: [user_override, workflow_default]
+        dependency_scope: local
+        impacts: [local_processing_behavior]
+      number_of_mpi:
+        type: int
+        required: false
+        min: 1
+        description: MPI process count.
+        exposure: expert_only
+        source: workflow_default
+        param_id: number_of_mpi
+        category: resource_request
+        allowed_sources: [workflow_default, user_override, resource_allocator]
+        authority_order: [resource_allocator, user_override, workflow_default]
+        dependency_scope: local
+        impacts: [runtime_resources]
+      submit_to_queue:
+        type: bool
+        required: false
+        default: false
+        description: Whether to submit through backend queue policy.
+        exposure: expert_only
+        source: backend_policy
+        param_id: submit_to_queue
+        category: resource_request
+        allowed_sources: [workflow_default, user_override, resource_allocator]
+        authority_order: [resource_allocator, user_override, workflow_default]
+        dependency_scope: local
+        impacts: [runtime_resources]
+    expected_results:
+      - result_type: picked_particles
+    backend_support:
+      relion:
+        supported: true
+        mapping_ref: log_autopicking
+        support_level: schedule_mappable
+
+  reference_autopicking:
+    description: Automatically pick particles using 2D class references.
+    operation_type: processing
+    category: processing
+    supported_backends: [relion]
+    modifies_backend_project: true
+    creates_files: true
+    authorization_required: true
+    authorization_source: user_task_request
+    requires_human_approval: false
+    required_inputs:
+      micrographs:
+        result_types: [motion_corrected_micrographs, ctf_estimates]
+        required: true
+        description: Micrographs for reference-based picking.
+      references:
+        result_types: [two_d_classes]
+        required: true
+        description: 2D class references for picking.
+    params:
+      use_references:
+        type: bool
+        required: false
+        default: true
+        description: Use reference-based picking mode.
+        exposure: mapped_internal
+        source: workflow_default
+        param_id: use_references
+        category: backend_option
+        allowed_sources: [workflow_default, backend_default]
+        authority_order: [workflow_default, backend_default]
+        dependency_scope: local
+        impacts: []
+      lowpass_filter_A:
+        type: float
+        required: false
+        unit: angstrom
+        description: Low-pass filter before picking.
+        exposure: user_overridable
+        source: workflow_default
+        param_id: lowpass_filter_A
+        category: processing_standard
+        allowed_sources: [workflow_default, user_override]
+        authority_order: [user_override, workflow_default]
+        dependency_scope: local
+        impacts: [local_processing_behavior]
+      number_of_mpi:
+        type: int
+        required: false
+        min: 1
+        description: MPI process count.
+        exposure: expert_only
+        source: workflow_default
+        param_id: number_of_mpi
+        category: resource_request
+        allowed_sources: [workflow_default, user_override, resource_allocator]
+        authority_order: [resource_allocator, user_override, workflow_default]
+        dependency_scope: local
+        impacts: [runtime_resources]
+      submit_to_queue:
+        type: bool
+        required: false
+        default: false
+        description: Whether to submit through backend queue policy.
+        exposure: expert_only
+        source: backend_policy
+        param_id: submit_to_queue
+        category: resource_request
+        allowed_sources: [workflow_default, user_override, resource_allocator]
+        authority_order: [resource_allocator, user_override, workflow_default]
+        dependency_scope: local
+        impacts: [runtime_resources]
+    expected_results:
+      - result_type: picked_particles
+    backend_support:
+      relion:
+        supported: true
+        mapping_ref: reference_autopicking
+        support_level: schedule_mappable
+
+  topaz_training:
+    description: Train a Topaz neural network model from selected particles.
+    operation_type: processing
+    category: processing
+    supported_backends: [relion]
+    modifies_backend_project: true
+    creates_files: true
+    authorization_required: true
+    authorization_source: user_task_request
+    requires_human_approval: false
+    required_inputs:
+      micrographs:
+        result_types: [selected_micrographs, motion_corrected_micrographs, ctf_estimates]
+        required: true
+        description: Micrographs for Topaz training.
+      particles:
+        result_types: [selected_particles]
+        required: true
+        description: Selected particle positions for Topaz training.
+    params:
+      use_topaz:
+        type: bool
+        required: false
+        default: true
+        description: Use Topaz mode in RELION AutoPick.
+        exposure: mapped_internal
+        source: workflow_default
+        param_id: use_topaz
+        category: backend_option
+        allowed_sources: [workflow_default, backend_default]
+        authority_order: [workflow_default, backend_default]
+        dependency_scope: local
+        impacts: []
+      perform_topaz_training:
+        type: bool
+        required: false
+        default: true
+        description: Train a Topaz model.
+        exposure: mapped_internal
+        source: workflow_default
+        param_id: perform_topaz_training
+        category: backend_option
+        allowed_sources: [workflow_default, backend_default]
+        authority_order: [workflow_default, backend_default]
+        dependency_scope: local
+        impacts: []
+      train_on_particles:
+        type: bool
+        required: false
+        default: true
+        description: Train Topaz using selected particles rather than coordinate picks.
+        exposure: mapped_internal
+        source: workflow_default
+        param_id: train_on_particles
+        category: backend_option
+        allowed_sources: [workflow_default, backend_default]
+        authority_order: [workflow_default, backend_default]
+        dependency_scope: local
+        impacts: []
+      perform_topaz_picking:
+        type: bool
+        required: false
+        default: false
+        description: Whether to run Topaz picking in the training job.
+        exposure: mapped_internal
+        source: workflow_default
+        param_id: perform_topaz_picking
+        category: backend_option
+        allowed_sources: [workflow_default, backend_default]
+        authority_order: [workflow_default, backend_default]
+        dependency_scope: local
+        impacts: []
+      topaz_particle_diameter_A:
+        type: float
+        required: true
+        exclusive_min: 0
+        unit: angstrom
+        description: Particle diameter used by Topaz training.
+        exposure: user_overridable
+        source: derived_geometry
+        param_id: topaz_particle_diameter_A
+        category: sample_hypothesis
+        allowed_sources: [input_metadata, derived_geometry, sample_hypothesis, user_override]
+        authority_order: [user_override, derived_geometry, input_metadata, sample_hypothesis]
+        dependency_scope: local
+        impacts: [particle_geometry]
+      use_gpu:
+        type: bool
+        required: false
+        default: true
+        description: Allow GPU acceleration.
+        exposure: expert_only
+        source: workflow_default
+        param_id: use_gpu
+        category: resource_request
+        allowed_sources: [workflow_default, user_override, resource_allocator]
+        authority_order: [resource_allocator, user_override, workflow_default]
+        dependency_scope: local
+        impacts: [runtime_resources]
+      gpu_ids:
+        type: str
+        category: resource_allocation
+        required: false
+        description: GPU IDs to use for Topaz training.
+        exposure: expert_only
+        source: resource_allocator
+        allowed_sources: [resource_allocator, explicit_runtime_override]
+        authority_order: [explicit_runtime_override, resource_allocator]
+        param_id: gpu_ids
+        dependency_scope: local
+        impacts: []
+      submit_to_queue:
+        type: bool
+        required: false
+        default: false
+        description: Whether to submit through backend queue policy.
+        exposure: expert_only
+        source: backend_policy
+        param_id: submit_to_queue
+        category: resource_request
+        allowed_sources: [workflow_default, user_override, resource_allocator]
+        authority_order: [resource_allocator, user_override, workflow_default]
+        dependency_scope: local
+        impacts: [runtime_resources]
+      topaz_executable:
+        type: str
+        required: false
+        description: Topaz executable path for RELION AutoPick Topaz jobs.
+        exposure: expert_only
+        source: project_bootstrap
+        param_id: topaz_executable
+        category: backend_option
+        allowed_sources: [workflow_default, project_bootstrap, explicit_runtime_override]
+        authority_order: [explicit_runtime_override, project_bootstrap, workflow_default]
+        dependency_scope: local
+        impacts: []
+    expected_results:
+      - result_type: topaz_model
+    backend_support:
+      relion:
+        supported: true
+        mapping_ref: topaz_training
+        support_level: schedule_mappable
+
+  topaz_picking:
+    description: Pick particles on all micrographs with a trained Topaz neural network model.
+    operation_type: processing
+    category: processing
+    supported_backends: [relion]
+    modifies_backend_project: true
+    creates_files: true
+    authorization_required: true
+    authorization_source: user_task_request
+    requires_human_approval: false
+    required_inputs:
+      micrographs:
+        result_types: [ctf_estimates, motion_corrected_micrographs]
+        required: true
+        description: Micrographs to pick with the trained Topaz model.
+      model:
+        result_types: [topaz_model]
+        required: true
+        description: Trained Topaz neural network model.
+    params:
+      use_topaz:
+        type: bool
+        required: false
+        default: true
+        description: Use Topaz mode in RELION AutoPick.
+        exposure: mapped_internal
+        source: workflow_default
+        param_id: use_topaz
+        category: backend_option
+        allowed_sources: [workflow_default, backend_default]
+        authority_order: [workflow_default, backend_default]
+        dependency_scope: local
+        impacts: []
+      perform_topaz_training:
+        type: bool
+        required: false
+        default: false
+        description: Whether to train a Topaz model in this job.
+        exposure: mapped_internal
+        source: workflow_default
+        param_id: perform_topaz_training
+        category: backend_option
+        allowed_sources: [workflow_default, backend_default]
+        authority_order: [workflow_default, backend_default]
+        dependency_scope: local
+        impacts: []
+      perform_topaz_picking:
+        type: bool
+        required: false
+        default: true
+        description: Run Topaz picking with the provided model.
+        exposure: mapped_internal
+        source: workflow_default
+        param_id: perform_topaz_picking
+        category: backend_option
+        allowed_sources: [workflow_default, backend_default]
+        authority_order: [workflow_default, backend_default]
+        dependency_scope: local
+        impacts: []
+      topaz_particle_diameter_A:
+        type: float
+        required: true
+        exclusive_min: 0
+        unit: angstrom
+        description: Particle diameter used by Topaz picking.
+        exposure: user_overridable
+        source: derived_geometry
+        param_id: topaz_particle_diameter_A
+        category: sample_hypothesis
+        allowed_sources: [input_metadata, derived_geometry, sample_hypothesis, user_override]
+        authority_order: [user_override, derived_geometry, input_metadata, sample_hypothesis]
+        dependency_scope: local
+        impacts: [particle_geometry]
+      use_gpu:
+        type: bool
+        required: false
+        default: true
+        description: Allow GPU acceleration.
+        exposure: expert_only
+        source: workflow_default
+        param_id: use_gpu
+        category: resource_request
+        allowed_sources: [workflow_default, user_override, resource_allocator]
+        authority_order: [resource_allocator, user_override, workflow_default]
+        dependency_scope: local
+        impacts: [runtime_resources]
+      gpu_ids:
+        type: str
+        category: resource_allocation
+        required: false
+        description: GPU IDs to use for Topaz picking.
+        exposure: expert_only
+        source: resource_allocator
+        allowed_sources: [resource_allocator, explicit_runtime_override]
+        authority_order: [explicit_runtime_override, resource_allocator]
+        param_id: gpu_ids
+        dependency_scope: local
+        impacts: []
+      number_of_mpi:
+        type: int
+        required: false
+        min: 1
+        description: MPI process count; each rank picks a disjoint micrograph subset and can be assigned its own GPU via gpu_ids, parallelizing Topaz inference across GPUs.
+        exposure: expert_only
+        source: workflow_default
+        param_id: number_of_mpi
+        category: resource_request
+        allowed_sources: [workflow_default, user_override, resource_allocator]
+        authority_order: [resource_allocator, user_override, workflow_default]
+        dependency_scope: local
+        impacts: [runtime_resources]
+      submit_to_queue:
+        type: bool
+        required: false
+        default: false
+        description: Whether to submit through backend queue policy.
+        exposure: expert_only
+        source: backend_policy
+        param_id: submit_to_queue
+        category: resource_request
+        allowed_sources: [workflow_default, user_override, resource_allocator]
+        authority_order: [resource_allocator, user_override, workflow_default]
+        dependency_scope: local
+        impacts: [runtime_resources]
+      topaz_executable:
+        type: str
+        required: false
+        description: Topaz executable path for RELION AutoPick Topaz jobs.
+        exposure: expert_only
+        source: project_bootstrap
+        param_id: topaz_executable
+        category: backend_option
+        allowed_sources: [workflow_default, project_bootstrap, explicit_runtime_override]
+        authority_order: [explicit_runtime_override, project_bootstrap, workflow_default]
+        dependency_scope: local
+        impacts: []
+    expected_results:
+      - result_type: picked_particles
+    backend_support:
+      relion:
+        supported: true
+        mapping_ref: topaz_picking
+        support_level: schedule_mappable
+
+  particle_extraction:
+    description: Extract particles from picked coordinates and micrographs.
+    operation_type: processing
+    category: processing
+    supported_backends: [relion]
+    modifies_backend_project: true
+    creates_files: true
+    authorization_required: true
+    authorization_source: user_task_request
+    requires_human_approval: false
+    required_inputs:
+      micrographs:
+        result_types: [ctf_estimates, motion_corrected_micrographs]
+        required: true
+        description: Micrographs used for extraction.
+      coordinates:
+        result_types: [picked_particles]
+        required: false
+        description: Picked particle coordinates.
+      refined_particles:
+        result_types: [refine3d_particles, selected_particles]
+        required: false
+        description: Refined particle STAR file for re-extraction.
+    params:
+      reextract_refined_particles:
+        type: bool
+        required: false
+        default: false
+        description: Whether to re-extract refined particles from an existing particle STAR file.
+        exposure: user_overridable
+        source: workflow_default
+        param_id: reextract_refined_particles
+        category: processing_standard
+        allowed_sources: [workflow_default, user_override]
+        authority_order: [user_override, workflow_default]
+        dependency_scope: local
+        impacts: []
+      recenter_refined_coordinates:
+        type: bool
+        required: false
+        default: false
+        description: Whether to re-center re-extracted particles using refined coordinates.
+        exposure: user_overridable
+        source: workflow_default
+        param_id: recenter_refined_coordinates
+        category: processing_standard
+        allowed_sources: [workflow_default, user_override]
+        authority_order: [user_override, workflow_default]
+        dependency_scope: local
+        impacts: []
+      recenter_x_pix:
+        type: str
+        required: false
+        default: "0"
+        description: X coordinate for re-centering refined particles.
+        exposure: expert_only
+        source: workflow_default
+        param_id: recenter_x_pix
+        category: processing_advanced
+        allowed_sources: [workflow_default, user_override, derived]
+        authority_order: [derived, user_override, workflow_default]
+        dependency_scope: downstream
+        impacts: [particle_coordinates]
+      recenter_y_pix:
+        type: str
+        required: false
+        default: "0"
+        description: Y coordinate for re-centering refined particles.
+        exposure: expert_only
+        source: workflow_default
+        param_id: recenter_y_pix
+        category: processing_advanced
+        allowed_sources: [workflow_default, user_override, derived]
+        authority_order: [derived, user_override, workflow_default]
+        dependency_scope: downstream
+        impacts: [particle_coordinates]
+      recenter_z_pix:
+        type: str
+        required: false
+        default: "0"
+        description: Z coordinate for re-centering refined particles.
+        exposure: expert_only
+        source: workflow_default
+        param_id: recenter_z_pix
+        category: processing_advanced
+        allowed_sources: [workflow_default, user_override, derived]
+        authority_order: [derived, user_override, workflow_default]
+        dependency_scope: downstream
+        impacts: [particle_coordinates]
+      box_size_pix:
+        param_id: extraction_box_size_pix
+        type: int
+        category: sample_hypothesis
+        required: true
+        unit: pixels
+        min: 1
+        description: Extraction box size.
+        exposure: user_overridable
+        source: sample_hypothesis
+        strategy_selectable: true
+        allowed_sources: [sample_hypothesis, strategy_intent, user_override, workflow_default, derived]
+        authority_order: [derived, strategy_intent, sample_hypothesis, user_override, workflow_default]
+        dependency_scope: downstream
+        impacts: [box_size_pix, box_size_A]
+        override_requires_consistency_validation: true
+      rescaled_size_pix:
+        type: int
+        required: false
+        unit: pixels
+        min: 1
+        description: Optional rescaled particle box size.
+        exposure: user_overridable
+        source: sample_hypothesis
+        param_id: rescaled_size_pix
+        category: sample_hypothesis
+        strategy_selectable: true
+        allowed_sources: [sample_hypothesis, strategy_intent, user_override, workflow_default, derived]
+        authority_order: [derived, strategy_intent, sample_hypothesis, user_override, workflow_default]
+        dependency_scope: downstream
+        impacts: [box_size_pix, box_size_A]
+      use_float16:
+        type: bool
+        required: false
+        default: true
+        description: Whether to write extracted particles in float16 format.
+        exposure: user_overridable
+        source: workflow_default
+        param_id: use_float16
+        category: processing_standard
+        allowed_sources: [workflow_default, user_override]
+        authority_order: [user_override, workflow_default]
+        dependency_scope: local
+        impacts: []
+      normalize_particles:
+        type: bool
+        required: false
+        default: true
+        description: Whether to normalize extracted particles.
+        exposure: user_overridable
+        source: workflow_default
+        param_id: normalize_particles
+        category: processing_standard
+        allowed_sources: [workflow_default, user_override]
+        authority_order: [user_override, workflow_default]
+        dependency_scope: local
+        impacts: []
+      background_diameter_pix:
+        type: int
+        required: false
+        description: Background circle diameter for particle normalization in pixels.
+        exposure: user_overridable
+        source: derived
+        param_id: background_diameter_pix
+        category: processing_standard
+        allowed_sources: [derived, sample_hypothesis, user_override, workflow_default]
+        authority_order: [derived, sample_hypothesis, user_override, workflow_default]
+        dependency_scope: local
+        impacts: [local_processing_behavior]
+      white_dust_stddev:
+        type: float
+        required: false
+        description: White dust removal threshold in image standard deviations.
+        exposure: user_overridable
+        source: workflow_default
+        param_id: white_dust_stddev
+        category: processing_standard
+        allowed_sources: [workflow_default, user_override]
+        authority_order: [user_override, workflow_default]
+        dependency_scope: local
+        impacts: []
+      black_dust_stddev:
+        type: float
+        required: false
+        description: Black dust removal threshold in image standard deviations.
+        exposure: user_overridable
+        source: workflow_default
+        param_id: black_dust_stddev
+        category: processing_standard
+        allowed_sources: [workflow_default, user_override]
+        authority_order: [user_override, workflow_default]
+        dependency_scope: local
+        impacts: []
+      invert_contrast:
+        type: bool
+        required: false
+        default: true
+        description: Whether to invert particle contrast during extraction.
+        exposure: user_overridable
+        source: workflow_default
+        param_id: invert_contrast
+        category: processing_standard
+        allowed_sources: [workflow_default, user_override]
+        authority_order: [user_override, workflow_default]
+        dependency_scope: local
+        impacts: []
+      rescale_particles:
+        param_id: rescale_particles
+        type: bool
+        category: processing_standard
+        required: false
+        default: false
+        description: Whether to rescale extracted particles.
+        exposure: user_overridable
+        source: workflow_default
+        strategy_selectable: true
+        allowed_sources: [strategy_intent, user_override, workflow_default, derived]
+        authority_order: [derived, strategy_intent, user_override, workflow_default]
+        dependency_scope: downstream
+        impacts: [particle_pixel_size_A, box_size_pix, box_size_A]
+        override_requires_consistency_validation: true
+      use_autopick_fom_threshold:
+        type: bool
+        required: false
+        default: false
+        description: Whether to filter picked coordinates by autopick figure of merit.
+        exposure: user_overridable
+        source: workflow_default
+        param_id: use_autopick_fom_threshold
+        category: processing_standard
+        allowed_sources: [workflow_default, user_override]
+        authority_order: [user_override, workflow_default]
+        dependency_scope: local
+        impacts: [local_processing_behavior]
+      minimum_autopick_fom:
+        type: float
+        required: false
+        description: Minimum autopick figure of merit for extracted particles.
+        exposure: user_overridable
+        source: workflow_default
+        param_id: minimum_autopick_fom
+        category: processing_standard
+        allowed_sources: [workflow_default, user_override]
+        authority_order: [user_override, workflow_default]
+        dependency_scope: local
+        impacts: []
+      number_of_mpi:
+        type: int
+        required: false
+        min: 1
+        description: MPI process count.
+        exposure: expert_only
+        source: workflow_default
+        param_id: number_of_mpi
+        category: resource_request
+        allowed_sources: [workflow_default, user_override, resource_allocator]
+        authority_order: [resource_allocator, user_override, workflow_default]
+        dependency_scope: local
+        impacts: [runtime_resources]
+      submit_to_queue:
+        type: bool
+        required: false
+        default: false
+        description: Whether to submit through backend queue policy.
+        exposure: expert_only
+        source: backend_policy
+        param_id: submit_to_queue
+        category: resource_request
+        allowed_sources: [workflow_default, user_override, resource_allocator]
+        authority_order: [resource_allocator, user_override, workflow_default]
+        dependency_scope: local
+        impacts: [runtime_resources]
+    expected_results:
+      - result_type: extracted_particles
+    backend_support:
+      relion:
+        supported: true
+        mapping_ref: extract_particles
+        support_level: schedule_mappable
+
+  particle_selection:
+    description: Select particle subsets or class subsets from an existing particle JobResult.
+    operation_type: validation
+    category: validation
+    supported_backends: [relion]
+    modifies_backend_project: true
+    creates_files: true
+    authorization_required: true
+    authorization_source: user_task_request
+    requires_human_approval: false
+    required_inputs:
+      particles:
+        result_types: [extracted_particles, selected_particles, classified_particles]
+        required: false
+        description: Particle JobResult to select from.
+      classes:
+        result_types: [two_d_classes, refined_volume]
+        required: false
+        description: 2D or 3D class optimiser JobResult to select from.
+    params:
+      auto_select_2d_classes:
+        type: bool
+        required: false
+        default: false
+        description: Whether to automatically select 2D classes with RELION class_ranker.
+        exposure: user_overridable
+        source: workflow_default
+        param_id: auto_select_2d_classes
+        category: processing_standard
+        allowed_sources: [workflow_default, user_override]
+        authority_order: [user_override, workflow_default]
+        dependency_scope: local
+        impacts: []
+      minimum_selection_score:
+        type: float
+        required: false
+        min: 0
+        description: Minimum class-ranker score for automatic 2D class selection.
+        exposure: user_overridable
+        source: user_or_agent
+        param_id: minimum_selection_score
+        category: processing_standard
+        strategy_selectable: true
+        allowed_sources: [strategy_intent, user_override, workflow_default]
+        authority_order: [strategy_intent, user_override, workflow_default]
+        dependency_scope: local
+        impacts: [particle_selection]
+      select_by_metadata_values:
+        type: bool
+        required: false
+        default: false
+        description: Run non-interactively by filtering the particle STAR on one metadata label.
+        exposure: user_overridable
+        source: user_override
+        param_id: select_by_metadata_values
+        category: processing_standard
+        allowed_sources: [user_override]
+        authority_order: [user_override]
+        dependency_scope: local
+        impacts: [particle_selection]
+      selection_label:
+        type: str
+        required: false
+        description: RELION metadata label used for non-interactive subset selection.
+        exposure: expert_only
+        source: user_override
+        param_id: selection_label
+        category: processing_standard
+        allowed_sources: [user_override]
+        authority_order: [user_override]
+        dependency_scope: local
+        impacts: [particle_selection]
+      selection_minimum:
+        type: int
+        required: false
+        description: Inclusive minimum metadata value for non-interactive selection.
+        exposure: user_overridable
+        source: user_override
+        param_id: selection_minimum
+        category: processing_standard
+        allowed_sources: [user_override]
+        authority_order: [user_override]
+        dependency_scope: local
+        impacts: [particle_selection]
+      selection_maximum:
+        type: int
+        required: false
+        description: Inclusive maximum metadata value for non-interactive selection.
+        exposure: user_overridable
+        source: user_override
+        param_id: selection_maximum
+        category: processing_standard
+        allowed_sources: [user_override]
+        authority_order: [user_override]
+        dependency_scope: local
+        impacts: [particle_selection]
+      recenter_class_averages:
+        type: bool
+        required: false
+        default: false
+        description: >
+          Whether to re-center selected 2D class averages on their center of
+          mass. RELION's class_ranker (auto_select_2d_classes) does not
+          support re-centering or regrouping and aborts if either is enabled,
+          so this must default to false for automatic class-ranker selection;
+          set true only for a manual/exact class selection intended to
+          produce autopicking templates.
+        exposure: user_overridable
+        source: workflow_default
+        param_id: recenter_class_averages
+        category: processing_standard
+        allowed_sources: [workflow_default, user_override]
+        authority_order: [user_override, workflow_default]
+        dependency_scope: local
+        impacts: []
+    expected_results:
+      - result_type: selected_particles
+    backend_support:
+      relion:
+        supported: true
+        mapping_ref: particle_selection
+        support_level: schedule_mappable
+
+  two_d_classification:
+    description: Classify particles into 2D class averages.
+    operation_type: processing
+    category: processing
+    supported_backends: [mock, relion]
+    modifies_backend_project: true
+    creates_files: true
+    authorization_required: true
+    authorization_source: user_task_request
+    requires_human_approval: false
+    required_inputs:
+      particles:
+        result_types: [extracted_particles, selected_particles]
+        required: true
+        description: Particle stack to classify.
+    params:
+      num_classes:
+        param_id: num_classes
+        type: int
+        category: processing_standard
+        required: true
+        min: 2
+        max: 500
+        description: Number of 2D classes to estimate.
+        exposure: user_overridable
+        source: user_or_agent
+        strategy_selectable: true
+        allowed_sources: [strategy_intent, user_override, workflow_default, operation_default]
+        authority_order: [strategy_intent, user_override, workflow_default, operation_default]
+        dependency_scope: local
+        impacts: [runtime, particle_selection]
+      mask_diameter_A:
+        type: float
+        required: true
+        unit: angstrom
+        exclusive_min: 0
+        description: Approximate particle mask diameter.
+        exposure: user_overridable
+        source: derived_geometry
+        param_id: mask_diameter_A
+        category: sample_hypothesis
+        allowed_sources: [input_metadata, derived_geometry, sample_hypothesis, user_override]
+        authority_order: [user_override, derived_geometry, input_metadata, sample_hypothesis]
+        dependency_scope: local
+        impacts: [particle_geometry]
+      number_of_iterations:
+        type: int
+        required: false
+        min: 1
+        description: Number of EM iterations for 2D classification.
+        exposure: user_overridable
+        source: user_or_agent
+        param_id: number_of_iterations
+        category: processing_standard
+        strategy_selectable: true
+        allowed_sources: [strategy_intent, user_override, workflow_default]
+        authority_order: [strategy_intent, user_override, workflow_default]
+        dependency_scope: local
+        impacts: []
+      use_em_algorithm:
+        type: bool
+        required: false
+        default: true
+        description: Whether to use the EM algorithm for 2D classification.
+        exposure: expert_only
+        source: workflow_default
+        param_id: use_em_algorithm
+        category: processing_advanced
+        allowed_sources: [workflow_default]
+        authority_order: [workflow_default]
+        dependency_scope: local
+        impacts: []
+      use_vdam_algorithm:
+        type: bool
+        required: false
+        default: false
+        description: Whether to use the VDAM algorithm for 2D classification.
+        exposure: expert_only
+        source: workflow_default
+        param_id: use_vdam_algorithm
+        category: processing_advanced
+        allowed_sources: [workflow_default]
+        authority_order: [workflow_default]
+        dependency_scope: local
+        impacts: []
+      number_of_vdam_mini_batches:
+        type: int
+        required: false
+        min: 1
+        description: Number of VDAM mini-batches for gradient-driven 2D classification.
+        exposure: user_overridable
+        source: user_or_agent
+        param_id: number_of_vdam_mini_batches
+        category: processing_advanced
+        strategy_selectable: true
+        allowed_sources: [strategy_intent, user_override, workflow_default]
+        authority_order: [strategy_intent, user_override, workflow_default]
+        dependency_scope: local
+        impacts: []
+      preread_images:
+        type: bool
+        required: false
+        default: false
+        description: Whether to pre-read particle images into RAM.
+        exposure: expert_only
+        source: workflow_default
+        param_id: preread_images
+        category: processing_advanced
+        allowed_sources: [workflow_default]
+        authority_order: [workflow_default]
+        dependency_scope: local
+        impacts: []
+      scratch_directory:
+        type: absolute_runtime_path
+        required: false
+        description: Optional absolute runtime scratch base; omit it to preserve the RELION_SCRATCH_DIR default, or pass an empty string to disable scratch for this job.
+        exposure: expert_only
+        source: resource_allocator
+        param_id: scratch_directory
+        category: resource_allocation
+        allowed_sources: [user_override, explicit_runtime_override, resource_allocator]
+        authority_order: [user_override, explicit_runtime_override, resource_allocator]
+        dependency_scope: local
+        impacts: [runtime_resources]
+      pooled_particles:
+        type: int
+        required: false
+        min: 1
+        description: Number of pooled particles per thread.
+        exposure: expert_only
+        source: workflow_default
+        param_id: pooled_particles
+        category: processing_advanced
+        allowed_sources: [workflow_default]
+        authority_order: [workflow_default]
+        dependency_scope: local
+        impacts: []
+      do_ctf_correction:
+        type: bool
+        required: false
+        default: true
+        description: Whether to perform CTF correction during 2D classification.
+        exposure: user_overridable
+        source: workflow_default
+        param_id: do_ctf_correction
+        category: processing_standard
+        allowed_sources: [workflow_default, user_override]
+        authority_order: [user_override, workflow_default]
+        dependency_scope: local
+        impacts: []
+      regularisation_parameter:
+        type: float
+        required: false
+        min: 0
+        description: RELION regularisation parameter T.
+        exposure: user_overridable
+        source: user_or_agent
+        param_id: regularisation_parameter
+        category: processing_standard
+        strategy_selectable: true
+        allowed_sources: [strategy_intent, user_override, workflow_default]
+        authority_order: [strategy_intent, user_override, workflow_default]
+        dependency_scope: local
+        impacts: [classification_or_refinement_regularisation]
+      e_step_resolution_limit_A:
+        type: float
+        required: false
+        unit: angstrom
+        min: -1
+        description: Positive RELION E-step resolution limit in Angstrom; -1 disables the limit.
+        exposure: user_overridable
+        source: user_or_agent
+        param_id: e_step_resolution_limit_A
+        category: processing_standard
+        strategy_selectable: true
+        allowed_sources: [strategy_intent, user_override, workflow_default]
+        authority_order: [strategy_intent, user_override, workflow_default]
+        dependency_scope: local
+        impacts: [classification_or_refinement_regularisation]
+      zero_mask_particles:
+        type: bool
+        required: false
+        default: true
+        description: Whether to mask individual particles with zeros.
+        exposure: expert_only
+        source: workflow_default
+        param_id: zero_mask_particles
+        category: processing_advanced
+        allowed_sources: [workflow_default]
+        authority_order: [workflow_default]
+        dependency_scope: local
+        impacts: []
+      center_classes:
+        type: bool
+        required: false
+        default: true
+        description: Whether to center class averages.
+        exposure: expert_only
+        source: workflow_default
+        param_id: center_classes
+        category: processing_advanced
+        allowed_sources: [workflow_default]
+        authority_order: [workflow_default]
+        dependency_scope: local
+        impacts: []
+      inplane_angular_sampling_deg:
+        type: float
+        required: false
+        min: 0
+        description: Initial in-plane angular sampling in degrees.
+        exposure: user_overridable
+        source: user_or_agent
+        param_id: inplane_angular_sampling_deg
+        category: processing_standard
+        strategy_selectable: true
+        allowed_sources: [strategy_intent, user_override, workflow_default]
+        authority_order: [strategy_intent, user_override, workflow_default]
+        dependency_scope: local
+        impacts: [local_processing_behavior]
+      offset_search_range_pix:
+        type: float
+        required: false
+        min: 0
+        description: Initial offset search range in pixels.
+        exposure: user_overridable
+        source: user_or_agent
+        param_id: offset_search_range_pix
+        category: processing_standard
+        strategy_selectable: true
+        allowed_sources: [strategy_intent, user_override, workflow_default]
+        authority_order: [strategy_intent, user_override, workflow_default]
+        dependency_scope: local
+        impacts: [local_processing_behavior]
+      offset_search_step_pix:
+        type: float
+        required: false
+        min: 0
+        description: Initial offset search step in pixels.
+        exposure: user_overridable
+        source: user_or_agent
+        param_id: offset_search_step_pix
+        category: processing_standard
+        strategy_selectable: true
+        allowed_sources: [strategy_intent, user_override, workflow_default]
+        authority_order: [strategy_intent, user_override, workflow_default]
+        dependency_scope: local
+        impacts: [local_processing_behavior]
+      gpu_ids:
+        type: str
+        category: resource_allocation
+        required: false
+        description: GPU IDs to use for 2D classification.
+        exposure: expert_only
+        source: resource_allocator
+        allowed_sources: [resource_allocator, explicit_runtime_override]
+        authority_order: [explicit_runtime_override, resource_allocator]
+        param_id: gpu_ids
+        dependency_scope: local
+        impacts: []
+      number_of_mpi:
+        type: int
+        required: false
+        min: 1
+        description: MPI process count.
+        exposure: expert_only
+        source: workflow_default
+        param_id: number_of_mpi
+        category: resource_request
+        allowed_sources: [workflow_default, user_override, resource_allocator]
+        authority_order: [resource_allocator, user_override, workflow_default]
+        dependency_scope: local
+        impacts: [runtime_resources]
+      number_of_threads:
+        type: int
+        required: false
+        min: 1
+        description: Thread count per process.
+        exposure: expert_only
+        source: workflow_default
+        param_id: number_of_threads
+        category: resource_request
+        allowed_sources: [workflow_default, user_override, resource_allocator]
+        authority_order: [resource_allocator, user_override, workflow_default]
+        dependency_scope: local
+        impacts: [runtime_resources]
+      use_gpu:
+        type: bool
+        required: false
+        default: false
+        description: Allow GPU acceleration.
+        exposure: expert_only
+        source: backend_policy
+        param_id: use_gpu
+        category: resource_request
+        allowed_sources: [workflow_default, user_override, resource_allocator]
+        authority_order: [resource_allocator, user_override, workflow_default]
+        dependency_scope: local
+        impacts: [runtime_resources]
+      submit_to_queue:
+        type: bool
+        required: false
+        default: false
+        description: Whether to submit through backend queue policy.
+        exposure: expert_only
+        source: backend_policy
+        param_id: submit_to_queue
+        category: resource_request
+        allowed_sources: [workflow_default, user_override, resource_allocator]
+        authority_order: [resource_allocator, user_override, workflow_default]
+        dependency_scope: local
+        impacts: [runtime_resources]
+    expected_results:
+      - result_type: selected_particles
+      - result_type: two_d_classes
+    backend_support:
+      relion:
+        supported: true
+        mapping_ref: two_d_classification
+        support_level: schedule_mappable
+      cryosparc:
+        supported: false
+
+  initial_model:
+    description: Generate a de novo initial 3D model from particles.
+    operation_type: processing
+    category: processing
+    supported_backends: [relion]
+    modifies_backend_project: true
+    creates_files: true
+    authorization_required: true
+    authorization_source: user_task_request
+    requires_human_approval: false
+    required_inputs:
+      particles:
+        result_types: [extracted_particles, selected_particles]
+        required: true
+        description: Particle stack for initial model generation.
+    params:
+      num_classes:
+        type: int
+        required: true
+        min: 1
+        max: 20
+        description: Number of initial model classes.
+        exposure: user_overridable
+        source: user_or_agent
+        param_id: num_classes
+        category: processing_standard
+        strategy_selectable: true
+        allowed_sources: [workflow_default, strategy_intent, user_override]
+        authority_order: [strategy_intent, user_override, workflow_default]
+        dependency_scope: local
+        impacts: [runtime, class_selection]
+      symmetry:
+        type: symmetry
+        required: true
+        description: Assumed point-group symmetry.
+        exposure: user_overridable
+        source: user_or_agent
+        param_id: symmetry
+        category: sample_hypothesis
+        strategy_selectable: true
+        allowed_sources: [sample_hypothesis, strategy_intent, workflow_default, user_override]
+        authority_order: [strategy_intent, sample_hypothesis, user_override, workflow_default]
+        dependency_scope: local
+        impacts: [particle_geometry]
+      mask_diameter_A:
+        type: float
+        required: true
+        unit: angstrom
+        exclusive_min: 0
+        description: Approximate particle mask diameter.
+        exposure: user_overridable
+        source: derived_geometry
+        param_id: mask_diameter_A
+        category: sample_hypothesis
+        allowed_sources: [input_metadata, derived_geometry, sample_hypothesis, user_override]
+        authority_order: [user_override, derived_geometry, input_metadata, sample_hypothesis]
+        dependency_scope: local
+        impacts: [particle_geometry]
+      number_of_vdam_mini_batches:
+        type: int
+        required: false
+        min: 1
+        description: Number of VDAM mini-batches for de novo initial model generation.
+        exposure: user_overridable
+        source: user_or_agent
+        param_id: number_of_vdam_mini_batches
+        category: processing_advanced
+        strategy_selectable: true
+        allowed_sources: [strategy_intent, user_override, workflow_default]
+        authority_order: [strategy_intent, user_override, workflow_default]
+        dependency_scope: local
+        impacts: []
+      regularisation_parameter:
+        type: float
+        required: false
+        min: 0
+        description: RELION regularisation parameter T.
+        exposure: user_overridable
+        source: user_or_agent
+        param_id: regularisation_parameter
+        category: processing_standard
+        strategy_selectable: true
+        allowed_sources: [strategy_intent, user_override, workflow_default]
+        authority_order: [strategy_intent, user_override, workflow_default]
+        dependency_scope: local
+        impacts: [classification_or_refinement_regularisation]
+      run_in_c1_and_apply_symmetry:
+        type: bool
+        required: false
+        default: true
+        description: Run initial model in C1 and apply requested symmetry afterward.
+        exposure: expert_only
+        source: workflow_default
+        param_id: run_in_c1_and_apply_symmetry
+        category: processing_advanced
+        allowed_sources: [workflow_default]
+        authority_order: [workflow_default]
+        dependency_scope: local
+        impacts: []
+      flatten_solvent:
+        type: bool
+        required: false
+        default: true
+        description: Flatten and enforce non-negative solvent.
+        exposure: expert_only
+        source: workflow_default
+        param_id: flatten_solvent
+        category: processing_advanced
+        allowed_sources: [workflow_default]
+        authority_order: [workflow_default]
+        dependency_scope: local
+        impacts: []
+      do_ctf_correction:
+        type: bool
+        required: false
+        default: true
+        description: Whether to perform CTF correction during initial model generation.
+        exposure: user_overridable
+        source: workflow_default
+        param_id: do_ctf_correction
+        category: processing_standard
+        allowed_sources: [workflow_default, user_override]
+        authority_order: [user_override, workflow_default]
+        dependency_scope: local
+        impacts: []
+      use_parallel_disc_io:
+        type: bool
+        required: false
+        default: true
+        description: Allow parallel image reads from disk.
+        exposure: expert_only
+        source: workflow_default
+        param_id: use_parallel_disc_io
+        category: processing_advanced
+        allowed_sources: [workflow_default]
+        authority_order: [workflow_default]
+        dependency_scope: local
+        impacts: []
+      pooled_particles:
+        type: int
+        required: false
+        min: 1
+        description: Number of pooled particles per thread.
+        exposure: expert_only
+        source: workflow_default
+        param_id: pooled_particles
+        category: processing_advanced
+        allowed_sources: [workflow_default]
+        authority_order: [workflow_default]
+        dependency_scope: local
+        impacts: []
+      preread_images:
+        type: bool
+        required: false
+        default: false
+        description: Whether to pre-read particle images into RAM.
+        exposure: expert_only
+        source: workflow_default
+        param_id: preread_images
+        category: processing_advanced
+        allowed_sources: [workflow_default]
+        authority_order: [workflow_default]
+        dependency_scope: local
+        impacts: []
+      scratch_directory:
+        type: absolute_runtime_path
+        required: false
+        description: Optional absolute runtime scratch base; omit it to preserve the RELION_SCRATCH_DIR default, or pass an empty string to disable scratch for this job.
+        exposure: expert_only
+        source: resource_allocator
+        param_id: scratch_directory
+        category: resource_allocation
+        allowed_sources: [user_override, explicit_runtime_override, resource_allocator]
+        authority_order: [user_override, explicit_runtime_override, resource_allocator]
+        dependency_scope: local
+        impacts: [runtime_resources]
+      combine_iterations_through_disc:
+        type: bool
+        required: false
+        default: false
+        description: Combine iteration results through disk.
+        exposure: expert_only
+        source: workflow_default
+        param_id: combine_iterations_through_disc
+        category: processing_advanced
+        allowed_sources: [workflow_default]
+        authority_order: [workflow_default]
+        dependency_scope: local
+        impacts: []
+      use_gpu:
+        type: bool
+        required: false
+        default: false
+        description: Allow GPU acceleration.
+        exposure: expert_only
+        source: backend_policy
+        param_id: use_gpu
+        category: resource_request
+        allowed_sources: [workflow_default, user_override, resource_allocator]
+        authority_order: [resource_allocator, user_override, workflow_default]
+        dependency_scope: local
+        impacts: [runtime_resources]
+      gpu_ids:
+        type: str
+        category: resource_allocation
+        required: false
+        description: GPU IDs to use for initial model generation.
+        exposure: expert_only
+        source: resource_allocator
+        allowed_sources: [resource_allocator, explicit_runtime_override]
+        authority_order: [explicit_runtime_override, resource_allocator]
+        param_id: gpu_ids
+        dependency_scope: local
+        impacts: []
+      number_of_mpi:
+        type: int
+        required: false
+        min: 1
+        description: MPI process count.
+        exposure: expert_only
+        source: workflow_default
+        param_id: number_of_mpi
+        category: resource_request
+        allowed_sources: [workflow_default, user_override, resource_allocator]
+        authority_order: [resource_allocator, user_override, workflow_default]
+        dependency_scope: local
+        impacts: [runtime_resources]
+      number_of_threads:
+        type: int
+        required: false
+        min: 1
+        description: Thread count per process.
+        exposure: expert_only
+        source: workflow_default
+        param_id: number_of_threads
+        category: resource_request
+        allowed_sources: [workflow_default, user_override, resource_allocator]
+        authority_order: [resource_allocator, user_override, workflow_default]
+        dependency_scope: local
+        impacts: [runtime_resources]
+      submit_to_queue:
+        type: bool
+        required: false
+        default: false
+        description: Whether to submit through backend queue policy.
+        exposure: expert_only
+        source: backend_policy
+        param_id: submit_to_queue
+        category: resource_request
+        allowed_sources: [workflow_default, user_override, resource_allocator]
+        authority_order: [resource_allocator, user_override, workflow_default]
+        dependency_scope: local
+        impacts: [runtime_resources]
+    expected_results:
+      - result_type: initial_volume
+    backend_support:
+      relion:
+        supported: true
+        mapping_ref: initial_model
+        support_level: schedule_mappable
+
+  three_d_classification:
+    description: Classify particles into 3D classes using an initial or refined reference.
+    operation_type: processing
+    category: processing
+    supported_backends: [relion]
+    modifies_backend_project: true
+    creates_files: true
+    authorization_required: true
+    authorization_source: user_task_request
+    requires_human_approval: false
+    required_inputs:
+      particles:
+        result_types: [extracted_particles, selected_particles]
+        required: true
+        description: Particles to classify.
+      reference_volume:
+        result_types: [initial_volume, refined_volume]
+        required: true
+        description: Initial or refined reference volume.
+      reference_mask:
+        result_types: [mask]
+        required: false
+        description: Optional soft reference mask for focused 3D classification.
+    params:
+      num_classes:
+        type: int
+        required: true
+        min: 2
+        max: 50
+        description: Number of 3D classes.
+        exposure: user_overridable
+        source: user_or_agent
+        param_id: num_classes
+        category: processing_standard
+        strategy_selectable: true
+        allowed_sources: [workflow_default, strategy_intent, user_override]
+        authority_order: [strategy_intent, user_override, workflow_default]
+        dependency_scope: local
+        impacts: [runtime, class_selection]
+      symmetry:
+        type: symmetry
+        required: true
+        description: Assumed point-group symmetry.
+        exposure: user_overridable
+        source: user_or_agent
+        param_id: symmetry
+        category: sample_hypothesis
+        strategy_selectable: true
+        allowed_sources: [sample_hypothesis, strategy_intent, workflow_default, user_override]
+        authority_order: [strategy_intent, sample_hypothesis, user_override, workflow_default]
+        dependency_scope: local
+        impacts: [particle_geometry]
+      mask_diameter_A:
+        type: float
+        required: true
+        unit: angstrom
+        exclusive_min: 0
+        description: Approximate particle mask diameter.
+        exposure: user_overridable
+        source: derived_geometry
+        param_id: mask_diameter_A
+        category: sample_hypothesis
+        allowed_sources: [input_metadata, derived_geometry, sample_hypothesis, user_override]
+        authority_order: [user_override, derived_geometry, input_metadata, sample_hypothesis]
+        dependency_scope: local
+        impacts: [particle_geometry]
+      initial_lowpass_A:
+        type: float
+        required: false
+        unit: angstrom
+        min: 0
+        description: Initial low-pass filter applied to the reference map.
+        exposure: user_overridable
+        source: user_or_agent
+        param_id: initial_lowpass_A
+        category: processing_standard
+        strategy_selectable: true
+        allowed_sources: [strategy_intent, user_override, workflow_default]
+        authority_order: [strategy_intent, user_override, workflow_default]
+        dependency_scope: local
+        impacts: [local_processing_behavior]
+      reference_map_absolute_greyscale:
+        type: bool
+        required: false
+        default: false
+        description: Whether the reference map is on an absolute greyscale.
+        exposure: user_overridable
+        source: workflow_default
+        param_id: reference_map_absolute_greyscale
+        category: processing_standard
+        allowed_sources: [workflow_default, user_override]
+        authority_order: [user_override, workflow_default]
+        dependency_scope: local
+        impacts: []
+      resize_reference_if_needed:
+        type: bool
+        required: false
+        default: true
+        description: Whether RELION may resize the reference map if dimensions differ.
+        exposure: expert_only
+        source: workflow_default
+        param_id: resize_reference_if_needed
+        category: processing_advanced
+        allowed_sources: [workflow_default]
+        authority_order: [workflow_default]
+        dependency_scope: local
+        impacts: []
+      number_of_iterations:
+        type: int
+        required: false
+        min: 1
+        description: Total number of classification iterations.
+        exposure: user_overridable
+        source: user_or_agent
+        param_id: number_of_iterations
+        category: processing_standard
+        strategy_selectable: true
+        allowed_sources: [strategy_intent, user_override, workflow_default]
+        authority_order: [strategy_intent, user_override, workflow_default]
+        dependency_scope: local
+        impacts: []
+      regularisation_parameter:
+        type: float
+        required: false
+        min: 0
+        description: RELION regularisation parameter T.
+        exposure: user_overridable
+        source: user_or_agent
+        param_id: regularisation_parameter
+        category: processing_standard
+        strategy_selectable: true
+        allowed_sources: [strategy_intent, user_override, workflow_default]
+        authority_order: [strategy_intent, user_override, workflow_default]
+        dependency_scope: local
+        impacts: [classification_or_refinement_regularisation]
+      e_step_resolution_limit_A:
+        type: float
+        required: false
+        unit: angstrom
+        min: -1
+        description: Positive RELION E-step resolution limit in Angstrom; -1 disables the limit.
+        exposure: user_overridable
+        source: user_or_agent
+        param_id: e_step_resolution_limit_A
+        category: processing_standard
+        strategy_selectable: true
+        allowed_sources: [strategy_intent, user_override, workflow_default]
+        authority_order: [strategy_intent, user_override, workflow_default]
+        dependency_scope: local
+        impacts: [classification_or_refinement_regularisation]
+      use_blush_regularisation:
+        type: bool
+        required: false
+        default: false
+        description: Use Blush neural-network regularisation during 3D classification.
+        exposure: user_overridable
+        source: user_or_agent
+        param_id: use_blush_regularisation
+        category: processing_advanced
+        strategy_selectable: true
+        allowed_sources: [strategy_intent, user_override, workflow_default]
+        authority_order: [strategy_intent, user_override, workflow_default]
+        dependency_scope: local
+        impacts: []
+      alignment:
+        type: bool
+        required: false
+        default: true
+        description: Whether to align particle images while performing 3D classification.
+        exposure: user_overridable
+        source: workflow_default
+        param_id: alignment
+        category: processing_advanced
+        allowed_sources: [workflow_default, user_override]
+        authority_order: [user_override, workflow_default]
+        dependency_scope: local
+        impacts: [classification_search]
+      zero_mask_particles:
+        type: bool
+        required: false
+        default: true
+        description: Mask individual particles with zeros outside the mask.
+        exposure: expert_only
+        source: workflow_default
+        param_id: zero_mask_particles
+        category: processing_advanced
+        allowed_sources: [workflow_default]
+        authority_order: [workflow_default]
+        dependency_scope: local
+        impacts: []
+      do_ctf_correction:
+        type: bool
+        required: false
+        default: true
+        description: Whether to perform CTF correction during 3D classification.
+        exposure: user_overridable
+        source: workflow_default
+        param_id: do_ctf_correction
+        category: processing_standard
+        allowed_sources: [workflow_default, user_override]
+        authority_order: [user_override, workflow_default]
+        dependency_scope: local
+        impacts: []
+      initial_angular_sampling:
+        type: enum
+        allowed: ["30 degrees", "15 degrees", "7.5 degrees", "3.7 degrees", "1.8 degrees", "0.9 degrees"]
+        required: false
+        description: Initial angular sampling interval.
+        exposure: expert_only
+        source: workflow_default
+        param_id: initial_angular_sampling
+        category: processing_advanced
+        allowed_sources: [workflow_default]
+        authority_order: [workflow_default]
+        dependency_scope: local
+        impacts: [local_processing_behavior]
+      initial_offset_range_pix:
+        type: float
+        required: false
+        min: 0
+        description: Initial offset search range in pixels.
+        exposure: expert_only
+        source: workflow_default
+        param_id: initial_offset_range_pix
+        category: processing_advanced
+        allowed_sources: [workflow_default]
+        authority_order: [workflow_default]
+        dependency_scope: local
+        impacts: [local_processing_behavior]
+      initial_offset_step_pix:
+        type: float
+        required: false
+        min: 0
+        description: Initial offset search step in pixels.
+        exposure: expert_only
+        source: workflow_default
+        param_id: initial_offset_step_pix
+        category: processing_advanced
+        allowed_sources: [workflow_default]
+        authority_order: [workflow_default]
+        dependency_scope: local
+        impacts: [local_processing_behavior]
+      use_parallel_disc_io:
+        type: bool
+        required: false
+        default: false
+        description: Allow parallel image reads from disk.
+        exposure: expert_only
+        source: workflow_default
+        param_id: use_parallel_disc_io
+        category: processing_advanced
+        allowed_sources: [workflow_default]
+        authority_order: [workflow_default]
+        dependency_scope: local
+        impacts: []
+      skip_padding:
+        type: bool
+        required: false
+        default: false
+        description: Skip Fourier-space padding during 3D classification.
+        exposure: expert_only
+        source: workflow_default
+        param_id: skip_padding
+        category: processing_advanced
+        allowed_sources: [workflow_default]
+        authority_order: [workflow_default]
+        dependency_scope: local
+        impacts: []
+      pooled_particles:
+        type: int
+        required: false
+        min: 1
+        description: Number of pooled particles per thread.
+        exposure: expert_only
+        source: workflow_default
+        param_id: pooled_particles
+        category: processing_advanced
+        allowed_sources: [workflow_default]
+        authority_order: [workflow_default]
+        dependency_scope: local
+        impacts: []
+      preread_images:
+        type: bool
+        required: false
+        default: false
+        description: Whether to pre-read particle images into RAM.
+        exposure: expert_only
+        source: workflow_default
+        param_id: preread_images
+        category: processing_advanced
+        allowed_sources: [workflow_default]
+        authority_order: [workflow_default]
+        dependency_scope: local
+        impacts: []
+      scratch_directory:
+        type: absolute_runtime_path
+        required: false
+        description: Optional absolute runtime scratch base; omit it to preserve the RELION_SCRATCH_DIR default, or pass an empty string to disable scratch for this job.
+        exposure: expert_only
+        source: resource_allocator
+        param_id: scratch_directory
+        category: resource_allocation
+        allowed_sources: [user_override, explicit_runtime_override, resource_allocator]
+        authority_order: [user_override, explicit_runtime_override, resource_allocator]
+        dependency_scope: local
+        impacts: [runtime_resources]
+      number_of_mpi:
+        type: int
+        required: false
+        min: 1
+        description: MPI process count.
+        exposure: expert_only
+        source: workflow_default
+        param_id: number_of_mpi
+        category: resource_request
+        allowed_sources: [workflow_default, user_override, resource_allocator]
+        authority_order: [resource_allocator, user_override, workflow_default]
+        dependency_scope: local
+        impacts: [runtime_resources]
+      number_of_threads:
+        type: int
+        required: false
+        min: 1
+        description: Thread count per process.
+        exposure: expert_only
+        source: workflow_default
+        param_id: number_of_threads
+        category: resource_request
+        allowed_sources: [workflow_default, user_override, resource_allocator]
+        authority_order: [resource_allocator, user_override, workflow_default]
+        dependency_scope: local
+        impacts: [runtime_resources]
+      use_gpu:
+        type: bool
+        required: false
+        default: false
+        description: Allow GPU acceleration.
+        exposure: expert_only
+        source: backend_policy
+        param_id: use_gpu
+        category: resource_request
+        allowed_sources: [workflow_default, user_override, resource_allocator]
+        authority_order: [resource_allocator, user_override, workflow_default]
+        dependency_scope: local
+        impacts: [runtime_resources]
+      gpu_ids:
+        type: str
+        category: resource_allocation
+        required: false
+        description: GPU IDs to use for 3D classification.
+        exposure: expert_only
+        source: resource_allocator
+        allowed_sources: [resource_allocator, explicit_runtime_override]
+        authority_order: [explicit_runtime_override, resource_allocator]
+        param_id: gpu_ids
+        dependency_scope: local
+        impacts: []
+      submit_to_queue:
+        type: bool
+        required: false
+        default: false
+        description: Whether to submit through backend queue policy.
+        exposure: expert_only
+        source: backend_policy
+        param_id: submit_to_queue
+        category: resource_request
+        allowed_sources: [workflow_default, user_override, resource_allocator]
+        authority_order: [resource_allocator, user_override, workflow_default]
+        dependency_scope: local
+        impacts: [runtime_resources]
+    expected_results:
+      - result_type: classified_particles
+      - result_type: refined_volume
+    backend_support:
+      relion:
+        supported: true
+        mapping_ref: three_d_classification
+        support_level: schedule_mappable
+
+  refine3d:
+    description: Refine selected particles against a 3D reference.
+    operation_type: processing
+    category: processing
+    supported_backends: [auto, mock, relion]
+    modifies_backend_project: true
+    creates_files: true
+    authorization_required: true
+    authorization_source: user_task_request
+    requires_human_approval: false
+    required_inputs:
+      particles:
+        result_types: [extracted_particles, selected_particles, classified_particles, refine3d_particles, ctf_refined_particles, polished_particles]
+        required: true
+        description: Particles to refine.
+      reference_volume:
+        result_types: [initial_volume, refined_volume]
+        required: true
+        description: Initial or refined reference volume.
+      mask:
+        result_types: [mask]
+        required: false
+        description: Optional solvent mask.
+    params:
+      symmetry:
+        type: symmetry
+        required: true
+        description: Assumed point-group symmetry.
+        exposure: user_overridable
+        source: user_or_agent
+        param_id: symmetry
+        category: sample_hypothesis
+        allowed_sources: [sample_hypothesis, strategy_intent, workflow_default, user_override]
+        authority_order: [strategy_intent, sample_hypothesis, user_override, workflow_default]
+        dependency_scope: local
+        impacts: [particle_geometry]
+      mask_diameter_A:
+        type: float
+        required: true
+        unit: angstrom
+        exclusive_min: 0
+        description: Approximate particle mask diameter.
+        exposure: user_overridable
+        source: derived_geometry
+        param_id: mask_diameter_A
+        category: sample_hypothesis
+        allowed_sources: [input_metadata, derived_geometry, sample_hypothesis, user_override]
+        authority_order: [user_override, derived_geometry, input_metadata, sample_hypothesis]
+        dependency_scope: local
+        impacts: [particle_geometry]
+      initial_lowpass_A:
+        type: float
+        required: false
+        unit: angstrom
+        min: 0
+        description: Initial low-pass filter applied to the reference map.
+        exposure: user_overridable
+        source: workflow_default
+        param_id: initial_lowpass_A
+        category: processing_standard
+        allowed_sources: [workflow_default, user_override]
+        authority_order: [user_override, workflow_default]
+        dependency_scope: local
+        impacts: [local_processing_behavior]
+      reference_map_absolute_greyscale:
+        type: bool
+        required: false
+        default: false
+        description: Whether the reference map is on an absolute greyscale.
+        exposure: user_overridable
+        source: workflow_default
+        param_id: reference_map_absolute_greyscale
+        category: processing_standard
+        allowed_sources: [workflow_default, user_override]
+        authority_order: [user_override, workflow_default]
+        dependency_scope: local
+        impacts: []
+      resize_reference_if_needed:
+        type: bool
+        required: false
+        default: true
+        description: Whether RELION may resize the reference map if its box or pixel size differs.
+        exposure: expert_only
+        source: workflow_default
+        param_id: resize_reference_if_needed
+        category: processing_advanced
+        allowed_sources: [workflow_default]
+        authority_order: [workflow_default]
+        dependency_scope: local
+        impacts: []
+      do_ctf_correction:
+        type: bool
+        required: false
+        default: true
+        description: Whether to apply CTF correction during 3D refinement.
+        exposure: user_overridable
+        source: workflow_default
+        param_id: do_ctf_correction
+        category: processing_standard
+        allowed_sources: [workflow_default, user_override]
+        authority_order: [user_override, workflow_default]
+        dependency_scope: local
+        impacts: []
+      zero_mask_particles:
+        type: bool
+        required: false
+        default: true
+        description: Mask individual particles with zeros outside the mask.
+        exposure: expert_only
+        source: workflow_default
+        param_id: zero_mask_particles
+        category: processing_advanced
+        allowed_sources: [workflow_default]
+        authority_order: [workflow_default]
+        dependency_scope: local
+        impacts: []
+      solvent_correct_fsc:
+        type: bool
+        required: false
+        default: false
+        description: Use phase-randomized solvent-corrected gold-standard FSCs when evidence supports a validated soft solvent mask.
+        exposure: user_overridable
+        source: user_or_agent
+        param_id: solvent_correct_fsc
+        category: processing_advanced
+        strategy_selectable: true
+        allowed_sources: [strategy_intent, user_override, workflow_default]
+        authority_order: [strategy_intent, user_override, workflow_default]
+        dependency_scope: local
+        impacts: [fsc_interpretation]
+      initial_angular_sampling:
+        type: enum
+        allowed: ["30 degrees", "15 degrees", "7.5 degrees", "3.7 degrees", "1.8 degrees", "0.9 degrees"]
+        required: false
+        description: Initial angular sampling interval.
+        exposure: expert_only
+        source: workflow_default
+        param_id: initial_angular_sampling
+        category: processing_advanced
+        allowed_sources: [workflow_default]
+        authority_order: [workflow_default]
+        dependency_scope: local
+        impacts: [local_processing_behavior]
+      local_search_from_auto_sampling:
+        type: enum
+        allowed: ["30 degrees", "15 degrees", "7.5 degrees", "3.7 degrees", "1.8 degrees", "0.9 degrees"]
+        required: false
+        description: Angular sampling from which auto-refine uses local searches.
+        exposure: expert_only
+        source: workflow_default
+        param_id: local_search_from_auto_sampling
+        category: processing_advanced
+        allowed_sources: [workflow_default]
+        authority_order: [workflow_default]
+        dependency_scope: local
+        impacts: [local_processing_behavior]
+      initial_offset_range_pix:
+        type: float
+        required: false
+        min: 0
+        description: Initial offset search range in pixels.
+        exposure: expert_only
+        source: workflow_default
+        param_id: initial_offset_range_pix
+        category: processing_advanced
+        allowed_sources: [workflow_default]
+        authority_order: [workflow_default]
+        dependency_scope: local
+        impacts: [local_processing_behavior]
+      initial_offset_step_pix:
+        type: float
+        required: false
+        min: 0
+        description: Initial offset search step in pixels.
+        exposure: expert_only
+        source: workflow_default
+        param_id: initial_offset_step_pix
+        category: processing_advanced
+        allowed_sources: [workflow_default]
+        authority_order: [workflow_default]
+        dependency_scope: local
+        impacts: [local_processing_behavior]
+      use_finer_angular_sampling_faster:
+        type: bool
+        required: false
+        default: false
+        description: Allow auto-refine to move to finer angular sampling faster.
+        exposure: expert_only
+        source: workflow_default
+        param_id: use_finer_angular_sampling_faster
+        category: processing_advanced
+        allowed_sources: [workflow_default]
+        authority_order: [workflow_default]
+        dependency_scope: local
+        impacts: [local_processing_behavior]
+      use_parallel_disc_io:
+        type: bool
+        required: false
+        default: true
+        description: Allow parallel image reads from disk.
+        exposure: expert_only
+        source: workflow_default
+        param_id: use_parallel_disc_io
+        category: processing_advanced
+        allowed_sources: [workflow_default]
+        authority_order: [workflow_default]
+        dependency_scope: local
+        impacts: []
+      skip_padding:
+        type: bool
+        required: false
+        default: false
+        description: Skip Fourier-space padding during 3D refinement.
+        exposure: expert_only
+        source: workflow_default
+        param_id: skip_padding
+        category: processing_advanced
+        allowed_sources: [workflow_default]
+        authority_order: [workflow_default]
+        dependency_scope: local
+        impacts: []
+      pooled_particles:
+        type: int
+        required: false
+        min: 1
+        description: Number of pooled particles per thread.
+        exposure: expert_only
+        source: workflow_default
+        param_id: pooled_particles
+        category: processing_advanced
+        allowed_sources: [workflow_default]
+        authority_order: [workflow_default]
+        dependency_scope: local
+        impacts: []
+      preread_images:
+        type: bool
+        required: false
+        default: false
+        description: Whether to pre-read particle images into RAM.
+        exposure: expert_only
+        source: workflow_default
+        param_id: preread_images
+        category: processing_advanced
+        allowed_sources: [workflow_default]
+        authority_order: [workflow_default]
+        dependency_scope: local
+        impacts: []
+      scratch_directory:
+        type: absolute_runtime_path
+        required: false
+        description: Optional absolute runtime scratch base; omit it to preserve the RELION_SCRATCH_DIR default, or pass an empty string to disable scratch for this job.
+        exposure: expert_only
+        source: resource_allocator
+        param_id: scratch_directory
+        category: resource_allocation
+        allowed_sources: [user_override, explicit_runtime_override, resource_allocator]
+        authority_order: [user_override, explicit_runtime_override, resource_allocator]
+        dependency_scope: local
+        impacts: [runtime_resources]
+      combine_iterations_through_disc:
+        type: bool
+        required: false
+        default: false
+        description: Combine refinement iterations through disk instead of network reduction.
+        exposure: expert_only
+        source: workflow_default
+        param_id: combine_iterations_through_disc
+        category: processing_advanced
+        allowed_sources: [workflow_default]
+        authority_order: [workflow_default]
+        dependency_scope: local
+        impacts: []
+      number_of_mpi:
+        type: int
+        required: false
+        min: 1
+        description: MPI process count.
+        exposure: expert_only
+        source: workflow_default
+        param_id: number_of_mpi
+        category: resource_request
+        allowed_sources: [workflow_default, user_override, resource_allocator]
+        authority_order: [resource_allocator, user_override, workflow_default]
+        dependency_scope: local
+        impacts: [runtime_resources]
+      number_of_threads:
+        type: int
+        required: false
+        min: 1
+        description: Thread count per process.
+        exposure: expert_only
+        source: workflow_default
+        param_id: number_of_threads
+        category: resource_request
+        allowed_sources: [workflow_default, user_override, resource_allocator]
+        authority_order: [resource_allocator, user_override, workflow_default]
+        dependency_scope: local
+        impacts: [runtime_resources]
+      use_gpu:
+        type: bool
+        required: false
+        default: false
+        description: Allow GPU acceleration.
+        exposure: expert_only
+        source: backend_policy
+        param_id: use_gpu
+        category: resource_request
+        allowed_sources: [workflow_default, user_override, resource_allocator]
+        authority_order: [resource_allocator, user_override, workflow_default]
+        dependency_scope: local
+        impacts: [runtime_resources]
+      gpu_ids:
+        type: str
+        category: resource_allocation
+        required: false
+        description: GPU IDs to use for 3D refinement.
+        exposure: expert_only
+        source: resource_allocator
+        allowed_sources: [resource_allocator, explicit_runtime_override]
+        authority_order: [explicit_runtime_override, resource_allocator]
+        param_id: gpu_ids
+        dependency_scope: local
+        impacts: []
+      submit_to_queue:
+        type: bool
+        required: false
+        default: false
+        description: Whether to submit through backend queue policy.
+        exposure: expert_only
+        source: backend_policy
+        param_id: submit_to_queue
+        category: resource_request
+        allowed_sources: [workflow_default, user_override, resource_allocator]
+        authority_order: [resource_allocator, user_override, workflow_default]
+        dependency_scope: local
+        impacts: [runtime_resources]
+    expected_results:
+      - result_type: refined_volume
+      - result_type: refine3d_particles
+      - result_type: half_maps
+    backend_support:
+      relion:
+        supported: true
+        mapping_ref: refine3d
+        support_level: schedule_mappable
+
+  mask_creation:
+    description: Create a soft mask from a reconstructed map.
+    operation_type: postprocessing
+    category: postprocessing
+    supported_backends: [relion]
+    modifies_backend_project: true
+    creates_files: true
+    authorization_required: true
+    authorization_source: user_task_request
+    requires_human_approval: false
+    required_inputs:
+      input_map:
+        result_types: [initial_volume, refined_volume]
+        required: true
+        description: Map to mask.
+    params:
+      pixel_size_A:
+        type: float
+        required: false
+        unit: angstrom
+        description: Pixel size for mask creation.
+        exposure: workflow_default
+        source: workflow_default
+        param_id: pixel_size_A
+        category: derived
+        allowed_sources: [input_metadata, derived, workflow_default, user_override]
+        authority_order: [derived, input_metadata, user_override, workflow_default]
+        dependency_scope: downstream
+        impacts: [particle_pixel_size_A, box_size_pix, box_size_A]
+      lowpass_filter_A:
+        type: float
+        required: false
+        unit: angstrom
+        description: Low-pass filter before thresholding.
+        exposure: user_overridable
+        source: workflow_default
+        param_id: lowpass_filter_A
+        category: processing_standard
+        allowed_sources: [workflow_default, user_override]
+        authority_order: [user_override, workflow_default]
+        dependency_scope: local
+        impacts: [local_processing_behavior]
+      initial_binarisation_threshold:
+        type: float
+        required: false
+        description: Initial map threshold for binary mask creation.
+        exposure: user_overridable
+        source: workflow_default
+        param_id: initial_binarisation_threshold
+        category: processing_standard
+        allowed_sources: [workflow_default, user_override]
+        authority_order: [user_override, workflow_default]
+        dependency_scope: local
+        impacts: [local_processing_behavior]
+      extend_binary_map_pixels:
+        type: int
+        required: false
+        min: 0
+        description: Number of pixels to extend the initial binary mask.
+        exposure: user_overridable
+        source: workflow_default
+        param_id: extend_binary_map_pixels
+        category: processing_standard
+        allowed_sources: [workflow_default, user_override]
+        authority_order: [user_override, workflow_default]
+        dependency_scope: local
+        impacts: []
+      soft_edge_width_pixels:
+        type: int
+        required: false
+        min: 0
+        description: Width of the final soft mask edge in pixels.
+        exposure: user_overridable
+        source: workflow_default
+        param_id: soft_edge_width_pixels
+        category: processing_standard
+        allowed_sources: [workflow_default, user_override]
+        authority_order: [user_override, workflow_default]
+        dependency_scope: local
+        impacts: []
+      number_of_threads:
+        type: int
+        required: false
+        min: 1
+        description: Thread count.
+        exposure: expert_only
+        source: workflow_default
+        param_id: number_of_threads
+        category: resource_request
+        allowed_sources: [workflow_default, user_override, resource_allocator]
+        authority_order: [resource_allocator, user_override, workflow_default]
+        dependency_scope: local
+        impacts: [runtime_resources]
+    expected_results:
+      - result_type: mask
+    backend_support:
+      relion:
+        supported: true
+        mapping_ref: mask_creation
+        support_level: schedule_mappable
+
+  align_symmetry_reference:
+    description: Materialize a new unsymmetrized reference aligned to an explicitly selected RELION point group by native relion_align_symmetry.
+    operation_type: processing
+    category: processing
+    supported_backends: [relion]
+    modifies_backend_project: true
+    creates_files: true
+    destructive: false
+    authorization_required: true
+    authorization_source: user_task_request
+    authorization_note: A processing or optimization request covers bounded evidence-backed reference alignment for a matched comparison without another prompt. Preserve the C1 baseline; alignment does not impose symmetry or establish a biological conclusion.
+    requires_human_approval: false
+    required_inputs:
+      input_map:
+        result_types: [refined_volume, initial_volume]
+        required: true
+        description: Project-relative real-space MRC map to align without modifying it; its cubic box is subject to the configured resource ceiling.
+    params:
+      target_symmetry:
+        type: alignment_symmetry
+        required: true
+        description: Explicit proper RELION point group to align (C2-C64, D2-D32, T, O, or I1-I4), bounded to 64 operators.
+        exposure: user_overridable
+        source: user_override
+        param_id: target_symmetry
+        category: sample_hypothesis
+        allowed_sources: [sample_hypothesis, user_override]
+        authority_order: [user_override, sample_hypothesis]
+        dependency_scope: local
+        impacts: [particle_geometry]
+      output_map:
+        type: str
+        required: true
+        description: Explicit path beneath ReferencePrep/ for a new aligned MRC map; existing paths are refused.
+        exposure: user_overridable
+        source: user_override
+        param_id: output_map
+        category: input_binding
+        allowed_sources: [user_override]
+        authority_order: [user_override]
+        dependency_scope: local
+        impacts: []
+      search_max_resolution_A:
+        type: float
+        required: true
+        unit: angstrom
+        min: 0.000001
+        description: Resolution cutoff used only to score native alignment candidates; it must retain at least three Fourier-radius shells and the output is not low-pass filtered.
+        exposure: user_overridable
+        source: user_override
+        param_id: search_max_resolution_A
+        category: backend_option
+        allowed_sources: [user_override]
+        authority_order: [user_override]
+        dependency_scope: local
+        impacts: []
+    expected_results:
+      - result_type: refined_volume
+    backend_support:
+      relion:
+        supported: true
+        support_level: execution_ready
+
+  rescale_map:
+    description: Rescale and re-box a map for downstream refinement.
+    operation_type: processing
+    category: processing
+    supported_backends: [relion]
+    modifies_backend_project: true
+    creates_files: true
+    authorization_required: true
+    authorization_source: user_task_request
+    requires_human_approval: false
+    human_approval_conditions: [overwrite_existing_output]
+    required_inputs:
+      input_map:
+        result_types: [refined_volume, initial_volume]
+        required: true
+        description: Map JobResult to rescale.
+    params:
+      input_pixel_size_A:
+        type: float
+        required: true
+        unit: angstrom
+        min: 0
+        description: Pixel size of the input map.
+        exposure: user_overridable
+        source: workflow_default
+        param_id: input_pixel_size_A
+        category: derived
+        allowed_sources: [input_metadata, derived, workflow_default, user_override]
+        authority_order: [derived, input_metadata, user_override, workflow_default]
+        dependency_scope: downstream
+        impacts: [particle_pixel_size_A, box_size_pix, box_size_A]
+      output_pixel_size_A:
+        type: float
+        required: true
+        unit: angstrom
+        min: 0
+        description: Pixel size of the rescaled map.
+        exposure: user_overridable
+        source: workflow_default
+        param_id: output_pixel_size_A
+        category: derived
+        allowed_sources: [input_metadata, derived, workflow_default, user_override]
+        authority_order: [derived, input_metadata, user_override, workflow_default]
+        dependency_scope: downstream
+        impacts: [particle_pixel_size_A, box_size_pix, box_size_A]
+      new_box_size_pix:
+        type: int
+        required: true
+        unit: pixels
+        min: 1
+        description: New cubic box size for the rescaled map.
+        exposure: user_overridable
+        source: workflow_default
+        param_id: new_box_size_pix
+        category: derived
+        allowed_sources: [input_metadata, derived, workflow_default, user_override]
+        authority_order: [derived, input_metadata, user_override, workflow_default]
+        dependency_scope: downstream
+        impacts: [particle_pixel_size_A, box_size_pix, box_size_A]
+      output_map:
+        type: str
+        required: false
+        description: Project-relative output map path.
+        exposure: workflow_default
+        source: workflow_default
+        param_id: output_map
+        category: input_binding
+        allowed_sources: [workflow_default, project_bootstrap, input_metadata, user_override]
+        authority_order: [input_metadata, project_bootstrap, user_override, workflow_default]
+        dependency_scope: local
+        impacts: []
+      output_suffix:
+        type: str
+        required: false
+        default: _rescaled
+        description: Suffix to append to the input map stem when deriving the output map path.
+        exposure: user_overridable
+        source: derived
+        param_id: output_suffix
+        category: backend_option
+        allowed_sources: [derived, user_override, workflow_default]
+        authority_order: [derived, user_override, workflow_default]
+        dependency_scope: local
+        impacts: []
+    expected_results:
+      - result_type: refined_volume
+    backend_support:
+      relion:
+        supported: true
+        support_level: execution_ready
+
+  remove_duplicate_particles:
+    description: Remove duplicated particles closer than an explicit physical distance with native relion_star_handler, writing new retained- and removed-particle STAR files.
+    operation_type: processing
+    category: processing
+    supported_backends: [relion]
+    modifies_backend_project: true
+    creates_files: true
+    destructive: false
+    authorization_required: true
+    authorization_source: user_task_request
+    requires_human_approval: false
+    required_inputs:
+      particles:
+        result_types: [selected_particles, classified_particles, refine3d_particles]
+        required: true
+        description: Native-runnable SPA particle STAR to deduplicate. data_particles must include finite X/Y coordinates and origins, non-null image and micrograph names, and an optics group; the tomography-triggering rlnCenteredCoordinateZAngst column is rejected. Native-bound input must be valid UTF-8 without NUL bytes or carriage returns. Particle and optics loops must use unambiguous native block/loop structure, valid declarations, complete physical rows, unique logical labels, supported ordinary loop columns, native token and string round-trip semantics, and values valid for the pinned RELION 5.0 metadata types; null markers are rejected for recognized non-string types. The particle loop must be the first data construct, and data_optics must contain exactly one loop without a scalar list. The optics table must include the fields required by RELION and list contiguous group IDs 1..N in row order so native loading cannot renumber them. A fresh unaligned extraction without origin columns is rejected. The input file is never modified in place.
+    params:
+      duplicate_distance_A:
+        type: float
+        required: true
+        unit: angstrom
+        min: 0.000001
+        description: Centre-to-centre separation in Angstrom below which two particles are treated as the same particle; derive it from measured particle geometry, never from a tutorial value.
+        exposure: user_overridable
+        source: user_override
+        param_id: duplicate_distance_A
+        category: derived
+        allowed_sources: [derived, sample_hypothesis, user_override]
+        authority_order: [user_override, derived, sample_hypothesis]
+        dependency_scope: local
+        impacts: [particle_geometry]
+      image_pixel_size_A:
+        type: float
+        required: false
+        unit: angstrom
+        min: 0.000001
+        description: Pre-extraction micrograph coordinate pixel size always passed to native --image_angpix. It is inferred from rlnMicrographPixelSize for every referenced optics group; do not substitute rlnMicrographOriginalPixelSize or rlnImagePixelSize. An explicit verified value is required whenever authoritative micrograph-scale metadata is absent and must match it when present.
+        exposure: user_overridable
+        source: input_metadata
+        param_id: image_pixel_size_A
+        category: derived
+        allowed_sources: [input_metadata, derived, user_override]
+        authority_order: [input_metadata, user_override, derived]
+        dependency_scope: local
+        impacts: []
+      output_star:
+        type: str
+        required: true
+        description: Explicit project-relative retained-particle STAR beneath Deduplicate/. This path and RELION's implicit sibling <stem>_removed.star are privately staged, validated as an exact count, image-identity, and type-aware complete-row-metadata partition with at least one retained row and unchanged retained optics metadata. A nonempty removed sidecar may use the named data_particles block from newer RELION builds or the deployed beta's legal unnamed data_ block; this legacy exception does not apply to inputs or retained outputs. The native zero-byte no-removals sidecar is accepted, but a removed sidecar with optics is not. Both outputs are published as new files only; either existing destination is refused.
+        exposure: user_overridable
+        source: user_override
+        param_id: output_star
+        category: input_binding
+        allowed_sources: [user_override]
+        authority_order: [user_override]
+        dependency_scope: local
+        impacts: []
+    expected_results:
+      - result_type: selected_particles
+    backend_support:
+      relion:
+        supported: true
+        support_level: execution_ready
+
+  postprocessing:
+    description: Postprocess half maps with a solvent mask and report FSC.
+    operation_type: postprocessing
+    category: postprocessing
+    supported_backends: [relion]
+    modifies_backend_project: true
+    creates_files: true
+    authorization_required: true
+    authorization_source: user_task_request
+    requires_human_approval: false
+    required_inputs:
+      half_map:
+        result_types: [half_maps]
+        required: true
+        description: Half-map JobResult.
+      mask:
+        result_types: [mask]
+        required: true
+        description: Solvent mask.
+    params:
+      pixel_size_A:
+        type: float
+        required: false
+        unit: angstrom
+        description: Calibrated pixel size for reporting.
+        exposure: user_overridable
+        source: workflow_default
+        param_id: pixel_size_A
+        category: derived
+        allowed_sources: [input_metadata, derived, workflow_default, user_override]
+        authority_order: [derived, input_metadata, user_override, workflow_default]
+        dependency_scope: downstream
+        impacts: [particle_pixel_size_A, box_size_pix, box_size_A]
+      mtf_file:
+        type: str
+        required: false
+        description: Detector MTF STAR file used for map sharpening.
+        exposure: user_overridable
+        source: workflow_default
+        param_id: mtf_file
+        category: input_binding
+        allowed_sources: [workflow_default, project_bootstrap, input_metadata, user_override]
+        authority_order: [input_metadata, project_bootstrap, user_override, workflow_default]
+        dependency_scope: local
+        impacts: []
+      mtf_pixel_size_A:
+        type: float
+        required: false
+        unit: angstrom
+        description: Original detector pixel size for the MTF curve.
+        exposure: user_overridable
+        source: workflow_default
+        param_id: mtf_pixel_size_A
+        category: microscopy_metadata
+        allowed_sources: [input_metadata, project_bootstrap, workflow_default]
+        authority_order: [input_metadata, project_bootstrap, workflow_default]
+        dependency_scope: project
+        impacts: []
+      estimate_bfactor_automatically:
+        type: bool
+        required: false
+        default: true
+        description: Estimate the sharpening B-factor automatically.
+        exposure: user_overridable
+        source: workflow_default
+        param_id: estimate_bfactor_automatically
+        category: processing_standard
+        allowed_sources: [workflow_default, user_override]
+        authority_order: [user_override, workflow_default]
+        dependency_scope: local
+        impacts: []
+      lowest_resolution_for_auto_bfit_A:
+        type: float
+        required: false
+        unit: angstrom
+        min: 0
+        description: Lowest resolution included in the automated B-factor fit.
+        exposure: user_overridable
+        source: workflow_default
+        param_id: lowest_resolution_for_auto_bfit_A
+        category: processing_standard
+        allowed_sources: [workflow_default, user_override]
+        authority_order: [user_override, workflow_default]
+        dependency_scope: local
+        impacts: [local_processing_behavior]
+    derived_parameter_rules:
+      - param_name: pixel_size_A
+        input_role: half_map
+        metadata_field: pixel_size_A
+        required: true
+        description: Postprocessing pixel size must match the selected half-map JobResult metadata.
+    scientific_invariants:
+      - invariant_id: postprocess_pixel_size_matches_half_map
+        param_name: pixel_size_A
+        input_role: half_map
+        metadata_field: pixel_size_A
+        relation: equals
+        required: true
+        description: Postprocessing pixel size must match half-map pixel size metadata.
+    expected_results:
+      - result_type: refined_volume
+      - result_type: fsc_curve
+    backend_support:
+      relion:
+        supported: true
+        mapping_ref: postprocess
+        support_level: schedule_mappable
+
+  ctf_refinement:
+    description: Refine CTF-related particle metadata.
+    operation_type: postprocessing
+    category: postprocessing
+    supported_backends: [relion]
+    modifies_backend_project: true
+    creates_files: true
+    authorization_required: true
+    authorization_source: user_task_request
+    requires_human_approval: false
+    required_inputs:
+      particles:
+        result_types: [refine3d_particles, ctf_refined_particles, selected_particles, extracted_particles]
+        required: true
+        description: Particle metadata to refine.
+      postprocess:
+        result_types: [fsc_curve]
+        required: true
+        description: Postprocess FSC JobResult.
+    params:
+      fit_ctf:
+        type: bool
+        required: false
+        default: true
+        description: Fit CTF parameters.
+        exposure: expert_only
+        source: workflow_default
+        param_id: fit_ctf
+        category: processing_advanced
+        allowed_sources: [workflow_default, user_override]
+        authority_order: [user_override, workflow_default]
+        dependency_scope: local
+        impacts: []
+      fit_defocus:
+        type: enum
+        allowed: ["No", "Per-micrograph", "Per-particle"]
+        required: false
+        description: Defocus fitting mode for CTF refinement.
+        exposure: expert_only
+        source: workflow_default
+        param_id: fit_defocus
+        category: processing_advanced
+        allowed_sources: [workflow_default, user_override]
+        authority_order: [user_override, workflow_default]
+        dependency_scope: local
+        impacts: []
+      fit_astigmatism:
+        type: enum
+        allowed: ["No", "Per-micrograph", "Per-particle"]
+        required: false
+        description: Astigmatism fitting mode for CTF refinement.
+        exposure: expert_only
+        source: workflow_default
+        param_id: fit_astigmatism
+        category: processing_advanced
+        allowed_sources: [workflow_default, user_override]
+        authority_order: [user_override, workflow_default]
+        dependency_scope: local
+        impacts: []
+      fit_beamtilt:
+        type: bool
+        required: false
+        default: false
+        description: Fit beam tilt.
+        exposure: expert_only
+        source: workflow_default
+        param_id: fit_beamtilt
+        category: processing_advanced
+        allowed_sources: [workflow_default, user_override]
+        authority_order: [user_override, workflow_default]
+        dependency_scope: local
+        impacts: []
+      fit_anisotropic_magnification:
+        type: bool
+        required: false
+        default: false
+        description: Estimate anisotropic magnification during CTF refinement.
+        exposure: expert_only
+        source: workflow_default
+        param_id: fit_anisotropic_magnification
+        category: processing_advanced
+        allowed_sources: [workflow_default, user_override]
+        authority_order: [user_override, workflow_default]
+        dependency_scope: local
+        impacts: []
+      fit_trefoil:
+        type: bool
+        required: false
+        default: false
+        description: Estimate trefoil aberrations during CTF refinement.
+        exposure: expert_only
+        source: workflow_default
+        param_id: fit_trefoil
+        category: processing_advanced
+        allowed_sources: [workflow_default, user_override]
+        authority_order: [user_override, workflow_default]
+        dependency_scope: local
+        impacts: []
+      fit_fourth_order_aberrations:
+        type: bool
+        required: false
+        default: false
+        description: Estimate fourth-order aberrations during CTF refinement.
+        exposure: expert_only
+        source: workflow_default
+        param_id: fit_fourth_order_aberrations
+        category: processing_advanced
+        allowed_sources: [workflow_default, user_override]
+        authority_order: [user_override, workflow_default]
+        dependency_scope: local
+        impacts: []
+      number_of_mpi:
+        type: int
+        required: false
+        min: 1
+        description: MPI process count.
+        exposure: expert_only
+        source: workflow_default
+        param_id: number_of_mpi
+        category: resource_request
+        allowed_sources: [workflow_default, user_override, resource_allocator]
+        authority_order: [resource_allocator, user_override, workflow_default]
+        dependency_scope: local
+        impacts: [runtime_resources]
+      number_of_threads:
+        type: int
+        required: false
+        min: 1
+        description: Thread count per process.
+        exposure: expert_only
+        source: workflow_default
+        param_id: number_of_threads
+        category: resource_request
+        allowed_sources: [workflow_default, user_override, resource_allocator]
+        authority_order: [resource_allocator, user_override, workflow_default]
+        dependency_scope: local
+        impacts: [runtime_resources]
+    expected_results:
+      - result_type: ctf_refined_particles
+    backend_support:
+      relion:
+        supported: true
+        mapping_ref: ctf_refinement
+        support_level: schedule_mappable
+
+  bayesian_polishing:
+    description: Polish particle trajectories to improve particle metadata.
+    operation_type: postprocessing
+    category: postprocessing
+    supported_backends: [relion]
+    modifies_backend_project: true
+    creates_files: true
+    authorization_required: true
+    authorization_source: user_task_request
+    requires_human_approval: false
+    required_inputs:
+      micrographs:
+        result_types: [motion_corrected_micrographs]
+        required: true
+        description: Motion-corrected micrographs.
+      particles:
+        result_types: [refine3d_particles, ctf_refined_particles, selected_particles, extracted_particles]
+        required: true
+        description: Particles to polish.
+      postprocess:
+        result_types: [fsc_curve]
+        required: true
+        description: Postprocess FSC JobResult.
+      polishing_parameters:
+        result_types: [polishing_parameters]
+        required: false
+        description: Optional optimised Bayesian polishing parameter JobResult.
+    params:
+      write_float16:
+        type: bool
+        required: false
+        default: true
+        description: Write polished outputs in float16 format.
+        exposure: expert_only
+        source: workflow_default
+        param_id: write_float16
+        category: processing_advanced
+        allowed_sources: [workflow_default]
+        authority_order: [workflow_default]
+        dependency_scope: local
+        impacts: []
+      first_frame:
+        type: int
+        required: false
+        description: First movie frame used in motion refinement.
+        exposure: expert_only
+        source: workflow_default
+        param_id: first_frame
+        category: processing_advanced
+        allowed_sources: [workflow_default]
+        authority_order: [workflow_default]
+        dependency_scope: local
+        impacts: []
+      last_frame:
+        type: int
+        required: false
+        description: Last movie frame used in motion refinement; non-positive means all frames.
+        exposure: expert_only
+        source: workflow_default
+        param_id: last_frame
+        category: processing_advanced
+        allowed_sources: [workflow_default]
+        authority_order: [workflow_default]
+        dependency_scope: local
+        impacts: []
+      train_optimal_parameters:
+        type: bool
+        required: false
+        default: false
+        description: Estimate optimal Bayesian polishing parameters on a subset.
+        exposure: expert_only
+        source: workflow_default
+        param_id: train_optimal_parameters
+        category: processing_advanced
+        allowed_sources: [workflow_default]
+        authority_order: [workflow_default]
+        dependency_scope: local
+        impacts: []
+      perform_particle_polishing:
+        type: bool
+        required: false
+        default: true
+        description: Generate polished particles using optimisation parameters.
+        exposure: expert_only
+        source: workflow_default
+        param_id: perform_particle_polishing
+        category: processing_advanced
+        allowed_sources: [workflow_default]
+        authority_order: [workflow_default]
+        dependency_scope: local
+        impacts: []
+      minimum_particles_for_parameter_optimisation:
+        type: int
+        required: false
+        min: 1
+        description: Minimum number of particles used for polishing parameter optimisation.
+        exposure: expert_only
+        source: workflow_default
+        param_id: minimum_particles_for_parameter_optimisation
+        category: processing_advanced
+        allowed_sources: [workflow_default]
+        authority_order: [workflow_default]
+        dependency_scope: local
+        impacts: []
+      evaluation_fraction:
+        type: float
+        required: false
+        min: 0
+        description: Fraction of Fourier pixels used for testing during parameter optimisation.
+        exposure: expert_only
+        source: workflow_default
+        param_id: evaluation_fraction
+        category: processing_advanced
+        allowed_sources: [workflow_default]
+        authority_order: [workflow_default]
+        dependency_scope: local
+        impacts: []
+      minimum_resolution_for_bfactor_fit_A:
+        type: float
+        required: false
+        min: 0
+        unit: angstrom
+        description: Minimum resolution used for the polished-particle B-factor fit.
+        exposure: expert_only
+        source: workflow_default
+        param_id: minimum_resolution_for_bfactor_fit_A
+        category: processing_advanced
+        allowed_sources: [workflow_default]
+        authority_order: [workflow_default]
+        dependency_scope: local
+        impacts: [local_processing_behavior]
+      maximum_resolution_for_bfactor_fit_A:
+        type: float
+        required: false
+        unit: angstrom
+        description: Maximum resolution used for the polished-particle B-factor fit; negative means infer from FSC.
+        exposure: expert_only
+        source: workflow_default
+        param_id: maximum_resolution_for_bfactor_fit_A
+        category: processing_advanced
+        allowed_sources: [workflow_default]
+        authority_order: [workflow_default]
+        dependency_scope: local
+        impacts: [local_processing_behavior]
+      number_of_mpi:
+        type: int
+        required: false
+        min: 1
+        description: MPI process count.
+        exposure: expert_only
+        source: workflow_default
+        param_id: number_of_mpi
+        category: resource_request
+        allowed_sources: [workflow_default, user_override, resource_allocator]
+        authority_order: [resource_allocator, user_override, workflow_default]
+        dependency_scope: local
+        impacts: [runtime_resources]
+      number_of_threads:
+        type: int
+        required: false
+        min: 1
+        description: Thread count per process.
+        exposure: expert_only
+        source: workflow_default
+        param_id: number_of_threads
+        category: resource_request
+        allowed_sources: [workflow_default, user_override, resource_allocator]
+        authority_order: [resource_allocator, user_override, workflow_default]
+        dependency_scope: local
+        impacts: [runtime_resources]
+    expected_results:
+      - result_type: polished_particles
+      - result_type: polishing_parameters
+    backend_support:
+      relion:
+        supported: true
+        mapping_ref: polish
+        support_level: schedule_mappable
+
+  local_resolution:
+    description: Estimate local resolution from half maps and an optional mask.
+    operation_type: postprocessing
+    category: postprocessing
+    supported_backends: [relion]
+    modifies_backend_project: true
+    creates_files: true
+    authorization_required: true
+    authorization_source: user_task_request
+    requires_human_approval: false
+    required_inputs:
+      half_map:
+        result_types: [half_maps]
+        required: true
+        description: Half-map JobResult.
+      mask:
+        result_types: [mask]
+        required: false
+        description: Optional mask.
+    params:
+      pixel_size_A:
+        type: float
+        required: false
+        unit: angstrom
+        description: Pixel size for local-resolution reporting.
+        exposure: user_overridable
+        source: workflow_default
+        param_id: pixel_size_A
+        category: derived
+        allowed_sources: [input_metadata, derived, workflow_default, user_override]
+        authority_order: [derived, input_metadata, user_override, workflow_default]
+        dependency_scope: downstream
+        impacts: [particle_pixel_size_A, box_size_pix, box_size_A]
+      use_relion_local_resolution:
+        type: bool
+        required: false
+        default: false
+        description: Use RELION postprocess local-resolution estimation instead of ResMap.
+        exposure: user_overridable
+        source: workflow_default
+        param_id: use_relion_local_resolution
+        category: processing_standard
+        allowed_sources: [workflow_default, user_override]
+        authority_order: [user_override, workflow_default]
+        dependency_scope: local
+        impacts: []
+      use_resmap:
+        type: bool
+        required: false
+        default: true
+        description: Use ResMap for local-resolution estimation.
+        exposure: expert_only
+        source: backend_default
+        param_id: use_resmap
+        category: backend_option
+        allowed_sources: [backend_default, workflow_default]
+        authority_order: [workflow_default, backend_default]
+        dependency_scope: local
+        impacts: []
+      user_provided_bfactor:
+        type: float
+        required: false
+        description: User-provided sharpening B-factor for local-resolution filtering.
+        exposure: user_overridable
+        source: workflow_default
+        param_id: user_provided_bfactor
+        category: processing_standard
+        allowed_sources: [workflow_default, user_override]
+        authority_order: [user_override, workflow_default]
+        dependency_scope: local
+        impacts: []
+      mtf_file:
+        type: str
+        required: false
+        description: Detector MTF STAR file used for local-resolution sharpening.
+        exposure: user_overridable
+        source: workflow_default
+        param_id: mtf_file
+        category: input_binding
+        allowed_sources: [workflow_default, project_bootstrap, input_metadata, user_override]
+        authority_order: [input_metadata, project_bootstrap, user_override, workflow_default]
+        dependency_scope: local
+        impacts: []
+    derived_parameter_rules:
+      - param_name: pixel_size_A
+        input_role: half_map
+        metadata_field: pixel_size_A
+        required: true
+        description: Local-resolution pixel size must match the selected half-map JobResult metadata.
+    scientific_invariants:
+      - invariant_id: local_resolution_pixel_size_matches_half_map
+        param_name: pixel_size_A
+        input_role: half_map
+        metadata_field: pixel_size_A
+        relation: equals
+        required: true
+        description: Local-resolution pixel size must match half-map pixel size metadata.
+    expected_results:
+      - result_type: local_resolution_map
+    backend_support:
+      relion:
+        supported: true
+        mapping_ref: local_resolution
+        support_level: schedule_mappable
+
+  modelangelo:
+    description: Build an atomic model from a postprocessed map.
+    operation_type: postprocessing
+    category: postprocessing
+    supported_backends: [relion]
+    modifies_backend_project: true
+    creates_files: true
+    authorization_required: true
+    authorization_source: user_task_request
+    requires_human_approval: true
+    required_inputs:
+      map:
+        result_types: [refined_volume]
+        required: true
+        description: Postprocessed map for model building.
+    params:
+      protein_fasta:
+        type: str
+        required: false
+        description: FASTA sequence file for protein chains.
+        exposure: user_overridable
+        source: workflow_default
+        param_id: protein_fasta
+        category: input_binding
+        allowed_sources: [workflow_default, project_bootstrap, input_metadata, user_override]
+        authority_order: [input_metadata, project_bootstrap, user_override, workflow_default]
+        dependency_scope: local
+        impacts: []
+      gpu_ids:
+        type: str
+        category: resource_allocation
+        required: false
+        description: Comma-separated GPU IDs for ModelAngelo.
+        exposure: user_overridable
+        source: resource_allocator
+        allowed_sources: [resource_allocator, explicit_runtime_override]
+        authority_order: [explicit_runtime_override, resource_allocator]
+        param_id: gpu_ids
+        dependency_scope: local
+        impacts: []
+    expected_results: []
+    backend_support:
+      relion:
+        supported: true
+        mapping_ref: modelangelo
+        support_level: dry_run_mappable
+
+  dynamight:
+    description: Explore continuous flexibility with DynaMight.
+    operation_type: postprocessing
+    category: postprocessing
+    supported_backends: [relion]
+    modifies_backend_project: true
+    creates_files: true
+    authorization_required: true
+    authorization_source: user_task_request
+    requires_human_approval: true
+    required_inputs:
+      particles:
+        result_types: [refine3d_particles, selected_particles]
+        required: true
+        description: Refined particle STAR file for DynaMight.
+      reference_volume:
+        result_types: [refined_volume]
+        required: true
+        description: Consensus map used as the initial DynaMight model.
+    params:
+      n_gaussians:
+        type: int
+        required: false
+        description: Number of Gaussians for DynaMight deformation modelling.
+        exposure: expert_only
+        source: workflow_default
+        param_id: n_gaussians
+        category: processing_advanced
+        allowed_sources: [workflow_default]
+        authority_order: [workflow_default]
+        dependency_scope: local
+        impacts: []
+      initial_threshold:
+        type: float
+        required: false
+        description: Initial map threshold used to place DynaMight Gaussians.
+        exposure: expert_only
+        source: workflow_default
+        param_id: initial_threshold
+        category: processing_advanced
+        allowed_sources: [workflow_default]
+        authority_order: [workflow_default]
+        dependency_scope: local
+        impacts: [local_processing_behavior]
+      regularization_factor:
+        type: float
+        required: false
+        description: DynaMight regularization factor.
+        exposure: expert_only
+        source: workflow_default
+        param_id: regularization_factor
+        category: processing_advanced
+        allowed_sources: [workflow_default]
+        authority_order: [workflow_default]
+        dependency_scope: local
+        impacts: [classification_or_refinement_regularisation]
+      number_of_threads:
+        type: int
+        required: false
+        description: Number of DynaMight CPU threads.
+        exposure: user_overridable
+        source: workflow_default
+        param_id: number_of_threads
+        category: resource_request
+        allowed_sources: [workflow_default, user_override, resource_allocator]
+        authority_order: [resource_allocator, user_override, workflow_default]
+        dependency_scope: local
+        impacts: [runtime_resources]
+      preload_images:
+        type: bool
+        required: false
+        default: false
+        description: Preload particle images in RAM.
+        exposure: expert_only
+        source: workflow_default
+        param_id: preload_images
+        category: processing_advanced
+        allowed_sources: [workflow_default]
+        authority_order: [workflow_default]
+        dependency_scope: local
+        impacts: []
+      gpu_id:
+        type: str
+        required: false
+        description: Single GPU ID for DynaMight.
+        exposure: user_overridable
+        source: resource_allocator
+        param_id: gpu_id
+        category: resource_allocation
+        allowed_sources: [resource_allocator, explicit_runtime_override]
+        authority_order: [explicit_runtime_override, resource_allocator]
+        dependency_scope: local
+        impacts: []
+      run_inverse_deformations:
+        type: bool
+        required: false
+        default: false
+        description: Estimate inverse deformations.
+        exposure: expert_only
+        source: workflow_default
+        param_id: run_inverse_deformations
+        category: processing_advanced
+        allowed_sources: [workflow_default]
+        authority_order: [workflow_default]
+        dependency_scope: local
+        impacts: []
+      number_of_epochs:
+        type: int
+        required: false
+        description: Number of inverse-deformation epochs.
+        exposure: expert_only
+        source: workflow_default
+        param_id: number_of_epochs
+        category: processing_advanced
+        allowed_sources: [workflow_default]
+        authority_order: [workflow_default]
+        dependency_scope: local
+        impacts: []
+      run_latent_space_exploration:
+        type: bool
+        required: false
+        default: false
+        description: Explore the DynaMight latent space.
+        exposure: expert_only
+        source: workflow_default
+        param_id: run_latent_space_exploration
+        category: processing_advanced
+        allowed_sources: [workflow_default]
+        authority_order: [workflow_default]
+        dependency_scope: local
+        impacts: []
+      halfset:
+        type: int
+        required: false
+        description: Half-set used for latent-space visualization.
+        exposure: expert_only
+        source: workflow_default
+        param_id: halfset
+        category: processing_advanced
+        allowed_sources: [workflow_default]
+        authority_order: [workflow_default]
+        dependency_scope: local
+        impacts: []
+      run_deformed_backprojection:
+        type: bool
+        required: false
+        default: false
+        description: Run deformed backprojection from inverse deformations.
+        exposure: expert_only
+        source: workflow_default
+        param_id: run_deformed_backprojection
+        category: processing_advanced
+        allowed_sources: [workflow_default]
+        authority_order: [workflow_default]
+        dependency_scope: local
+        impacts: []
+      backprojection_batchsize:
+        type: int
+        required: false
+        description: Batch size for DynaMight deformed backprojection.
+        exposure: expert_only
+        source: workflow_default
+        param_id: backprojection_batchsize
+        category: processing_advanced
+        allowed_sources: [workflow_default]
+        authority_order: [workflow_default]
+        dependency_scope: local
+        impacts: []
+      checkpoint_file:
+        type: str
+        required: false
+        description: DynaMight checkpoint file for follow-up stages.
+        exposure: expert_only
+        source: workflow_default
+        param_id: checkpoint_file
+        category: input_binding
+        allowed_sources: [workflow_default, project_bootstrap, input_metadata]
+        authority_order: [input_metadata, project_bootstrap, workflow_default]
+        dependency_scope: local
+        impacts: []
+    expected_results: []
+    backend_support:
+      relion:
+        supported: true
+        mapping_ref: dynamight
+        support_level: manifest_only
+
+  initial_model_search:
+    description: Generate or identify candidate initial 3D models.
+    operation_type: processing
+    category: processing
+    supported_backends: [auto, mock, relion]
+    required_inputs:
+      particles:
+        result_types: [selected_particles, extracted_particles]
+        required: true
+        description: Particles for initial model search.
+    params:
+      num_candidates:
+        type: int
+        allowed: [2, 3, 4, 6]
+        required: true
+        description: Number of candidate models to search.
+        exposure: user_overridable
+        source: user_or_agent
+        param_id: num_candidates
+        category: processing_standard
+        allowed_sources: [strategy_intent, user_override, workflow_default]
+        authority_order: [strategy_intent, user_override, workflow_default]
+        dependency_scope: local
+        impacts: [runtime, classification_or_search_space]
+      symmetry:
+        type: symmetry
+        required: true
+        description: Assumed point-group symmetry.
+        exposure: user_overridable
+        source: user_or_agent
+        param_id: symmetry
+        category: sample_hypothesis
+        allowed_sources: [sample_hypothesis, strategy_intent, workflow_default, user_override]
+        authority_order: [strategy_intent, sample_hypothesis, user_override, workflow_default]
+        dependency_scope: local
+        impacts: [particle_geometry]
+    expected_results:
+      - result_type: initial_volume
+    backend_support:
+      relion:
+        supported: true
+        mapping_ref: initial_model
+        support_level: schedule_mappable
+
+  separate_3d_states:
+    description: Separate heterogeneous particle populations into 3D states.
+    operation_type: processing
+    category: processing
+    supported_backends: [auto, mock, relion]
+    required_inputs:
+      particles:
+        result_types: [selected_particles, extracted_particles]
+        required: true
+        description: Particles to classify.
+      reference_volume:
+        result_types: [initial_volume, refined_volume]
+        required: false
+        description: Optional reference volume.
+    params:
+      num_classes:
+        type: int
+        allowed: [2, 3, 4, 6]
+        required: true
+        description: Number of 3D classes.
+        exposure: user_overridable
+        source: user_or_agent
+        param_id: num_classes
+        category: processing_standard
+        allowed_sources: [strategy_intent, user_override, workflow_default]
+        authority_order: [strategy_intent, user_override, workflow_default]
+        dependency_scope: local
+        impacts: [runtime, classification_or_search_space]
+      symmetry:
+        type: symmetry
+        required: true
+        description: Assumed point-group symmetry.
+        exposure: user_overridable
+        source: user_or_agent
+        param_id: symmetry
+        category: sample_hypothesis
+        allowed_sources: [sample_hypothesis, strategy_intent, workflow_default, user_override]
+        authority_order: [strategy_intent, sample_hypothesis, user_override, workflow_default]
+        dependency_scope: local
+        impacts: [particle_geometry]
+      alignment:
+        type: bool
+        required: false
+        description: Whether to perform alignment during classification.
+        exposure: user_overridable
+        source: user_or_agent
+        param_id: alignment
+        category: processing_standard
+        allowed_sources: [strategy_intent, user_override, workflow_default]
+        authority_order: [strategy_intent, user_override, workflow_default]
+        dependency_scope: local
+        impacts: [classification_search]
+    expected_results:
+      - result_type: classified_particles
+      - result_type: refined_volume
+    backend_support:
+      relion:
+        supported: true
+        mapping_ref: three_d_classification
+        support_level: dry_run_mappable
+
+  two_d_cleanup:
+    description: Improve particle selection by removing poor 2D classes.
+    operation_type: validation
+    category: validation
+    supported_backends: [auto, mock, relion]
+    required_inputs:
+      particles:
+        result_types: [extracted_particles]
+        required: true
+        description: Extracted particles before cleanup.
+    params:
+      min_class_score:
+        type: int
+        min: 0
+        max: 100
+        required: false
+        description: Minimum class score to keep.
+        exposure: user_overridable
+        source: user_or_agent
+        param_id: min_class_score
+        category: processing_standard
+        allowed_sources: [strategy_intent, user_override, workflow_default]
+        authority_order: [strategy_intent, user_override, workflow_default]
+        dependency_scope: local
+        impacts: [particle_selection]
+    expected_results:
+      - result_type: selected_particles
+    backend_support:
+      relion:
+        supported: true
+        mapping_ref: particle_selection
+        support_level: dry_run_mappable
+
+  alternative_particle_picking:
+    description: Revisit particle picking with an alternate neutral strategy.
+    operation_type: processing
+    category: processing
+    supported_backends: [auto, mock, relion]
+    required_inputs: {}
+    params:
+      strategy:
+        type: enum
+        allowed: [conservative, permissive]
+        required: false
+        description: Alternate picking strategy.
+        exposure: user_overridable
+        source: user_or_agent
+        param_id: strategy
+        category: processing_standard
+        allowed_sources: [strategy_intent, user_override, workflow_default]
+        authority_order: [strategy_intent, user_override, workflow_default]
+        dependency_scope: local
+        impacts: [picking_strategy]
+    expected_results:
+      - result_type: picked_particles
+    backend_support:
+      relion:
+        supported: true
+        mapping_ref: log_autopicking
+        support_level: schedule_mappable

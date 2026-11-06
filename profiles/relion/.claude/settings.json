@@ -1,0 +1,76 @@
+{
+  "enabledMcpjsonServers": [
+    "relion"
+  ],
+  "enableAllProjectMcpServers": false,
+  "permissions": {
+    "defaultMode": "auto",
+    "allow": [
+      "mcp__relion__relion_environment",
+      "mcp__relion__relion_list_operations",
+      "mcp__relion__relion_describe_operation",
+      "mcp__relion__relion_validate_workflow",
+      "mcp__relion__relion_render_job",
+      "mcp__relion__relion_render_workflow_step",
+      "mcp__relion__relion_render_cryosparc_particle_import",
+      "mcp__relion__relion_render_remove_duplicate_particles",
+      "mcp__relion__relion_plan_particle_class_selection",
+      "mcp__relion__relion_visual_smoke_test",
+      "mcp__relion__relion_verify_visual_smoke_test",
+      "mcp__relion__relion_render_2d_classes",
+      "mcp__relion__relion_validate_2d_class_review",
+      "mcp__relion__relion_compare_map_projections",
+      "mcp__relion__relion_render_particle_boxes",
+      "mcp__relion__relion_audit_particle_selection",
+      "mcp__relion__relion_plan_micrograph_subset",
+      "mcp__relion__relion_render_pick_overlays",
+      "mcp__relion__relion_render_3d_classes",
+      "mcp__relion__relion_compare_maps",
+      "mcp__relion__relion_validate_3d_assessment",
+      "mcp__relion__relion_validate_initial_model_acceptance",
+      "mcp__relion__relion_record_initial_model_acceptance",
+      "mcp__relion__relion_publish_initial_model_evidence",
+      "mcp__relion__relion_render_map_report",
+      "mcp__relion__relion_render_mask_report",
+      "mcp__relion__relion_render_fsc_report",
+      "mcp__relion__relion_scan_symmetry",
+      "mcp__relion__relion_compare_symmetry",
+      "mcp__relion__relion_compare_hands",
+      "mcp__relion__relion_job_status",
+      "mcp__relion__relion_job_outputs",
+      "mcp__relion__relion_suggest_step_inputs",
+      "mcp__relion__relion_tail_job_log",
+      "mcp__relion__relion_render_symmetry_alignment",
+      "mcp__relion__relion_run_workflow_step",
+      "mcp__relion__relion_materialize_micrograph_subset",
+      "mcp__relion__relion_initialize_project",
+      "mcp__relion__relion_import_cryosparc_particles",
+      "mcp__relion__relion_run_job",
+      "mcp__relion__relion_run_particle_class_selection",
+      "mcp__relion__relion_add_job",
+      "mcp__relion__relion_add_particle_class_selection_jobs",
+      "mcp__relion__relion_add_workflow_step",
+      "mcp__relion__relion_start_jobs",
+      "mcp__relion__relion_align_symmetry_reference",
+      "mcp__relion__relion_remove_duplicate_particles"
+    ],
+    "ask": [],
+    "deny": [
+      "mcp__relion__relion_abort_job"
+    ]
+  },
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "mcp__relion__relion_rescale_map",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 \"$CLAUDE_PROJECT_DIR/.claude/hooks/guard-relion-rescale-overwrite.py\"",
+            "timeout": 5
+          }
+        ]
+      }
+    ]
+  }
+}

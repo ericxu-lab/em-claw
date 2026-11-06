@@ -1,0 +1,68 @@
+# Claude machine-local overrides
+**/.claude/settings.local.json
+CLAUDE.local.md
+
+# Local environment files; examples remain publishable
+.env
+.env.*
+!.env.example
+
+# Python and test caches
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ruff_cache/
+
+# Editor and backup artifacts
+*.bak
+*.bak_*
+*.bak-*
+*~
+
+# Machine-local CryoSPARC dataset bindings
+**/base_datainfo.yaml
+
+# CryoSPARC project and pipeline workspaces stay local
+# (contents only: the tracked .gitkeep keeps each mountpoint in a clean clone)
+profiles/cryosparc/projects/*
+!profiles/cryosparc/projects/.gitkeep
+profiles/cryosparc/pipelines/*
+!profiles/cryosparc/pipelines/.gitkeep
+# the bundled example pipeline: track its notebook only, never its runs/
+!profiles/cryosparc/pipelines/zll_260130/
+profiles/cryosparc/pipelines/zll_260130/*
+!profiles/cryosparc/pipelines/zll_260130/transporter_lowSNR_micelle_pipeline.ipynb
+profiles/cryosparc-agent/projects/*
+!profiles/cryosparc-agent/projects/.gitkeep
+
+# RELION class-ranker runs written by 2d_select/
+**/relion_runs/
+
+# Cryo-EM data, numerical arrays, and derived scientific products
+*.mrc
+*.mrcs
+*.map
+*.star
+*.cs
+*.csg
+*.npy
+*.npz
+*.pkl
+*.pickle
+*.h5
+*.hdf5
+*.eer
+*.dm3
+*.dm4
+*.tif
+*.tiff
+*.log
+
+# Rendered and binary report artifacts
+*.png
+*.jpg
+*.jpeg
+*.gif
+*.webp
+*.pdf
+*.pptx

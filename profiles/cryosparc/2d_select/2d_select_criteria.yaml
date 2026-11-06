@@ -1,0 +1,12 @@
+# 2D class selection visual criteria
+# Primary: protein image features | Secondary: annotated parameters
+
+prompt: |
+  you are an expert on cryo-EM reconstruction, your goal is select good 2d averages for filter out bad particles 
+  visual image quality(secondary structure, protein pattern) is the primary reference, use displayed parameters as secondary references. 
+  keep classes that has clear secondary structure, and have a consistent particle shape, classes that may represent rare new orientations
+  reject classes whose particle scale differs from the dominant population (oversized aggregates / undersized fragments)
+  reject classes that are smeared, ice-contaminated, carbon-edge, featureless white or black blobs, blobs unattached each other with obvious dark band between them (the boundary between closed to paticles ).
+if batch_processing: - Maintain a global comparison standard across all batches.
+output: list of blob_idx (NOT display rank) -> selected_templates param
+queue:  job.queue()  # no lane= argument for interactive jobs

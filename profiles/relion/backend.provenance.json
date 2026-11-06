@@ -1,0 +1,24 @@
+{
+  "schema_version": "em-claw-vendored-backend/v1",
+  "component": "relion",
+  "package_name": "relion-mcp",
+  "package_version": "0.5.0",
+  "license": "MIT",
+  "source_repository": "relion",
+  "source_remote": null,
+  "source_revision": "96dcfc10949983fe9578a4b59da4c409ed4bf7f7",
+  "source_tree": "fee2be29fe36e9d5e4155430a5d3ea895c5abd39",
+  "export_method": "git archive with local identity normalization plus profile-local feature changes",
+  "exported_path": "profiles/relion/backend",
+  "content_digest_algorithm": "sha256 of sorted path\\0mode\\0size\\0file_sha256\\n records",
+  "content_digest_sha256": "59425e4b8ee8b3080ca28a6af09a7543fabc7b293d550eac6bb57be74a4851b3",
+  "excluded_checkout_artifacts": [
+    ".git/",
+    ".venv/",
+    ".pytest_cache/",
+    ".ruff_cache/",
+    "__pycache__/",
+    "build/",
+    "dist/"
+  ]
+}

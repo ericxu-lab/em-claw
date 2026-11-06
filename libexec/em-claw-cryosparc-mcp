@@ -1,0 +1,142 @@
+#!/usr/bin/env bash
+# Start the CryoSPARC MCP adapter with an isolated compatible runtime.
+
+set -euo pipefail
+
+readonly EMCLAW_ROOT="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")/.." && pwd -P)"
+readonly EXIT_BLOCKED=2
+readonly EXIT_USAGE=64
+
+fail() {
+  local message=$1
+  local code=${2:-$EXIT_BLOCKED}
+  printf 'em-claw-cryosparc-mcp: %s\n' "$message" >&2
+  exit "$code"
+}
+
+require_absolute_path() {
+  local path=$1
+  local label=$2
+  [[ "$path" == /* ]] || fail "$label must be an absolute path"
+}
+
+resolve_executable() {
+  local configured=$1
+  if [[ "$configured" == */* ]]; then
+    [[ -x "$configured" && -f "$configured" ]] || return 1
+    readlink -f -- "$configured"
+  else
+    command -v -- "$configured"
+  fi
+}
+
+unset_environment_prefix() {
+  local prefix=$1
+  local name
+
+  while IFS='=' read -r name _; do
+    if [[ "$name" == "$prefix"* ]]; then
+      unset "$name"
+    fi
+  done < <(env)
+}
+
+load_cryosparc_environment() {
+  local path=$1
+  local name
+  declare -A inherited=()
+  declare -A inherited_values=()
+  local -a names=(
+    EMCLAW_CRYOSPARC_SOURCE
+    CRYOSPARC_LICENSE_ID
+    CRYOSPARC_MASTER_HOSTNAME
+    CRYOSPARC_BASE_PORT
+    CRYOSPARC_EMAIL
+    CRYOSPARC_PASSWORD
+  )
+
+  [[ -f "$path" && -r "$path" ]] || fail "CryoSPARC environment file is unavailable"
+  for name in "${names[@]}"; do
+    if [[ -v "$name" ]]; then
+      inherited[$name]=1
+      inherited_values[$name]=${!name}
+    fi
+  done
+
+  set -a
+  # shellcheck disable=SC1090
+  source "$path" >/dev/null
+  set +a
+
+  # Explicit caller/launcher values take precedence over file defaults.
+  for name in "${names[@]}"; do
+    if [[ -n ${inherited[$name]+present} ]]; then
+      printf -v "$name" '%s' "${inherited_values[$name]}"
+      export "$name"
+    fi
+    [[ -n ${!name:-} ]] || fail "$name is missing from the CryoSPARC environment"
+  done
+}
+
+operation=serve
+if (($# == 1)) && [[ "$1" == --list-projects ]]; then
+  operation=list-projects
+elif (($# != 0)); then
+  fail "usage: em-claw-cryosparc-mcp [--list-projects]" "$EXIT_USAGE"
+fi
+
+cryosparc_env_file=${EMCLAW_CRYOSPARC_ENV_FILE:-$EMCLAW_ROOT/profiles/cryosparc/.env}
+require_absolute_path "$cryosparc_env_file" "EMCLAW_CRYOSPARC_ENV_FILE"
+load_cryosparc_environment "$cryosparc_env_file"
+
+# A combined Claude session needs both backend families, but this child process
+# needs only CryoSPARC. Scrub RELION policy and env-file pointers after loading
+# the CryoSPARC file so accidental cross-entries cannot reintroduce them.
+unset_environment_prefix RELION_
+unset EMCLAW_RELION_ENV_FILE
+
+declare -a entry_args=()
+if [[ "$operation" == list-projects ]]; then
+  entry="$EMCLAW_ROOT/profiles/cryosparc/instance_discovery.py"
+  entry_args=(--list-projects)
+else
+  entry=${EMCLAW_CRYOSPARC_MCP_ENTRY:-$EMCLAW_ROOT/profiles/cryosparc/cryosparc_mcp.py}
+fi
+[[ -f "$entry" && -r "$entry" ]] || fail "CryoSPARC MCP entry point is unavailable"
+entry=$(readlink -f -- "$entry")
+
+runtime=${EMCLAW_RUNTIME_DIR:-${XDG_CACHE_HOME:-${HOME:-/tmp}/.cache}/em-claw}
+configured_python=${EMCLAW_CRYOSPARC_MCP_PYTHON:-}
+runtime_python=${EMCLAW_CRYOSPARC_RUNTIME_PYTHON:-3.11}
+uv_bin=${EMCLAW_UV_BIN:-uv}
+export PYTHONDONTWRITEBYTECODE=1
+
+if [[ -n "$configured_python" ]]; then
+  [[ -x "$configured_python" && -f "$configured_python" ]] || \
+    fail "EMCLAW_CRYOSPARC_MCP_PYTHON is not executable"
+  exec "$configured_python" "$entry" ${entry_args[@]+"${entry_args[@]}"}
+fi
+
+uv_cache=${UV_CACHE_DIR:-$runtime/uv-cache}
+require_absolute_path "$runtime" "EMCLAW_RUNTIME_DIR"
+require_absolute_path "$uv_cache" "UV_CACHE_DIR"
+export UV_CACHE_DIR="$uv_cache"
+mkdir -p -- "$UV_CACHE_DIR"
+
+uv_path=$(resolve_executable "$uv_bin") || \
+  fail "uv is unavailable for the CryoSPARC MCP bootstrap"
+
+uv_args=(
+  run
+  --no-project
+  --python "$runtime_python"
+  --with 'mcp==1.29.1'
+  --with 'cryosparc-tools==4.7.1'
+  --with 'numpy==1.26.4'
+)
+if [[ ${UV_OFFLINE:-} != 1 ]] && \
+  UV_OFFLINE=1 "$uv_path" "${uv_args[@]}" python -c pass >/dev/null 2>&1; then
+  export UV_OFFLINE=1
+fi
+
+exec "$uv_path" "${uv_args[@]}" python "$entry" ${entry_args[@]+"${entry_args[@]}"}

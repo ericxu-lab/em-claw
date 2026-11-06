@@ -1,0 +1,20 @@
+#!/bin/bash
+# Self-contained RELION 5.0 class_ranker launcher.
+# Site settings come from the CryoSPARC .env (see profiles/cryosparc/.env.example):
+#   EMCLAW_RELION_MODULE      optional environment module to load (e.g. relion/5.0)
+#   EMCLAW_RELION_MODULEPATH  optional extra MODULEPATH entries for that module
+#   EMCLAW_RELION_TORCH_HOME  directory holding the class_ranker model weights
+#   EMCLAW_RELION_CLASS_RANKER  relion_class_ranker executable
+if [ -n "${EMCLAW_RELION_MODULE:-}" ]; then
+  if ! type module >/dev/null 2>&1; then
+    for i in /etc/profile.d/lmod.sh /etc/profile.d/modules.sh /usr/share/lmod/lmod/init/bash /usr/share/Modules/init/bash; do
+      [ -f "$i" ] && . "$i" && break
+    done
+  fi
+  if [ -n "${EMCLAW_RELION_MODULEPATH:-}" ]; then
+    export MODULEPATH="${EMCLAW_RELION_MODULEPATH}${MODULEPATH:+:$MODULEPATH}"
+  fi
+  module load "$EMCLAW_RELION_MODULE" >/dev/null 2>&1
+fi
+export TORCH_HOME="${EMCLAW_RELION_TORCH_HOME:-YOUR_RELION_TORCH_HOME_PATH}"
+exec "${EMCLAW_RELION_CLASS_RANKER:-YOUR_RELION5_BIN_PATH/relion_class_ranker}" "$@"

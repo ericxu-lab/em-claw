@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "cryosparc": {
+      "type": "stdio",
+      "command": "../../libexec/em-claw-cryosparc-mcp",
+      "args": [],
+      "timeout": 1200000
+    }
+  }
+}

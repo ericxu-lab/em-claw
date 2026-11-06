@@ -1,0 +1,56 @@
+# Per-project inputs for the CryoSPARC agent (agentM and its subagents).
+# Copy to projects/<name>/base_datainfo.yaml for each project and replace every
+# YOUR_... placeholder. The filled copy is machine-local and gitignored.
+
+# --- Data source (set one of movies_glob / micrographs_glob) ---
+movies_glob: "YOUR_DATA_PATH/movies/*.tiff"
+gain_reference_path: "YOUR_DATA_PATH/gain_ref.mrc"   # empty if none
+micrographs_glob: ""                                 # motion-corrected micrographs, if starting there
+
+# --- Required acquisition metadata ---
+accelerating_voltage_kV: 300
+pixel_size_A: 0.83
+spherical_aberration_mm: 2.7
+total_exposure_dose_e_per_A2: 50
+particle_size_A: 120
+reference_model_path: ""        # optional reference volume / model
+
+# Protein sequence FASTA (multi-chain ok), used by the model-derived mask builder.
+# If empty when a job needs it, agentM asks the human instead of guessing.
+sequence_fasta_path: ""
+
+# --- Sample description ---
+particle_character: "YOUR_SAMPLE_DESCRIPTION, C1"   # sample type and symmetry; use C1 if unknown
+physical_signature: ""          # what the target's 3D volume should look like (identity test)
+
+# --- CryoSPARC project placement ---
+# Create the project in the CryoSPARC web UI first, then set its UID.
+project_mode: existing          # existing | new
+project_uid: YOUR_PROJECT_UID   # e.g. P8
+workspace_mode: new             # existing | new
+workspace_title: "YOUR_WORKSPACE_TITLE"
+
+# --- Scheduler / hardware ---
+lane: YOUR_CRYOSPARC_LANE
+gpus: [0, 1, 2, 3]
+
+# --- External tools (optional; leave empty to disable the step) ---
+cryoranker_env: ""              # conda env name for Cryo-IEF/CryoRanker
+cryoranker_script: "YOUR_CRYO_IEF_PATH/CryoRanker_inference.py"
+cryoranker_weights: "YOUR_CRYO_IEF_PATH/cryo_ranker_v1.5_vit_b_model.safetensors"
+cryoranker_gpu_ids: 0,1,2,3
+cryoranker_num_processes: 16
+cryoranker_run_host: null       # GPU host to run on, or null for local
+topaz_exe: "YOUR_TOPAZ_PATH"
+topaz_num_threads: 2
+deepEMhancer_exe: ""
+deepEMhancer_model: ""
+
+# Model-derived soft-mask builder (build_model_mask/), for local/focused refinement masks.
+model_mask_env: ""
+model_mask_python: "YOUR_MODEL_MASK_PYTHON_PATH"   # Python with gemmi, mrcfile, numpy, scipy, matplotlib
+model_mask_script: "build_model_mask/multichain_cryoem_autofit.py"
+model_mask_chimerax: "chimerax"
+model_mask_phenix_bin: "YOUR_PHENIX_BIN_PATH"
+
+# --- Other notes (agentM may append discovered facts below as comments) ---

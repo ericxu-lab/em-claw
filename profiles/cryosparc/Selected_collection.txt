@@ -1,0 +1,17 @@
+# Selected_collection — curated "very successful" history precedents (HIGH WEIGHT for subR)
+#
+# Register here the history-bank examples you consider especially worth emulating. subR reads this
+# file FIRST and gives listed examples higher weight: among comparable candidates it prefers and
+# surfaces a listed one. (Fit still matters — a listed example that doesn't match the working
+# project's particle size/character at all should not be forced; but for similar cases, listed wins.)
+#
+# Format: one entry per line; blank lines and lines starting with '#' are ignored.
+# An entry is any ONE of:
+#   - a P-uid with optional workspace/group, e.g.   P514 W6      or   P514 G006
+#   - a full path to a *_digest.json (or its group dir)
+#   - a project-name substring, e.g.   CS-zll12182025
+# Optional trailing '# note' on why it is exemplary.
+#
+# subR resolves each entry to the matching *_digest.json in the site history bank.
+#
+# --- registered entries ---

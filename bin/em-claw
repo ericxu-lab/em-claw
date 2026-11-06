@@ -1,0 +1,727 @@
+#!/usr/bin/env bash
+# Launch or resume one EM-Claw Claude Code profile.
+
+set -euo pipefail
+
+readonly EMCLAW_ROOT="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")/.." && pwd -P)"
+readonly COMBINED_PROFILE="$EMCLAW_ROOT/profiles/combined"
+readonly CRYOSPARC_PROFILE="$EMCLAW_ROOT/profiles/cryosparc"
+readonly RELION_PROFILE="$EMCLAW_ROOT/profiles/relion"
+
+readonly EXIT_ERROR=1
+readonly EXIT_BLOCKED=2
+readonly EXIT_USAGE=64
+readonly EXIT_EXEC=126
+
+usage() {
+  cat <<'EOF'
+usage:
+  em-claw [--dry-run] [--resume [VALUE]] [-- CLAUDE_ARGUMENT ...]
+  em-claw [--dry-run] [cryosparc|relion|combine] [--resume [VALUE]] [-- CLAUDE_ARGUMENT ...]
+  em-claw --help
+
+An omitted route defaults to combine. The cryosparc and relion routes load one
+stdio MCP server in the corresponding isolated profile; combine loads both
+servers in profiles/combined. Claude arguments must follow --.
+
+-r and --resume mirror Claude Code's --resume [value]: omit the value to open
+the session picker, or provide a session ID or search term. --resume=value is
+also accepted. Place this launcher option before the -- separator. Every
+non-dry-run invocation starts new MCP processes, and current route instructions
+are rendered again. Resume with the same route that created the conversation;
+the current route's environment and safety policy are authoritative.
+
+The cryosparc route requires only the CryoSPARC environment file; the relion
+route never requires it. EMCLAW_CRYOSPARC_ENV_FILE defaults to
+profiles/cryosparc/.env. The relion route uses only its optional environment
+file, selected with EMCLAW_RELION_ENV_FILE or auto-discovered at
+profiles/relion/.env. An explicitly empty EMCLAW_RELION_ENV_FILE disables
+RELION env-file loading. The combine route uses both environment contracts.
+
+RELION_MCP_MODE accepts plan|run and defaults to run. Run mode permits gated
+execution; writes still require approved RELION_PROJECT_ROOTS, confirm=true,
+and the profile's bounded user-approval policy. RELION_SCRATCH_DIR may be empty
+or a lexically safe absolute, non-root path.
+EOF
+}
+
+fail() {
+  local message=$1
+  local code=${2:-$EXIT_ERROR}
+  printf 'em-claw: %s\n' "$message" >&2
+  exit "$code"
+}
+
+require_directory() {
+  local path=$1
+  local label=$2
+  [[ -d "$path" ]] || fail "$label is unavailable" "$EXIT_BLOCKED"
+}
+
+require_file() {
+  local path=$1
+  local label=$2
+  [[ -f "$path" && -r "$path" ]] || fail "$label is unavailable" "$EXIT_BLOCKED"
+}
+
+require_absolute_path() {
+  local path=$1
+  local label=$2
+  [[ "$path" == /* ]] || fail "$label must be an absolute path" "$EXIT_BLOCKED"
+}
+
+require_safe_scratch_path() {
+  local path=$1
+  local depth=0
+  local component
+  local last_component=""
+  local -a components=()
+
+  require_absolute_path "$path" "RELION_SCRATCH_DIR"
+  [[ "$path" != *$'\n'* && "$path" != *$'\r'* ]] || \
+    fail "RELION_SCRATCH_DIR must not contain line breaks" "$EXIT_BLOCKED"
+  [[ "$path" != [[:space:]]* && "$path" != *[[:space:]] ]] || \
+    fail "RELION_SCRATCH_DIR must not have leading or trailing whitespace" "$EXIT_BLOCKED"
+  [[ "$path" != *[!A-Za-z0-9_./+:-]* ]] || \
+    fail "RELION_SCRATCH_DIR contains unsafe path characters" "$EXIT_BLOCKED"
+
+  # Scratch may exist only on compute nodes, so validate it lexically without
+  # requiring it to exist on the launch host.
+  IFS='/' read -r -a components <<< "$path"
+  for component in "${components[@]}"; do
+    case "$component" in
+      "") ;;
+      .) fail "RELION_SCRATCH_DIR must not contain '.' path components" "$EXIT_BLOCKED" ;;
+      ..) fail "RELION_SCRATCH_DIR must not contain '..' traversal" "$EXIT_BLOCKED" ;;
+      *)
+        depth=$((depth + 1))
+        last_component=$component
+        ;;
+    esac
+  done
+  ((depth > 0)) || \
+    fail "RELION_SCRATCH_DIR must not resolve lexically to the filesystem root" "$EXIT_BLOCKED"
+  [[ "$last_component" != relion_volatile ]] || \
+    fail "RELION_SCRATCH_DIR must not end in relion_volatile" "$EXIT_BLOCKED"
+}
+
+resolve_executable() {
+  local configured=$1
+  if [[ "$configured" == */* ]]; then
+    [[ -x "$configured" && -f "$configured" ]] || return 1
+    readlink -f -- "$configured"
+  else
+    command -v -- "$configured"
+  fi
+}
+
+unset_environment_prefix() {
+  local prefix=$1
+  local name
+
+  while IFS='=' read -r name _; do
+    if [[ "$name" == "$prefix"* ]]; then
+      unset "$name"
+    fi
+  done < <(env)
+}
+
+# Environment files are trusted shell-format files. Evaluate them in a
+# subshell and import only explicitly requested names into the launcher. This
+# keeps a backend-specific PATH/PYTHONPATH/LD_LIBRARY_PATH out of the other
+# backend and out of the Claude parent while retaining ordinary shell quoting.
+read_env_file_value() {
+  local path=$1
+  local name=$2
+  (
+    set +u
+    set -a
+    # shellcheck disable=SC1090
+    source "$path" >/dev/null
+    if [[ -v "$name" ]]; then
+      printf '%s' "${!name}"
+    else
+      exit 3
+    fi
+  )
+}
+
+import_env_file_default() {
+  local path=$1
+  local name=$2
+  local value
+  local status
+
+  [[ -v "$name" ]] && return 0
+  if value=$(read_env_file_value "$path" "$name"); then
+    printf -v "$name" '%s' "$value"
+    export "$name"
+    return 0
+  else
+    status=$?
+  fi
+  ((status == 3)) || fail "could not read $name from $path" "$EXIT_BLOCKED"
+}
+
+require_nonempty_environment() {
+  local name=$1
+  [[ -n ${!name:-} ]] || \
+    fail "$name is required by the selected CryoSPARC profile" "$EXIT_BLOCKED"
+  [[ ${!name} != *$'\n'* && ${!name} != *$'\r'* ]] || \
+    fail "$name must not contain line breaks" "$EXIT_BLOCKED"
+}
+
+trim_whitespace() {
+  local value=$1
+  value="${value#"${value%%[![:space:]]*}"}"
+  value="${value%"${value##*[![:space:]]}"}"
+  printf '%s' "$value"
+}
+
+reject_reserved_claude_args() {
+  local argument
+
+  for argument in "$@"; do
+    case "$argument" in
+      --mcp-config|--settings|--plugin-dir)
+        fail "Claude option $argument is controlled by EM-Claw" "$EXIT_USAGE"
+        ;;
+      --mcp-config=*|--settings=*|--plugin-dir=*)
+        fail "Claude option ${argument%%=*} is controlled by EM-Claw" "$EXIT_USAGE"
+        ;;
+      --strict-mcp-config)
+        fail "Claude option --strict-mcp-config is controlled by EM-Claw" "$EXIT_USAGE"
+        ;;
+      --plugin-url|--plugin-url=*)
+        fail "Claude option --plugin-url is controlled by EM-Claw" "$EXIT_USAGE"
+        ;;
+      --system-prompt|--system-prompt=*|--system-prompt-file|--system-prompt-file=*|\
+      --append-system-prompt|--append-system-prompt=*|\
+      --append-system-prompt-file|--append-system-prompt-file=*|\
+      --system-prompt-snapshot|--system-prompt-snapshot=*)
+        fail "Claude system-prompt options are controlled by EM-Claw" "$EXIT_USAGE"
+        ;;
+      --permission-mode|--permission-mode=*|\
+      --dangerously-skip-permissions|--dangerously-skip-permissions=*|\
+      --allow-dangerously-skip-permissions|--allow-dangerously-skip-permissions=*)
+        fail "Claude permission-mode options are controlled by EM-Claw" "$EXIT_USAGE"
+        ;;
+      --safe-mode|--safe-mode=*|--bare|--bare=*)
+        fail "Claude option $argument disables required EM-Claw configuration" "$EXIT_USAGE"
+        ;;
+      --continue|--continue=*|-c|-c*)
+        fail "Claude option $argument is disabled; use --resume explicitly" "$EXIT_USAGE"
+        ;;
+      --resume|--resume=*|-r|-r?*)
+        fail "place --resume before the launcher's -- separator" "$EXIT_USAGE"
+        ;;
+    esac
+  done
+}
+
+print_command() {
+  local item
+  local displayed
+  local root
+  printf 'Claude argv:'
+  for item in "$@"; do
+    displayed=$item
+    for root in ${relion_bind_roots[@]+"${relion_bind_roots[@]}"}; do
+      if [[ "$displayed" == "$root" ]]; then
+        displayed='<RELION_PROJECT_ROOT>'
+        break
+      fi
+    done
+    printf ' %q' "$displayed"
+  done
+  printf '\n'
+}
+
+# Welcome banner for an interactive launch. It goes to stderr and only to a
+# terminal, so pipes, scripts, and --dry-run output never contain it. Block
+# letters need a UTF-8 locale; anything else gets the plain ASCII version.
+print_banner() {
+  local route_label
+  local active_locale=${LC_ALL:-${LC_CTYPE:-${LANG:-}}}
+  [[ -t 2 && -z ${EMCLAW_NO_BANNER:-} ]] || return 0
+  case "$backend" in
+    cryosparc) route_label="CryoSPARC" ;;
+    relion) route_label="RELION" ;;
+    *) route_label="CryoSPARC + RELION" ;;
+  esac
+  case "$active_locale" in
+    *[Uu][Tt][Ff]-8* | *[Uu][Tt][Ff]8*)
+      cat >&2 <<'BANNER'
+
+   ███████╗███╗   ███╗       ██████╗██╗      █████╗ ██╗    ██╗
+   ██╔════╝████╗ ████║      ██╔════╝██║     ██╔══██╗██║    ██║
+   █████╗  ██╔████╔██║█████╗██║     ██║     ███████║██║ █╗ ██║
+   ██╔══╝  ██║╚██╔╝██║╚════╝██║     ██║     ██╔══██║██║███╗██║
+   ███████╗██║ ╚═╝ ██║      ╚██████╗███████╗██║  ██║╚███╔███╔╝
+   ╚══════╝╚═╝     ╚═╝       ╚═════╝╚══════╝╚═╝  ╚═╝ ╚══╝╚══╝
+BANNER
+      ;;
+    *)
+      cat >&2 <<'BANNER'
+
+    _____ __  __        ____ _
+   | ____|  \/  |      / ___| | __ _ __      __
+   |  _| | |\/| |_____| |   | |/ _` |\ \ /\ / /
+   | |___| |  | |_____| |___| | (_| | \ V  V /
+   |_____|_|  |_|      \____|_|\__,_|  \_/\_/
+BANNER
+      ;;
+  esac
+  printf '\n   An Experience-Grounded Language-Model Agent\n' >&2
+  printf '   for Auto Cryo-EM Single-Particle Analysis\n\n' >&2
+  printf '   route: %s (%s)\n' "$backend" "$route_label" >&2
+  printf '   set EMCLAW_NO_BANNER=1 to hide this banner\n\n' >&2
+}
+
+backend=""
+dry_run=0
+resume_requested=0
+declare -a resume_args=()
+declare -a claude_args=()
+
+while (($#)); do
+  case "$1" in
+    --help|-h)
+      usage
+      exit 0
+      ;;
+    --dry-run)
+      ((dry_run == 0)) || fail "duplicate --dry-run option" "$EXIT_USAGE"
+      dry_run=1
+      shift
+      ;;
+    --resume|-r)
+      ((resume_requested == 0)) || fail "duplicate --resume option" "$EXIT_USAGE"
+      resume_requested=1
+      resume_args=(--resume)
+      shift
+      if (($#)) && [[ "$1" != -* ]]; then
+        case "$1" in
+          cryosparc|relion|combine)
+            if [[ -n "$backend" ]]; then
+              resume_args+=("$1")
+              shift
+            fi
+            ;;
+          *)
+            resume_args+=("$1")
+            shift
+            ;;
+        esac
+      fi
+      ;;
+    --resume=*)
+      ((resume_requested == 0)) || fail "duplicate --resume option" "$EXIT_USAGE"
+      resume_requested=1
+      resume_args=(--resume "${1#*=}")
+      shift
+      ;;
+    -r?*)
+      ((resume_requested == 0)) || fail "duplicate --resume option" "$EXIT_USAGE"
+      resume_requested=1
+      resume_args=(--resume "${1#-r}")
+      shift
+      ;;
+    cryosparc|relion|combine)
+      [[ -z "$backend" ]] || fail "select exactly one route" "$EXIT_USAGE"
+      backend=$1
+      shift
+      ;;
+    --)
+      shift
+      claude_args=("$@")
+      break
+      ;;
+    --components-config|--components-config=*)
+      fail "component registries are not used by the profile router" "$EXIT_USAGE"
+      ;;
+    -*)
+      fail "unknown launcher option: $1" "$EXIT_USAGE"
+      ;;
+    *)
+      fail "unknown route: $1" "$EXIT_USAGE"
+      ;;
+  esac
+done
+
+backend=${backend:-combine}
+
+reject_reserved_claude_args ${claude_args[@]+"${claude_args[@]}"}
+
+needs_cryo=0
+needs_relion=0
+case "$backend" in
+  cryosparc)
+    needs_cryo=1
+    unset_environment_prefix RELION_
+    unset EMCLAW_RELION_ENV_FILE
+    ;;
+  relion)
+    needs_relion=1
+    unset_environment_prefix CRYOSPARC_
+    unset EMCLAW_CRYOSPARC_ENV_FILE EMCLAW_CRYOSPARC_SOURCE
+    unset EMCLAW_CRYOSPARC_MCP_ENTRY EMCLAW_CRYOSPARC_PROJECTS
+    ;;
+  combine)
+    needs_cryo=1
+    needs_relion=1
+    ;;
+esac
+
+unset EMCLAW_COMBINED_ROUTE EMCLAW_CRYOSPARC_PROJECT_INVENTORY_JSON
+
+cryosparc_env_file=""
+CRYOSPARC_SOURCE=""
+CRYOSPARC_PROJECTS=""
+CRYOSPARC_PLUGIN=""
+if ((needs_cryo)); then
+  if [[ -v EMCLAW_CRYOSPARC_ENV_FILE ]]; then
+    [[ -n "$EMCLAW_CRYOSPARC_ENV_FILE" ]] || \
+      fail "EMCLAW_CRYOSPARC_ENV_FILE must not be empty" "$EXIT_BLOCKED"
+    cryosparc_env_file=$EMCLAW_CRYOSPARC_ENV_FILE
+  else
+    cryosparc_env_file="$CRYOSPARC_PROFILE/.env"
+  fi
+  require_absolute_path "$cryosparc_env_file" "EMCLAW_CRYOSPARC_ENV_FILE"
+  require_file "$cryosparc_env_file" "CryoSPARC environment file"
+  cryosparc_env_file=$(readlink -f -- "$cryosparc_env_file")
+  export EMCLAW_CRYOSPARC_ENV_FILE="$cryosparc_env_file"
+
+  for name in \
+    EMCLAW_CRYOSPARC_SOURCE \
+    CRYOSPARC_LICENSE_ID \
+    CRYOSPARC_MASTER_HOSTNAME \
+    CRYOSPARC_BASE_PORT \
+    CRYOSPARC_EMAIL \
+    CRYOSPARC_PASSWORD
+  do
+    import_env_file_default "$cryosparc_env_file" "$name"
+    require_nonempty_environment "$name"
+  done
+  [[ "$CRYOSPARC_BASE_PORT" =~ ^[0-9]+$ ]] || \
+    fail "CRYOSPARC_BASE_PORT must be an integer" "$EXIT_BLOCKED"
+
+  CRYOSPARC_SOURCE=$EMCLAW_CRYOSPARC_SOURCE
+  require_absolute_path "$CRYOSPARC_SOURCE" "EMCLAW_CRYOSPARC_SOURCE"
+  require_directory "$CRYOSPARC_SOURCE" "original CryoSPARC source"
+  CRYOSPARC_SOURCE=$(cd -- "$CRYOSPARC_SOURCE" && pwd -P)
+  CRYOSPARC_PROJECTS="$CRYOSPARC_SOURCE/projects"
+  CRYOSPARC_PLUGIN="$CRYOSPARC_SOURCE/.claude"
+  export EMCLAW_CRYOSPARC_SOURCE="$CRYOSPARC_SOURCE"
+fi
+
+relion_env_file=""
+relion_mode=""
+relion_scratch_dir=""
+relion_roots_canonical=""
+relion_bind_root_count=0
+declare -a relion_bind_roots=()
+declare -A seen_relion_roots=()
+if ((needs_relion)); then
+  if [[ -v EMCLAW_RELION_ENV_FILE ]]; then
+    relion_env_file=$EMCLAW_RELION_ENV_FILE
+    if [[ -n "$relion_env_file" ]]; then
+      require_absolute_path "$relion_env_file" "EMCLAW_RELION_ENV_FILE"
+      require_file "$relion_env_file" "RELION environment file"
+    fi
+  elif [[ -f "$RELION_PROFILE/.env" ]]; then
+    relion_env_file="$RELION_PROFILE/.env"
+  fi
+  if [[ -n "$relion_env_file" ]]; then
+    relion_env_file=$(readlink -f -- "$relion_env_file")
+    for name in RELION_MCP_MODE RELION_PROJECT_ROOTS RELION_SCRATCH_DIR; do
+      import_env_file_default "$relion_env_file" "$name"
+    done
+  fi
+  export EMCLAW_RELION_ENV_FILE="$relion_env_file"
+
+  relion_mode=${RELION_MCP_MODE:-run}
+  case "$relion_mode" in
+    plan|run) ;;
+    *) fail "RELION_MCP_MODE must be 'plan' or 'run'" "$EXIT_BLOCKED" ;;
+  esac
+  relion_scratch_dir=${RELION_SCRATCH_DIR:-}
+  if [[ -n "$relion_scratch_dir" ]]; then
+    require_safe_scratch_path "$relion_scratch_dir"
+  fi
+
+  relion_roots_raw=${RELION_PROJECT_ROOTS:-}
+  if [[ -n "$relion_roots_raw" ]]; then
+    [[ "$relion_roots_raw" != *$'\n'* && "$relion_roots_raw" != *$'\r'* ]] || \
+      fail "RELION_PROJECT_ROOTS must not contain line breaks" "$EXIT_BLOCKED"
+    declare -a relion_root_candidates=()
+    IFS=':' read -r -a relion_root_candidates <<< "$relion_roots_raw"
+    for candidate in "${relion_root_candidates[@]}"; do
+      candidate=$(trim_whitespace "$candidate")
+      [[ -n "$candidate" ]] || continue
+      require_absolute_path "$candidate" "RELION_PROJECT_ROOTS entry"
+      [[ "$candidate" != / ]] || \
+        fail "RELION_PROJECT_ROOTS must not include the filesystem root" "$EXIT_BLOCKED"
+      require_directory "$candidate" "RELION project root"
+      canonical_root=$(cd -- "$candidate" && pwd -P)
+      if ((needs_cryo)) && \
+        [[ "$canonical_root" == "$CRYOSPARC_SOURCE" || \
+           "$canonical_root" == "$CRYOSPARC_SOURCE/"* ]]; then
+        if [[ "$canonical_root" != "$CRYOSPARC_PROJECTS" && \
+              "$canonical_root" != "$CRYOSPARC_PROJECTS/"* ]]; then
+          fail "RELION_PROJECT_ROOTS must not make the protected CryoSPARC source writable" "$EXIT_BLOCKED"
+        fi
+      fi
+      if [[ -z ${seen_relion_roots[$canonical_root]+present} ]]; then
+        seen_relion_roots[$canonical_root]=1
+        relion_bind_roots+=("$canonical_root")
+        relion_bind_root_count=$((relion_bind_root_count + 1))
+        if [[ -n "$relion_roots_canonical" ]]; then
+          relion_roots_canonical+=:
+        fi
+        relion_roots_canonical+=$canonical_root
+      fi
+    done
+  fi
+
+  export RELION_MCP_MODE="$relion_mode"
+  export RELION_PROJECT_ROOTS="$relion_roots_canonical"
+  export RELION_SCRATCH_DIR="$relion_scratch_dir"
+fi
+
+profile=""
+settings=""
+mcp_config=""
+mcp_servers=""
+declare -a controlled_args=()
+declare -a exec_prefix=()
+
+case "$backend" in
+  cryosparc)
+    profile=$CRYOSPARC_PROFILE
+    settings="$profile/.claude/settings.json"
+    mcp_config="$profile/.mcp.json"
+    mcp_servers=cryosparc
+    require_directory "$profile" "CryoSPARC profile"
+    require_file "$profile/CLAUDE.md" "CryoSPARC instructions"
+    require_file "$profile/cryosparc_mcp.py" "CryoSPARC MCP entry point"
+    require_file "$profile/instance_discovery.py" "CryoSPARC discovery helper"
+    require_file "$settings" "CryoSPARC Claude settings"
+    require_file "$mcp_config" "CryoSPARC MCP configuration"
+    require_directory "$profile/projects" "CryoSPARC profile project mountpoint"
+    require_directory "$CRYOSPARC_PROJECTS" "original CryoSPARC projects directory"
+    require_directory "$CRYOSPARC_PLUGIN/agents" "original CryoSPARC Claude agents"
+    require_directory "$CRYOSPARC_PLUGIN/skills" "original CryoSPARC Claude skills"
+    require_file "$EMCLAW_ROOT/libexec/em-claw-cryosparc-mcp" "CryoSPARC MCP bootstrap"
+    require_file "$EMCLAW_ROOT/libexec/em-claw-cryosparc-python" "CryoSPARC Python bootstrap"
+    [[ -x "$EMCLAW_ROOT/libexec/em-claw-cryosparc-mcp" ]] || \
+      fail "CryoSPARC MCP bootstrap is not executable" "$EXIT_BLOCKED"
+    [[ -x "$EMCLAW_ROOT/libexec/em-claw-cryosparc-python" ]] || \
+      fail "CryoSPARC Python bootstrap is not executable" "$EXIT_BLOCKED"
+
+    export EMCLAW_CRYOSPARC_MCP_ENTRY="$profile/cryosparc_mcp.py"
+    export EMCLAW_CRYOSPARC_PROJECTS="$CRYOSPARC_PROJECTS"
+    controlled_args=(
+      --settings "$settings"
+      --strict-mcp-config
+      --mcp-config "$mcp_config"
+      --plugin-dir "$CRYOSPARC_PLUGIN"
+      --add-dir "$CRYOSPARC_PROJECTS"
+      --append-system-prompt
+      "EM-Claw selected the CryoSPARC route. Stay in the CryoSPARC profile and follow its CLAUDE.md. Resume only conversations created by this route; the current MCP environment and project mount remain authoritative. Treat $CRYOSPARC_SOURCE outside projects/ as read-only. Scientific state may be read or written under $CRYOSPARC_PROJECTS. Resolve every relative projects/... path there."
+    )
+    ;;
+  relion)
+    profile=$RELION_PROFILE
+    settings="$profile/.claude/settings.json"
+    mcp_config="$profile/.mcp.json"
+    mcp_servers=relion
+    require_directory "$profile" "RELION profile"
+    require_file "$profile/CLAUDE.md" "RELION instructions"
+    require_file "$settings" "RELION Claude settings"
+    require_file "$mcp_config" "RELION MCP configuration"
+    require_directory "$profile/backend" "RELION backend"
+    require_file "$EMCLAW_ROOT/libexec/em-claw-relion-mcp" "RELION MCP bootstrap"
+    [[ -x "$EMCLAW_ROOT/libexec/em-claw-relion-mcp" ]] || \
+      fail "RELION MCP bootstrap is not executable" "$EXIT_BLOCKED"
+
+    relion_repo=$(readlink -f -- "$profile/backend")
+    export RELION_MCP_REPO="$relion_repo"
+    controlled_args=(
+      --settings "$settings"
+      --strict-mcp-config
+      --mcp-config "$mcp_config"
+    )
+    for root in ${relion_bind_roots[@]+"${relion_bind_roots[@]}"}; do
+      controlled_args+=(--add-dir "$root")
+    done
+    controlled_args+=(
+      --append-system-prompt
+      "EM-Claw selected the RELION route. Stay in the RELION profile and follow its CLAUDE.md. Approved RELION project roots are additional working directories, but file access does not bypass the MCP's current write gates. The current MCP environment and write gates are authoritative even when resuming a conversation; run mode enables only the profile's bounded, confirmation-gated execution policy."
+    )
+    ;;
+  combine)
+    profile=$COMBINED_PROFILE
+    settings="$profile/.claude/settings.json"
+    mcp_config="$profile/.mcp.json"
+    mcp_servers="cryosparc, relion"
+    require_directory "$profile" "combined profile"
+    require_file "$profile/CLAUDE.md" "combined instructions"
+    require_file "$settings" "combined Claude settings"
+    require_file "$mcp_config" "combined MCP configuration"
+    require_directory "$profile/projects" "combined CryoSPARC project mountpoint"
+    require_file "$CRYOSPARC_PROFILE/cryosparc_mcp.py" "CryoSPARC MCP entry point"
+    require_file "$CRYOSPARC_PROFILE/instance_discovery.py" "CryoSPARC discovery helper"
+    require_directory "$RELION_PROFILE/backend" "RELION backend"
+    require_directory "$CRYOSPARC_PROJECTS" "original CryoSPARC projects directory"
+    require_directory "$CRYOSPARC_PLUGIN/agents" "original CryoSPARC Claude agents"
+    require_directory "$CRYOSPARC_PLUGIN/skills" "original CryoSPARC Claude skills"
+    require_file "$EMCLAW_ROOT/libexec/em-claw-cryosparc-mcp" "CryoSPARC MCP bootstrap"
+    require_file "$EMCLAW_ROOT/libexec/em-claw-cryosparc-python" "CryoSPARC Python bootstrap"
+    require_file "$EMCLAW_ROOT/libexec/em-claw-relion-mcp" "RELION MCP bootstrap"
+    [[ -x "$EMCLAW_ROOT/libexec/em-claw-cryosparc-mcp" ]] || \
+      fail "CryoSPARC MCP bootstrap is not executable" "$EXIT_BLOCKED"
+    [[ -x "$EMCLAW_ROOT/libexec/em-claw-cryosparc-python" ]] || \
+      fail "CryoSPARC Python bootstrap is not executable" "$EXIT_BLOCKED"
+    [[ -x "$EMCLAW_ROOT/libexec/em-claw-relion-mcp" ]] || \
+      fail "RELION MCP bootstrap is not executable" "$EXIT_BLOCKED"
+
+    relion_repo=$(readlink -f -- "$RELION_PROFILE/backend")
+    export RELION_MCP_REPO="$relion_repo"
+    export EMCLAW_CRYOSPARC_MCP_ENTRY="$CRYOSPARC_PROFILE/cryosparc_mcp.py"
+    export EMCLAW_CRYOSPARC_PROJECTS="$CRYOSPARC_PROJECTS"
+    controlled_args=(
+      --settings "$settings"
+      --strict-mcp-config
+      --mcp-config "$mcp_config"
+      --plugin-dir "$CRYOSPARC_PLUGIN"
+      --add-dir "$CRYOSPARC_PROJECTS"
+    )
+    for root in ${relion_bind_roots[@]+"${relion_bind_roots[@]}"}; do
+      if [[ "$root" != "$CRYOSPARC_PROJECTS" ]]; then
+        controlled_args+=(--add-dir "$root")
+      fi
+    done
+    controlled_args+=(
+      --append-system-prompt
+      "EM-Claw loaded the CryoSPARC and RELION MCP servers in the combined profile. Follow the combined profile's CLAUDE.md, keep backend state and credentials separate, and preserve each backend's current write gates even when resuming a conversation. Approved RELION project roots are additional working directories; this file access does not bypass RELION MCP confirmation or bounded-approval policy."
+    )
+    ;;
+esac
+
+claude_configured=${EMCLAW_CLAUDE_BIN:-claude}
+claude_path=$(resolve_executable "$claude_configured" 2>/dev/null || true)
+if [[ -z "$claude_path" && -z ${EMCLAW_CLAUDE_BIN:-} ]]; then
+  if [[ -n ${HOME:-} ]]; then
+    claude_path=$(resolve_executable "$HOME/.local/bin/claude" 2>/dev/null || true)
+  fi
+  if [[ -z "$claude_path" ]] && ((needs_cryo)); then
+    cryosparc_owner_claude="$(dirname -- "$CRYOSPARC_SOURCE")/.local/bin/claude"
+    claude_path=$(resolve_executable "$cryosparc_owner_claude" 2>/dev/null || true)
+  fi
+fi
+if [[ -z "$claude_path" ]]; then
+  if ((dry_run)); then
+    claude_path=$claude_configured
+  else
+    fail "Claude Code executable is unavailable (set EMCLAW_CLAUDE_BIN)" "$EXIT_EXEC"
+  fi
+fi
+
+runtime_dir=${EMCLAW_RUNTIME_DIR:-${XDG_CACHE_HOME:-${HOME:-/tmp}/.cache}/em-claw}
+uv_cache=${UV_CACHE_DIR:-$runtime_dir/uv-cache}
+require_absolute_path "$runtime_dir" "EMCLAW_RUNTIME_DIR"
+require_absolute_path "$uv_cache" "UV_CACHE_DIR"
+export EMCLAW_RUNTIME_DIR="$runtime_dir"
+export EMCLAW_LAUNCHER="$EMCLAW_ROOT/bin/em-claw"
+export ENABLE_CLAUDEAI_MCP_SERVERS=false
+export MCP_TIMEOUT="${MCP_TIMEOUT:-300000}"
+export UV_CACHE_DIR="$uv_cache"
+unset EMCLAW_BACKEND EMCLAW_PROFILE EMCLAW_COMPONENTS_CONFIG UV_PROJECT_ENVIRONMENT
+
+if ((needs_cryo)); then
+  bwrap_path=$(resolve_executable "${EMCLAW_BWRAP_BIN:-bwrap}" 2>/dev/null || true)
+  [[ -n "$bwrap_path" ]] || \
+    fail "bubblewrap is required to protect the original CryoSPARC source" "$EXIT_BLOCKED"
+  exec_prefix=(
+    "$bwrap_path"
+    --die-with-parent
+    --ro-bind / /
+    --dev-bind /dev /dev
+    --proc /proc
+    --bind /tmp /tmp
+  )
+  if [[ -n ${HOME:-} && -d ${HOME:-} ]]; then
+    exec_prefix+=(--bind "$HOME" "$HOME")
+  fi
+  if [[ "$backend" == combine ]]; then
+    for root in ${relion_bind_roots[@]+"${relion_bind_roots[@]}"}; do
+      exec_prefix+=(--bind "$root" "$root")
+    done
+    if [[ -n "$relion_scratch_dir" && -d "$relion_scratch_dir" ]]; then
+      exec_prefix+=(--bind "$relion_scratch_dir" "$relion_scratch_dir")
+    fi
+  fi
+  exec_prefix+=(
+    --ro-bind "$CRYOSPARC_SOURCE" "$CRYOSPARC_SOURCE"
+    --bind "$CRYOSPARC_PROJECTS" "$CRYOSPARC_PROJECTS"
+    --bind "$CRYOSPARC_PROJECTS" "$profile/projects"
+    --chdir "$profile"
+  )
+fi
+
+declare -a resume_controlled_args=()
+if ((resume_requested)); then
+  resume_controlled_args=(--system-prompt-snapshot off)
+fi
+
+argv=(
+  "$claude_path"
+  "${controlled_args[@]}"
+  ${resume_controlled_args[@]+"${resume_controlled_args[@]}"}
+  ${resume_args[@]+"${resume_args[@]}"}
+  ${claude_args[@]+"${claude_args[@]}"}
+)
+
+if ((dry_run)); then
+  printf 'selected route: %s\n' "$backend"
+  printf 'working directory: %s\n' "$profile"
+  printf 'settings: %s\n' "$settings"
+  printf 'MCP configuration: %s\n' "$mcp_config"
+  printf 'MCP servers: %s\n' "$mcp_servers"
+  printf 'MCP isolation: strict\n'
+  if ((needs_cryo)); then
+    printf 'CryoSPARC environment: configured (%s)\n' "$cryosparc_env_file"
+    printf 'CryoSPARC source: read-only (%s)\n' "$CRYOSPARC_SOURCE"
+    printf 'CryoSPARC project data: read-write (%s)\n' "$CRYOSPARC_PROJECTS"
+  fi
+  if ((needs_relion)); then
+    if [[ -n "$relion_env_file" ]]; then
+      printf 'RELION environment: configured (%s)\n' "$relion_env_file"
+    else
+      printf 'RELION environment: built-in defaults (no env file)\n'
+    fi
+    printf 'RELION mode: %s\n' "$RELION_MCP_MODE"
+    if ((relion_bind_root_count)); then
+      printf 'RELION_PROJECT_ROOTS: set (%d approved root(s))\n' "$relion_bind_root_count"
+    else
+      printf 'RELION_PROJECT_ROOTS: unset (session opens; project access remains blocked)\n'
+    fi
+    if [[ -n "$RELION_SCRATCH_DIR" ]]; then
+      printf 'RELION_SCRATCH_DIR: set\n'
+    else
+      printf 'RELION_SCRATCH_DIR: unset\n'
+    fi
+  fi
+  print_command "${argv[@]}"
+  exit 0
+fi
+
+print_banner
+mkdir -p -- "$runtime_dir" "$UV_CACHE_DIR"
+if ((needs_cryo)); then
+  exec "${exec_prefix[@]}" "${argv[@]}"
+fi
+
+cd -- "$profile"
+exec "${argv[@]}"

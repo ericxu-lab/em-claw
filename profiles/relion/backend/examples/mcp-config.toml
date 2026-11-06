@@ -1,0 +1,29 @@
+# Copy this server block into ~/.codex/config.toml or a trusted project's
+# .codex/config.toml. Replace the repository and project-root paths.
+[mcp_servers.relion]
+command = "uv"
+args = ["--directory", "/ABSOLUTE/PATH/em-claw/profiles/relion/backend", "run", "relion-mcp"]
+startup_timeout_sec = 20
+tool_timeout_sec = 900
+default_tools_approval_mode = "writes"
+
+[mcp_servers.relion.env]
+RELION_MCP_MODE = "plan"
+RELION_PROJECT_ROOTS = "/ABSOLUTE/PATH/TO/relion-projects"
+# Required only when this standalone server uses the CryoSPARC particle bridge.
+RELION_CRYOSPARC_IMPORT_ROOTS = ""
+RELION_PYEM_PYTHON = ""
+RELION_CSPARC2STAR = ""
+RELION_SCRATCH_DIR = ""
+RELION_PIPELINE_NAME = "default"
+RELION_PIPELINER = "relion_pipeliner"
+RELION_IMAGE_HANDLER = "relion_image_handler"
+RELION_STAR_HANDLER = "relion_star_handler"
+RELION_CLASS_SELECTOR = "relion-mcp-class-select"
+RELION_TOPAZ_EXECUTABLE = "topaz"
+RELION_ADD_JOB_TIMEOUT = "90"
+RELION_UTILITY_TIMEOUT = "900"
+RELION_SYMMETRY_ALIGNMENT_MAX_BOX_PX = "512"
+RELION_VISUAL_MAX_SIDE_PX = "2800"
+RELION_VISUAL_MAX_PNG_BYTES = "6000000"
+RELION_VISUAL_MAX_PANELS = "96"

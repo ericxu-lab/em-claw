@@ -1,0 +1,23 @@
+{
+  "enabledPlugins": {
+    "codex@openai-codex": true
+  },
+  "enabledMcpjsonServers": [
+    "cryosparc"
+  ],
+  "enableAllProjectMcpServers": false,
+  "permissions": {
+    "allow": [
+      "mcp__cryosparc__list_job_types",
+      "mcp__cryosparc__inspect_project_job",
+      "mcp__cryosparc__validate_job_type",
+      "mcp__cryosparc__get_job_spec",
+      "mcp__cryosparc__validate_params",
+      "mcp__cryosparc__validate_connection",
+      "mcp__cryosparc__validate_pipeline"
+    ],
+    "deny": [
+      "mcp__cryosparc__get_connection_template"
+    ]
+  }
+}

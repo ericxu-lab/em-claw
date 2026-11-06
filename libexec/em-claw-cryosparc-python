@@ -1,0 +1,132 @@
+#!/usr/bin/env bash
+# Run Python with an isolated, CryoSPARC-compatible tools runtime.
+
+set -euo pipefail
+
+readonly EMCLAW_ROOT="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")/.." && pwd -P)"
+readonly EXIT_BLOCKED=2
+readonly EXIT_USAGE=64
+
+fail() {
+  local message=$1
+  local code=${2:-$EXIT_BLOCKED}
+  printf 'em-claw-cryosparc-python: %s\n' "$message" >&2
+  exit "$code"
+}
+
+require_absolute_path() {
+  local path=$1
+  local label=$2
+  [[ "$path" == /* ]] || fail "$label must be an absolute path"
+}
+
+resolve_executable() {
+  local configured=$1
+  if [[ "$configured" == */* ]]; then
+    [[ -x "$configured" && -f "$configured" ]] || return 1
+    readlink -f -- "$configured"
+  else
+    command -v -- "$configured"
+  fi
+}
+
+unset_environment_prefix() {
+  local prefix=$1
+  local name
+
+  while IFS='=' read -r name _; do
+    if [[ "$name" == "$prefix"* ]]; then
+      unset "$name"
+    fi
+  done < <(env)
+}
+
+load_cryosparc_environment() {
+  local path=$1
+  local name
+  declare -A inherited=()
+  declare -A inherited_values=()
+  local -a names=(
+    EMCLAW_CRYOSPARC_SOURCE
+    CRYOSPARC_LICENSE_ID
+    CRYOSPARC_MASTER_HOSTNAME
+    CRYOSPARC_BASE_PORT
+    CRYOSPARC_EMAIL
+    CRYOSPARC_PASSWORD
+  )
+
+  [[ -f "$path" && -r "$path" ]] || fail "CryoSPARC environment file is unavailable"
+  for name in "${names[@]}"; do
+    if [[ -v "$name" ]]; then
+      inherited[$name]=1
+      inherited_values[$name]=${!name}
+    fi
+  done
+
+  set -a
+  # shellcheck disable=SC1090
+  source "$path" >/dev/null
+  set +a
+
+  # Explicit caller/launcher values take precedence over file defaults.
+  for name in "${names[@]}"; do
+    if [[ -n ${inherited[$name]+present} ]]; then
+      printf -v "$name" '%s' "${inherited_values[$name]}"
+      export "$name"
+    fi
+    [[ -n ${!name:-} ]] || fail "$name is missing from the CryoSPARC environment"
+  done
+}
+
+(($# > 0)) || \
+  fail "usage: em-claw-cryosparc-python PYTHON_ARG [PYTHON_ARG ...]" "$EXIT_USAGE"
+
+cryosparc_env_file=${EMCLAW_CRYOSPARC_ENV_FILE:-$EMCLAW_ROOT/profiles/cryosparc/.env}
+require_absolute_path "$cryosparc_env_file" "EMCLAW_CRYOSPARC_ENV_FILE"
+load_cryosparc_environment "$cryosparc_env_file"
+
+# A combined Claude session needs both backend families, but CryoSPARC Python
+# must not inherit RELION policy, paths, or the RELION environment-file pointer.
+unset_environment_prefix RELION_
+unset EMCLAW_RELION_ENV_FILE
+
+runtime=${EMCLAW_RUNTIME_DIR:-${XDG_CACHE_HOME:-${HOME:-/tmp}/.cache}/em-claw}
+runtime_python=${EMCLAW_CRYOSPARC_RUNTIME_PYTHON:-3.11}
+uv_bin=${EMCLAW_UV_BIN:-uv}
+export PYTHONDONTWRITEBYTECODE=1
+# Worker nodes are headless: matplotlib must never try to reach a display.
+export MPLBACKEND="${MPLBACKEND:-Agg}"
+
+uv_cache=${UV_CACHE_DIR:-$runtime/uv-cache}
+require_absolute_path "$runtime" "EMCLAW_RUNTIME_DIR"
+require_absolute_path "$uv_cache" "UV_CACHE_DIR"
+export UV_CACHE_DIR="$uv_cache"
+mkdir -p -- "$UV_CACHE_DIR"
+
+uv_path=$(resolve_executable "$uv_bin") || \
+  fail "uv is unavailable for the CryoSPARC Python bootstrap"
+
+uv_args=(
+  run
+  --no-project
+  --python "$runtime_python"
+  --with 'cryosparc-tools==4.7.1'
+  --with 'numpy==1.26.4'
+  # profiles/cryosparc/2d_select (select2d_utils, diagnose2d_utils) needs imaging and
+  # config deps. Without these the toolkit is linked into the profiles but cannot
+  # import, and callers silently reimplement it. Upper bounds keep numpy at 1.26.x,
+  # which cryosparc-tools 4.7.1 requires.
+  --with 'pillow>=10,<12'
+  --with 'mrcfile>=1.4,<2'
+  --with 'matplotlib>=3.8,<3.10'
+  --with 'pyyaml>=6,<7'
+  # profiles/cryosparc/vis_res (compare_volumes, connectivity checks) imports scipy.ndimage.
+  # scipy 1.11-1.14 supports numpy 1.26.x.
+  --with 'scipy>=1.11,<1.15'
+)
+if [[ ${UV_OFFLINE:-} != 1 ]] && \
+  UV_OFFLINE=1 "$uv_path" "${uv_args[@]}" python -c pass >/dev/null 2>&1; then
+  export UV_OFFLINE=1
+fi
+
+exec "$uv_path" "${uv_args[@]}" python "$@"

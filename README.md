@@ -260,3 +260,10 @@ The RELION provenance record next to `profiles/relion/backend` identifies its
 source revision, tree, package version, license, export method, and content
 digest. The snapshot excludes checkout-only state such as `.git`, virtual
 environments, caches, and built distributions.
+
+## License
+
+EM-Claw is released under the [MIT License](LICENSE), copyright 2026 Eric Xu Lab.
+The vendored RELION backend in `profiles/relion/backend` carries its own MIT
+license. CryoSPARC, RELION, and the other programs EM-Claw calls keep their own
+licenses; CryoSPARC requires a license from Structura Biotechnology.

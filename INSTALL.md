@@ -71,9 +71,9 @@ live outside the code checkout) and point the variable at the copy.
 Fill in the two site placeholders in the agent prompts:
 
 - `YOUR_HISTORY_BANK_PATH` in `.claude/agents/subR.md`: the offline history
-  bank of digested CryoSPARC projects. Build it with
-  `profiles/cryosparc/tools/build_history_digest.py` (source PDFs:
-  `EMCLAW_HISTORY_PDF_ROOT`) and list your best precedents in
+  bank of digested CryoSPARC projects. Collect the raw history yourself with
+  one of the two scripts in [`helper/`](helper/README.md), then ask the agent
+  to digest it; list your best precedents in
   `profiles/cryosparc/Selected_collection.txt`.
 - `YOUR_GPU_RENDER_HOST` in `.claude/agents/subC.md`: a host with OpenGL and
   ChimeraX for surface rendering.

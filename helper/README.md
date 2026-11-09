@@ -69,8 +69,20 @@ Point subR at the bank by replacing `YOUR_HISTORY_BANK_PATH` in
 > Digest the raw CryoSPARC history in <output folder> into the history bank at <bank path>.
 ```
 
-For Option B output the agent runs `profiles/cryosparc/tools/build_history_digest.py
---bank <bank path>`, which adds a compact `*_digest.json` to each `G<n>` folder;
-subR reads those digests. For Option A output the agent first turns the exported
-metadata into that layout as part of the same request. Finally, list your best precedents in
-`profiles/cryosparc/Selected_collection.txt` so subR weights them higher.
+The agent digests each kind of raw history with its own tool in
+`profiles/cryosparc/tools/`; both write compact `*_digest.json` files in the same
+schema, and subR reads those digests:
+
+| Raw history | Digest tool |
+| --- | --- |
+| Option B, `extract_effective_cryosparc_flow.py` | `build_history_digest.py --bank <bank path>` adds a digest to each `G<n>` folder |
+| Option A, `export_cryosparc_database_history.sh` | `build_dbdump_digest.py`, in two stages per CryoSPARC user: `index-res` reads each job's final resolution from the exported event logs, then `digest` writes one digest per sample under `<bank path>/<user>__<project folder>/G<nnn>__<workspaces>/` |
+
+`build_dbdump_digest.py` also recovers projects and jobs that were deleted from
+CryoSPARC but are still in the database. It decides which projects belong to a
+user from where their folders sit, so give it the directory that holds your
+users' home folders with `--home-root` or `EMCLAW_CRYOSPARC_HOME_ROOT` (default
+`/home`). Its digests carry numbers and parameters only, no 2D or FSC plots.
+
+Finally, list your best precedents in `profiles/cryosparc/Selected_collection.txt`
+so subR weights them higher.

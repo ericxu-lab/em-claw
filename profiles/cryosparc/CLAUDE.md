@@ -77,6 +77,12 @@ agentM runs `validation_plan.md` as an ordinary phase with subC. The reference e
 deterministic: `tools/build_live_digest.py` turns a live project into the same digest schema
 `tools/build_history_digest.py` produces for the bank.
 
+**Building the history bank.** When asked to digest raw history that a user collected with the
+`../../helper/` scripts (see `../../helper/README.md`), use the matching tool and never re-derive a
+digest by reading jobs yourself: `tools/build_history_digest.py --bank <bank>` for
+`extract_effective_cryosparc_flow.py` output, and `tools/build_dbdump_digest.py` (`index-res`, then
+`digest`, per CryoSPARC user, with `--home-root`) for an `export_cryosparc_database_history.sh` dump.
+
 **The subR + subS + subV collaboration fires on EVERY plan — never skip it.** Any time you form or
 materially revise a plan — at phase start AND for mid-phase strategy decisions (e.g. the 3D
 purification/refinement approach, a re-pick, a heterogeneity split) — first gather precedents +

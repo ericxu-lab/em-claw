@@ -83,6 +83,13 @@ digest by reading jobs yourself: `tools/build_history_digest.py --bank <bank>` f
 `extract_effective_cryosparc_flow.py` output, and `tools/build_dbdump_digest.py` (`index-res`, then
 `digest`, per CryoSPARC user, with `--home-root`) for an `export_cryosparc_database_history.sh` dump.
 
+**Adding a precedent on request.** When the human says a project did a good job and should join the
+collection (e.g. "P5 W34 did a good job, add it to our collection"), digest it from the live server
+with `tools/build_live_digest.py <P> --workspaces <W,...> --name <short sample name> --out
+history_bank/CS-<P>-<name>/G001__<W>/CS-<P>-<name>__<P>__G001__<W>_digest.json`, append
+`CS-<P>-<name> <P> <W>   # <sample; key steps; best resolution (job, particles)>` to
+`Selected_collection.txt`, and show the human the new line.
+
 **The subR + subS + subV collaboration fires on EVERY plan — never skip it.** Any time you form or
 materially revise a plan — at phase start AND for mid-phase strategy decisions (e.g. the 3D
 purification/refinement approach, a re-pick, a heterogeneity split) — first gather precedents +

@@ -1,3 +1,14 @@
+# ==================================================================================================
+# ==                                                                                              ==
+# ==   TO ADD A PROJECT, JUST TELL THE AGENT WHICH ONE DID A GOOD JOB. For example, type:         ==
+# ==                                                                                              ==
+# ==         P5 W34 did a good job, add it to our collection                                      ==
+# ==                                                                                              ==
+# ==   The agent digests that project into history_bank/, adds its entry at the bottom of this    ==
+# ==   file with a short note, and shows you the line. No need to edit this file by hand.         ==
+# ==                                                                                              ==
+# ==================================================================================================
+#
 # Selected_collection — curated "very successful" history precedents (HIGH WEIGHT for subR)
 #
 # Register here the history-bank examples you consider especially worth emulating. subR reads this

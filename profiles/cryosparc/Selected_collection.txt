@@ -9,9 +9,16 @@
 # An entry is any ONE of:
 #   - a P-uid with optional workspace/group, e.g.   P514 W6      or   P514 G006
 #   - a full path to a *_digest.json (or its group dir)
-#   - a project-name substring, e.g.   CS-zll12182025
+#   - a project-name substring, e.g.   CS-P514-transporter
 # Optional trailing '# note' on why it is exemplary.
 #
-# subR resolves each entry to the matching *_digest.json in the site history bank.
+# subR resolves each entry to the matching *_digest.json in the history bank (history_bank/ in this
+# directory). The entries below are the six example digests bundled with EM-Claw; add your own.
 #
 # --- registered entries ---
+CS-P514-transporter P514 W6   # transporter monomer, low SNR; lack of extracellular signal; NU-refine -> new_local_refine reached 2.66 A (J404)
+CS-P247-soluble-protein P247 W7   # soluble protein ~130 kDa, preferred orientation; rebalance_3D (18x) + NU-refine/new_local_refine (refine_scale_min, alignment priors) + ctf_refine_local reached 2.40 A (J1111, 435k ptcls)
+CS-P247-soluble-protein P247 W3   # small soluble protein ~50 kDa, C2 symmetry; box 256, blob+template+topaz picking, 15x 2D clean + dedup, iterative abinit(K2-5)->hetero->NU-refine->new_local_refine (refine_scale_min/reset, dynamic_mask_abs, defocus+global-CTF refine) reached 2.60 A (J218, 597k ptcls)
+CS-P250-C4-membrane-protein P250 W34   # C4 membrane protein ~140 kDa (~100 A); psize 0.73 box 320. Picker breadth (blob+template+topaz, diam 80-300), heavy cleaning (70x class_2D, 75x select_2D, 19x remove_duplicate), abinit->61x hetero_refine->NU-refine->new_local_refine; refine C1 consensus THEN impose C4 (refine_symmetry_do_align). Reached 1.97 A (J3377, 464k ptcls)
+CS-P481-GPCR-antibody P481 W2   # GPCR + antibody complex; picker diam 100-200 A. Picker breadth (blob+template+topaz), heavy 2D clean (13x class_2D, 11x select_2D) + 6x remove_duplicate, curate_exposures, abinit->11x hetero_refine->NU-refine->8x new_local_refine reached 2.69 A (J142, 176k ptcls)
+CS-P429-GPCR-Gprotein-Fab P429 W3   # GPCR-Gprotein-nb35-Fab complex, C1, RECEPTOR FLEXIBLE vs the rigid G-protein/Fab; picker diam 100-180 A. Picker breadth (blob+template+topaz), heavy 2D clean (14x class_2D, 15x select_2D) + dedup, abinit->hetero_refine + class_3D->NU-refine, class_3D show flexibility, then FLEXIBILITY handling: particle_subtract (remove rigid G-protein/Fab) + 13x new_local_refine (focus flexible receptor) + ctf_refine_local + rebalance_3D reached 2.22 A (J145, 349k ptcls)

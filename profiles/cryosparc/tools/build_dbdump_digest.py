@@ -62,7 +62,7 @@ Usage
   python tools/build_dbdump_digest.py digest --user YOUR_CRYOSPARC_USER \
       --dump-root YOUR_DB_EXPORT_PATH --home-root /home \
       --res-index ~/dbdump_cache/res_index.json \
-      --out-root YOUR_HISTORY_BANK_PATH --cutoff 4.0
+      --out-root history_bank --cutoff 4.0
 
   python tools/build_dbdump_digest.py list-users --dump-root YOUR_DB_EXPORT_PATH | head -30
 """

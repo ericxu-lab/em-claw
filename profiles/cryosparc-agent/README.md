@@ -15,6 +15,7 @@ loads it with `--plugin-dir` and mounts it read-only, except for `projects/`.
 
 The agent prompts refer to the helper code by paths relative to `profiles/cryosparc`,
 which is the working directory of the CryoSPARC and combined routes. Site values
-appear as `YOUR_...` placeholders: set `YOUR_HISTORY_BANK_PATH` (subR) and
-`YOUR_GPU_RENDER_HOST` (subC surface rendering) for your site, or keep a private
-copy of this directory and point `EMCLAW_CRYOSPARC_SOURCE` at it.
+appear as `YOUR_...` placeholders: set `YOUR_GPU_RENDER_HOST` (subC surface
+rendering) for your site, or keep a private copy of this directory and point
+`EMCLAW_CRYOSPARC_SOURCE` at it. subR reads the history bank in
+`profiles/cryosparc/history_bank/`.

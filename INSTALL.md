@@ -68,15 +68,17 @@ Use it directly by setting `EMCLAW_CRYOSPARC_SOURCE` to its absolute path in
 section 4, or copy it elsewhere (for example to shared storage, so projects
 live outside the code checkout) and point the variable at the copy.
 
-Fill in the two site placeholders in the agent prompts:
+Fill in the site placeholder in the agent prompts:
 
-- `YOUR_HISTORY_BANK_PATH` in `.claude/agents/subR.md`: the offline history
-  bank of digested CryoSPARC projects. Collect the raw history yourself with
-  one of the two scripts in [`helper/`](helper/README.md), then ask the agent
-  to digest it; list your best precedents in
-  `profiles/cryosparc/Selected_collection.txt`.
 - `YOUR_GPU_RENDER_HOST` in `.claude/agents/subC.md`: a host with OpenGL and
   ChimeraX for surface rendering.
+
+subR learns from the history bank in `profiles/cryosparc/history_bank/`. It
+ships with six example digests, registered in
+`profiles/cryosparc/Selected_collection.txt`. To add your site's own history,
+collect it with one of the two scripts in [`helper/`](helper/README.md), ask
+the agent to digest it into that bank, and list your best precedents in
+`Selected_collection.txt`.
 
 Add the reference papers subS may cite in phase 1 to
 `profiles/cryosparc/solid_reference_pool`.

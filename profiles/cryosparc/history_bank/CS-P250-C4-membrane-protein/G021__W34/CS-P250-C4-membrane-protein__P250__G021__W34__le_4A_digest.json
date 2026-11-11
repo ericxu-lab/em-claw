@@ -1,0 +1,10088 @@
+{
+ "schema": "cryoem-history-digest/v1",
+ "project_uid": "P250",
+ "project_name": "CS-P250-C4-membrane-protein",
+ "project_slug": "CS-P250-C4-membrane-protein",
+ "group": "G021",
+ "workspaces": [
+  "W34"
+ ],
+ "cs_version": "v4.5.3+240807",
+ "resolution_cutoff_A": 4.0,
+ "pdf": {
+  "present": false,
+  "note": "result images (2D classes, FSC, ...) are not distributed with the bundled example digests; recommend on numeric grounds",
+  "signal_2d": {
+   "uid": "J3361"
+  }
+ },
+ "optics": {
+  "psize_A": 0.73,
+  "accel_kv": 300.0,
+  "cs_mm": 2.7,
+  "final_box_pix": 320
+ },
+ "particle": {
+  "title": null,
+  "picker_diameter_A": [
+   80,
+   100,
+   120,
+   130,
+   150,
+   160,
+   180,
+   200,
+   240,
+   300
+  ]
+ },
+ "result": {
+  "best_uid": "J3377",
+  "best_job_type": "new_local_refine",
+  "best_res_A": 1.967,
+  "n_particles": 463963,
+  "n_seeds": 23
+ },
+ "job_type_counts": {
+  "new_local_refine": 86,
+  "nonuniform_refine_new": 82,
+  "select_2D": 75,
+  "class_2D_new": 70,
+  "hetero_refine": 61,
+  "homo_abinit": 44,
+  "extract_micrographs_multi": 35,
+  "curate_exposures_v2": 25,
+  "remove_duplicate_particles": 19,
+  "template_picker_gpu": 14,
+  "volume_tools": 12,
+  "import_volumes": 11,
+  "import_micrographs": 9,
+  "patch_ctf_estimation_multi": 9,
+  "topaz_train": 9,
+  "topaz_extract": 9,
+  "blob_picker_gpu": 8,
+  "create_templates": 6,
+  "particle_sets": 6,
+  "var_3D": 4,
+  "var_3D_disp": 3,
+  "ctf_refine_local": 1,
+  "ctf_refine_global": 1
+ },
+ "param_policy": {
+  "note": "steps[].params keeps ALL non-default knobs verbatim (learn from these). Names in steps[].env_fields are environment-specific paths from the source project: re-fill from the WORKING environment, never copy or omit. Confirm the full required-param set per job via MCP validate_params before running.",
+  "env_fields_seen": [
+   "blob_paths",
+   "exec_path",
+   "volume_blob_path"
+  ]
+ },
+ "backbone": [
+  {
+   "uid": "J1768",
+   "type": "homo_abinit",
+   "n_particle": 807612,
+   "params": {
+    "abinit_K": 5,
+    "abinit_max_res": 6,
+    "abinit_init_res": 12
+   }
+  },
+  {
+   "uid": "J1773",
+   "type": "nonuniform_refine_new",
+   "res_A": 2.758,
+   "n_particle": 258348,
+   "params": {
+    "refine_res_align_max": 6,
+    "refine_res_init": 12
+   }
+  },
+  {
+   "uid": "J1775",
+   "type": "new_local_refine",
+   "res_A": 2.461,
+   "delta_A": -0.297,
+   "n_particle": 258348,
+   "params": {
+    "refine_res_align_max": 3
+   }
+  },
+  {
+   "uid": "J1777",
+   "type": "hetero_refine",
+   "n_particle": 5686879
+  },
+  {
+   "uid": "J1778",
+   "type": "homo_abinit",
+   "n_particle": 460092,
+   "params": {
+    "abinit_K": 4,
+    "abinit_max_res": 6,
+    "abinit_init_res": 35
+   }
+  },
+  {
+   "uid": "J1780",
+   "type": "hetero_refine",
+   "n_particle": 2121518
+  },
+  {
+   "uid": "J1781",
+   "type": "hetero_refine",
+   "n_particle": 1461360
+  },
+  {
+   "uid": "J1783",
+   "type": "nonuniform_refine_new",
+   "res_A": 2.422,
+   "delta_A": -0.039,
+   "n_particle": 328928,
+   "params": {
+    "refine_res_align_max": 3,
+    "refine_res_init": 12,
+    "refine_symmetry": "C4"
+   }
+  },
+  {
+   "uid": "J1784",
+   "type": "new_local_refine",
+   "res_A": 2.646,
+   "delta_A": 0.224,
+   "n_particle": 328928,
+   "params": {
+    "refine_symmetry": "C1",
+    "refine_symmetry_do_align": true,
+    "refine_res_align_max": 3
+   }
+  },
+  {
+   "uid": "J1787",
+   "type": "homo_abinit",
+   "n_particle": 755024,
+   "params": {
+    "abinit_K": 3,
+    "abinit_max_res": 6
+   }
+  },
+  {
+   "uid": "J1789",
+   "type": "hetero_refine",
+   "n_particle": 4791129
+  },
+  {
+   "uid": "J1790",
+   "type": "hetero_refine",
+   "n_particle": 1770402
+  },
+  {
+   "uid": "J1794",
+   "type": "homo_abinit",
+   "n_particle": 903360,
+   "params": {
+    "abinit_K": 3,
+    "abinit_max_res": 6
+   }
+  },
+  {
+   "uid": "J1797",
+   "type": "nonuniform_refine_new",
+   "res_A": 2.113,
+   "delta_A": -0.533,
+   "n_particle": 403249,
+   "params": {
+    "refine_symmetry": "C4",
+    "crg_do_tetrafoil": true,
+    "crg_do_anisomag": true,
+    "crg_do_spherical": true,
+    "refine_do_ews_correct": true,
+    "refine_ctf_global_refine": true
+   }
+  },
+  {
+   "uid": "J1798",
+   "type": "new_local_refine",
+   "res_A": 2.113,
+   "delta_A": 0.0,
+   "n_particle": 403249,
+   "params": {
+    "refine_symmetry": "C4"
+   }
+  },
+  {
+   "uid": "J1802",
+   "type": "hetero_refine",
+   "n_particle": 1476215
+  },
+  {
+   "uid": "J1824",
+   "type": "hetero_refine",
+   "n_particle": 865323,
+   "params": {
+    "multirefine_symmetry": "C4"
+   }
+  },
+  {
+   "uid": "J1831",
+   "type": "nonuniform_refine_new",
+   "res_A": 2.082,
+   "delta_A": -0.031,
+   "n_particle": 692363,
+   "params": {
+    "refine_symmetry": "C4",
+    "refine_ctf_global_refine": true,
+    "crg_do_spherical": true,
+    "crg_do_tetrafoil": true,
+    "crg_do_anisomag": true,
+    "refine_do_ews_correct": true
+   }
+  },
+  {
+   "uid": "J1832",
+   "type": "new_local_refine",
+   "res_A": 2.055,
+   "delta_A": -0.027,
+   "n_particle": 692363,
+   "params": {
+    "refine_symmetry": "C4"
+   }
+  },
+  {
+   "uid": "J1933",
+   "type": "new_local_refine",
+   "params": {
+    "use_alignment_prior": true,
+    "reinitialize_ss": true,
+    "reinitialize_rs": true,
+    "refine_symmetry": "C4",
+    "refine_res_init": 3
+   }
+  },
+  {
+   "uid": "J1940",
+   "type": "new_local_refine",
+   "res_A": 1.994,
+   "delta_A": -0.061,
+   "n_particle": 529113,
+   "params": {
+    "use_alignment_prior": true,
+    "reinitialize_ss": true,
+    "reinitialize_rs": true,
+    "refine_symmetry": "C4",
+    "refine_res_init": 3,
+    "sigma_prior_r": 7,
+    "sigma_prior_s": 3
+   }
+  },
+  {
+   "uid": "J2822",
+   "type": "homo_abinit",
+   "n_particle": 529113,
+   "params": {
+    "abinit_K": 2
+   }
+  },
+  {
+   "uid": "J2823",
+   "type": "hetero_refine",
+   "n_particle": 529113
+  },
+  {
+   "uid": "J2828",
+   "type": "nonuniform_refine_new",
+   "res_A": 2.079,
+   "delta_A": 0.085,
+   "n_particle": 272345,
+   "params": {
+    "refine_symmetry": "C4",
+    "crg_do_spherical": true,
+    "crg_do_tetrafoil": true,
+    "crg_do_anisomag": true,
+    "refine_dynamic_mask_thresh_factor": 0.15,
+    "refine_dynamic_mask_far_ang": 16,
+    "refine_noise_init_from_imgs": true,
+    "refine_batchsize_epsilon": 0.0001,
+    "refine_batchsize_snrfactor": 75,
+    "refine_scale_reset": false,
+    "refine_scale_min": true
+   }
+  },
+  {
+   "uid": "J2829",
+   "type": "new_local_refine",
+   "res_A": 2.047,
+   "delta_A": -0.032,
+   "n_particle": 272345,
+   "params": {
+    "refine_symmetry": "C4",
+    "init_r_extent": 5,
+    "init_s_extent": 4
+   }
+  },
+  {
+   "uid": "J2833",
+   "type": "new_local_refine",
+   "res_A": 2.043,
+   "delta_A": -0.004,
+   "n_particle": 272345,
+   "params": {
+    "refine_symmetry": "C4",
+    "init_r_extent": 5,
+    "init_s_extent": 6,
+    "use_alignment_prior": true,
+    "sigma_prior_r": 4,
+    "sigma_prior_s": 2,
+    "reinitialize_rs": true,
+    "reinitialize_ss": true,
+    "refine_res_align_max": 2.2,
+    "refine_res_init": 8,
+    "refine_scale_reset": true,
+    "refine_scale_start_iter": 1
+   }
+  },
+  {
+   "uid": "J2835",
+   "type": "new_local_refine",
+   "res_A": 2.019,
+   "delta_A": -0.024,
+   "n_particle": 272345,
+   "params": {
+    "use_alignment_prior": true,
+    "sigma_prior_r": 3,
+    "sigma_prior_s": 2,
+    "init_r_extent": 2,
+    "init_s_extent": 3,
+    "reinitialize_rs": true,
+    "reinitialize_ss": true,
+    "refine_symmetry": "C4",
+    "refine_res_align_max": 2,
+    "refine_res_init": 6,
+    "refine_scale_reset": true
+   }
+  },
+  {
+   "uid": "J2865",
+   "type": "new_local_refine",
+   "res_A": 1.993,
+   "delta_A": -0.026,
+   "n_particle": 529113,
+   "params": {
+    "sigma_prior_r": 5,
+    "sigma_prior_s": 2,
+    "use_alignment_prior": true,
+    "init_r_extent": 12,
+    "reinitialize_rs": true,
+    "reinitialize_ss": true,
+    "refine_symmetry": "C4",
+    "refine_num_final_iterations": 2,
+    "refine_res_init": 4
+   }
+  },
+  {
+   "uid": "J2869",
+   "type": "new_local_refine",
+   "res_A": 2.002,
+   "delta_A": 0.009,
+   "n_particle": 529113,
+   "params": {
+    "sigma_prior_r": 4,
+    "sigma_prior_s": 1.8,
+    "use_alignment_prior": true,
+    "init_r_extent": 10,
+    "reinitialize_rs": true,
+    "reinitialize_ss": true,
+    "refine_symmetry": "C4",
+    "refine_num_final_iterations": 2,
+    "refine_res_init": 3.5,
+    "init_s_extent": 5,
+    "refine_res_align_max": 1.8
+   }
+  },
+  {
+   "uid": "J3317",
+   "type": "new_local_refine",
+   "params": {
+    "use_alignment_prior": true,
+    "sigma_prior_r": 3,
+    "sigma_prior_s": 2,
+    "init_r_extent": 2,
+    "init_s_extent": 3,
+    "reinitialize_rs": true,
+    "reinitialize_ss": true,
+    "refine_symmetry": "C4",
+    "refine_res_init": 3,
+    "refine_scale_reset": true,
+    "refine_dynamic_mask_use_abs": true,
+    "refine_scale_min": true,
+    "refine_dynamic_mask_far_ang": 8,
+    "refine_dynamic_mask_start_res": 8
+   }
+  },
+  {
+   "uid": "J3321",
+   "type": "new_local_refine",
+   "params": {
+    "use_alignment_prior": true,
+    "sigma_prior_r": 3,
+    "sigma_prior_s": 2,
+    "init_r_extent": 2,
+    "init_s_extent": 3,
+    "reinitialize_rs": true,
+    "reinitialize_ss": true,
+    "refine_symmetry": "C4",
+    "refine_res_init": 2,
+    "refine_scale_reset": true,
+    "refine_dynamic_mask_use_abs": true,
+    "refine_scale_min": true,
+    "refine_dynamic_mask_far_ang": 8,
+    "refine_dynamic_mask_start_res": 8
+   }
+  },
+  {
+   "uid": "J3343",
+   "type": "homo_abinit",
+   "n_particle": 1459131,
+   "params": {
+    "abinit_K": 3,
+    "abinit_max_res": 6,
+    "abinit_init_res": 18
+   }
+  },
+  {
+   "uid": "J3344",
+   "type": "hetero_refine",
+   "n_particle": 1459131
+  },
+  {
+   "uid": "J3345",
+   "type": "nonuniform_refine_new",
+   "res_A": 2.319,
+   "delta_A": 0.317,
+   "n_particle": 516982,
+   "params": {
+    "refine_res_init": 18
+   }
+  },
+  {
+   "uid": "J3346",
+   "type": "new_local_refine",
+   "res_A": 2.269,
+   "delta_A": -0.05,
+   "n_particle": 516982,
+   "params": {
+    "use_alignment_prior": true
+   }
+  },
+  {
+   "uid": "J3347",
+   "type": "homo_abinit",
+   "n_particle": 412959,
+   "params": {
+    "abinit_K": 2
+   }
+  },
+  {
+   "uid": "J3348",
+   "type": "hetero_refine",
+   "n_particle": 412959
+  },
+  {
+   "uid": "J3350",
+   "type": "nonuniform_refine_new",
+   "res_A": 2.284,
+   "delta_A": 0.015,
+   "n_particle": 349773,
+   "params": {
+    "refine_res_init": 18
+   }
+  },
+  {
+   "uid": "J3351",
+   "type": "new_local_refine",
+   "res_A": 2.249,
+   "delta_A": -0.035,
+   "n_particle": 349773
+  },
+  {
+   "uid": "J3359",
+   "type": "homo_abinit",
+   "n_particle": 155023,
+   "params": {
+    "abinit_K": 4
+   }
+  },
+  {
+   "uid": "J3363",
+   "type": "hetero_refine",
+   "n_particle": 1002306
+  },
+  {
+   "uid": "J3364",
+   "type": "nonuniform_refine_new",
+   "res_A": 2.216,
+   "delta_A": -0.033,
+   "n_particle": 792816,
+   "params": {
+    "refine_res_init": 18
+   }
+  },
+  {
+   "uid": "J3365",
+   "type": "new_local_refine",
+   "res_A": 2.169,
+   "delta_A": -0.047,
+   "n_particle": 792816
+  },
+  {
+   "uid": "J3368",
+   "type": "hetero_refine",
+   "n_particle": 953408
+  },
+  {
+   "uid": "J3369",
+   "type": "nonuniform_refine_new",
+   "res_A": 2.193,
+   "delta_A": 0.024,
+   "n_particle": 901062,
+   "params": {
+    "refine_res_init": 18
+   }
+  },
+  {
+   "uid": "J3370",
+   "type": "new_local_refine",
+   "res_A": 2.156,
+   "delta_A": -0.037,
+   "n_particle": 901062
+  },
+  {
+   "uid": "J3373",
+   "type": "nonuniform_refine_new",
+   "res_A": 2.02,
+   "delta_A": -0.136,
+   "n_particle": 602416,
+   "params": {
+    "refine_res_init": 7,
+    "refine_symmetry": "C4",
+    "refine_defocus_refine": true,
+    "refine_ctf_global_refine": true,
+    "crg_do_spherical": true,
+    "crg_do_tetrafoil": true,
+    "crg_do_anisomag": true,
+    "refine_do_ews_correct": true
+   }
+  },
+  {
+   "uid": "J3374",
+   "type": "new_local_refine",
+   "res_A": 1.992,
+   "delta_A": -0.028,
+   "n_particle": 602416,
+   "params": {
+    "refine_symmetry": "C4"
+   }
+  },
+  {
+   "uid": "J3376",
+   "type": "nonuniform_refine_new",
+   "res_A": 2.009,
+   "delta_A": 0.017,
+   "n_particle": 463963,
+   "params": {
+    "refine_res_init": 7,
+    "refine_symmetry": "C4",
+    "refine_defocus_refine": true,
+    "refine_ctf_global_refine": true,
+    "crg_do_spherical": true,
+    "crg_do_tetrafoil": true,
+    "crg_do_anisomag": true,
+    "refine_do_ews_correct": true
+   }
+  },
+  {
+   "uid": "J3377",
+   "type": "new_local_refine",
+   "res_A": 1.967,
+   "delta_A": -0.042,
+   "n_particle": 463963,
+   "params": {
+    "refine_symmetry": "C4"
+   }
+  }
+ ],
+ "steps": {
+  "J368": {
+   "type": "import_micrographs",
+   "params": {
+    "blob_paths": "YOUR_DATA_PATH/*.mrc",
+    "psize_A": 0.7300000190734863,
+    "accel_kv": 300.0,
+    "cs_mm": 2.700000047683716,
+    "total_dose_e_per_A2": 1.2999999523162842
+   },
+   "env_fields": [
+    "blob_paths"
+   ]
+  },
+  "J370": {
+   "type": "blob_picker_gpu",
+   "params": {
+    "diameter": 100,
+    "diameter_max": 200
+   },
+   "in": {
+    "micrographs": [
+     "J373"
+    ]
+   },
+   "n_particle": 290971
+  },
+  "J371": {
+   "type": "blob_picker_gpu",
+   "params": {
+    "diameter": 80,
+    "diameter_max": 180
+   },
+   "in": {
+    "micrographs": [
+     "J373"
+    ]
+   },
+   "n_particle": 446448
+  },
+  "J372": {
+   "type": "remove_duplicate_particles",
+   "in": {
+    "particles": [
+     "J370",
+     "J371"
+    ],
+    "micrographs": [
+     "J373"
+    ]
+   },
+   "n_particle": 494325
+  },
+  "J373": {
+   "type": "patch_ctf_estimation_multi",
+   "params": {
+    "compute_num_gpus": 4
+   },
+   "in": {
+    "exposures": [
+     "J368"
+    ]
+   }
+  },
+  "J374": {
+   "type": "extract_micrographs_multi",
+   "params": {
+    "compute_num_gpus": 3
+   },
+   "in": {
+    "particles": [
+     "J372"
+    ],
+    "micrographs": [
+     "J373"
+    ]
+   }
+  },
+  "J375": {
+   "type": "class_2D_new",
+   "params": {
+    "class2D_K": 200,
+    "class2D_max_res": 3,
+    "class2D_num_full_iter_batch": 30,
+    "class2D_num_full_iter_batchsize_per_class": 200,
+    "compute_num_gpus": 3
+   },
+   "in": {
+    "particles": [
+     "J374"
+    ]
+   },
+   "n_particle": 425085
+  },
+  "J376": {
+   "type": "select_2D",
+   "in": {
+    "particles": [
+     "J375"
+    ],
+    "templates": [
+     "J375"
+    ]
+   },
+   "n_particle": 369311,
+   "select": {
+    "selected": 22,
+    "excluded": 178
+   }
+  },
+  "J380": {
+   "type": "class_2D_new",
+   "params": {
+    "class2D_K": 100,
+    "class2D_max_res": 3,
+    "class2D_num_full_iter_batch": 30,
+    "class2D_num_full_iter_batchsize_per_class": 200
+   },
+   "in": {
+    "particles": [
+     "J376"
+    ]
+   },
+   "n_particle": 55511
+  },
+  "J382": {
+   "type": "select_2D",
+   "in": {
+    "particles": [
+     "J380"
+    ],
+    "templates": [
+     "J380"
+    ]
+   },
+   "n_particle": 39391,
+   "select": {
+    "selected": 64,
+    "excluded": 36
+   }
+  },
+  "J383": {
+   "type": "class_2D_new",
+   "params": {
+    "class2D_K": 100,
+    "class2D_max_res": 3,
+    "class2D_num_full_iter_batch": 30,
+    "class2D_num_full_iter_batchsize_per_class": 200
+   },
+   "in": {
+    "particles": [
+     "J382"
+    ]
+   },
+   "n_particle": 39311
+  },
+  "J384": {
+   "type": "select_2D",
+   "in": {
+    "particles": [
+     "J383"
+    ],
+    "templates": [
+     "J383"
+    ]
+   },
+   "n_particle": 29782,
+   "select": {
+    "selected": 74,
+    "excluded": 26
+   }
+  },
+  "J385": {
+   "type": "class_2D_new",
+   "params": {
+    "class2D_K": 60,
+    "class2D_max_res": 3,
+    "class2D_num_full_iter_batch": 30,
+    "class2D_num_full_iter_batchsize_per_class": 200
+   },
+   "in": {
+    "particles": [
+     "J384"
+    ]
+   },
+   "n_particle": 29756
+  },
+  "J386": {
+   "type": "select_2D",
+   "in": {
+    "particles": [
+     "J385"
+    ],
+    "templates": [
+     "J385"
+    ]
+   },
+   "n_particle": 21675,
+   "select": {
+    "selected": 46,
+    "excluded": 14
+   }
+  },
+  "J387": {
+   "type": "homo_abinit",
+   "params": {
+    "abinit_K": 3,
+    "abinit_max_res": 6,
+    "abinit_init_res": 12
+   },
+   "in": {
+    "particles": [
+     "J386"
+    ]
+   },
+   "n_particle": 21675
+  },
+  "J388": {
+   "type": "class_2D_new",
+   "params": {
+    "class2D_K": 60,
+    "class2D_max_res": 3,
+    "class2D_num_full_iter_batch": 30,
+    "class2D_num_full_iter_batchsize_per_class": 200
+   },
+   "in": {
+    "particles": [
+     "J386"
+    ]
+   },
+   "n_particle": 21670
+  },
+  "J389": {
+   "type": "hetero_refine",
+   "params": {
+    "multirefine_res_init": 7
+   },
+   "in": {
+    "particles": [
+     "J387"
+    ],
+    "volume": [
+     "J387"
+    ]
+   },
+   "n_particle": 21675
+  },
+  "J390": {
+   "type": "nonuniform_refine_new",
+   "params": {
+    "refine_res_init": 6
+   },
+   "in": {
+    "particles": [
+     "J389"
+    ],
+    "volume": [
+     "J389"
+    ]
+   },
+   "n_particle": 10877,
+   "res_A": 3.729
+  },
+  "J391": {
+   "type": "select_2D",
+   "in": {
+    "particles": [
+     "J388"
+    ],
+    "templates": [
+     "J388"
+    ]
+   },
+   "n_particle": 16990,
+   "select": {
+    "selected": 46,
+    "excluded": 14
+   }
+  },
+  "J392": {
+   "type": "extract_micrographs_multi",
+   "params": {
+    "compute_num_gpus": 3,
+    "update_location": true,
+    "update_alignments2D": true,
+    "recenter_key": "alignments2D",
+    "box_size_pix": 320
+   },
+   "in": {
+    "micrographs": [
+     "J373"
+    ],
+    "particles": [
+     "J391"
+    ]
+   }
+  },
+  "J393": {
+   "type": "class_2D_new",
+   "params": {
+    "class2D_K": 60,
+    "class2D_max_res": 3,
+    "class2D_num_full_iter_batch": 30,
+    "class2D_num_full_iter_batchsize_per_class": 200
+   },
+   "in": {
+    "particles": [
+     "J392"
+    ]
+   },
+   "n_particle": 16428
+  },
+  "J394": {
+   "type": "new_local_refine",
+   "in": {
+    "mask": [
+     "J390"
+    ],
+    "particles": [
+     "J390"
+    ],
+    "volume": [
+     "J390"
+    ]
+   },
+   "n_particle": 10877,
+   "res_A": 3.721
+  },
+  "J395": {
+   "type": "select_2D",
+   "in": {
+    "particles": [
+     "J393"
+    ],
+    "templates": [
+     "J393"
+    ]
+   },
+   "n_particle": 13403,
+   "select": {
+    "selected": 41,
+    "excluded": 19
+   }
+  },
+  "J396": {
+   "type": "nonuniform_refine_new",
+   "params": {
+    "refine_res_init": 6
+   },
+   "in": {
+    "volume": [
+     "J394"
+    ],
+    "particles": [
+     "J395"
+    ]
+   },
+   "n_particle": 13403,
+   "res_A": 3.567
+  },
+  "J397": {
+   "type": "new_local_refine",
+   "in": {
+    "mask": [
+     "J396"
+    ],
+    "particles": [
+     "J396"
+    ],
+    "volume": [
+     "J396"
+    ]
+   },
+   "n_particle": 13403,
+   "res_A": 3.515
+  },
+  "J398": {
+   "type": "homo_abinit",
+   "params": {
+    "abinit_K": 2,
+    "abinit_max_res": 5,
+    "abinit_init_res": 12
+   },
+   "in": {
+    "particles": [
+     "J397"
+    ]
+   },
+   "n_particle": 13403
+  },
+  "J399": {
+   "type": "create_templates",
+   "params": {
+    "n_templates": 20
+   },
+   "in": {
+    "volume": [
+     "J397"
+    ]
+   }
+  },
+  "J400": {
+   "type": "template_picker_gpu",
+   "params": {
+    "diameter": 130,
+    "min_distance": 0.8
+   },
+   "in": {
+    "micrographs": [
+     "J373"
+    ],
+    "templates": [
+     "J399"
+    ]
+   },
+   "n_particle": 360132
+  },
+  "J401": {
+   "type": "template_picker_gpu",
+   "params": {
+    "diameter": 150,
+    "min_distance": 0.8
+   },
+   "in": {
+    "micrographs": [
+     "J373"
+    ],
+    "templates": [
+     "J399"
+    ]
+   },
+   "n_particle": 281238
+  },
+  "J402": {
+   "type": "remove_duplicate_particles",
+   "params": {
+    "min_dist_A": 30
+   },
+   "in": {
+    "micrographs": [
+     "J373"
+    ],
+    "particles": [
+     "J400",
+     "J401"
+    ]
+   },
+   "n_particle": 439716
+  },
+  "J403": {
+   "type": "extract_micrographs_multi",
+   "params": {
+    "compute_num_gpus": 1,
+    "box_size_pix": 320
+   },
+   "in": {
+    "micrographs": [
+     "J373"
+    ],
+    "particles": [
+     "J402"
+    ]
+   }
+  },
+  "J404": {
+   "type": "class_2D_new",
+   "params": {
+    "class2D_K": 200,
+    "compute_num_gpus": 2
+   },
+   "in": {
+    "particles": [
+     "J403"
+    ]
+   },
+   "n_particle": 358008
+  },
+  "J405": {
+   "type": "nonuniform_refine_new",
+   "params": {
+    "refine_res_init": 6
+   },
+   "in": {
+    "particles": [
+     "J398"
+    ],
+    "volume": [
+     "J398"
+    ]
+   },
+   "n_particle": 9022,
+   "res_A": 3.584
+  },
+  "J406": {
+   "type": "new_local_refine",
+   "in": {
+    "mask": [
+     "J405"
+    ],
+    "particles": [
+     "J405"
+    ],
+    "volume": [
+     "J405"
+    ]
+   },
+   "n_particle": 9022,
+   "res_A": 3.444
+  },
+  "J410": {
+   "type": "select_2D",
+   "in": {
+    "particles": [
+     "J404"
+    ],
+    "templates": [
+     "J404"
+    ]
+   },
+   "n_particle": 318957,
+   "select": {
+    "selected": 179,
+    "excluded": 21
+   }
+  },
+  "J411": {
+   "type": "homo_abinit",
+   "params": {
+    "abinit_K": 3
+   },
+   "in": {
+    "particles": [
+     "J410"
+    ]
+   },
+   "n_particle": 39051
+  },
+  "J412": {
+   "type": "extract_micrographs_multi",
+   "params": {
+    "compute_num_gpus": 1,
+    "box_size_pix": 320
+   },
+   "in": {
+    "particles": [
+     "J372"
+    ],
+    "micrographs": [
+     "J373"
+    ]
+   }
+  },
+  "J413": {
+   "type": "hetero_refine",
+   "params": {
+    "multirefine_res_init": 7
+   },
+   "in": {
+    "volume": [
+     "J406",
+     "J411"
+    ],
+    "particles": [
+     "J410"
+    ]
+   },
+   "n_particle": 318957
+  },
+  "J414": {
+   "type": "hetero_refine",
+   "params": {
+    "multirefine_res_init": 7
+   },
+   "in": {
+    "volume": [
+     "J406",
+     "J411"
+    ],
+    "particles": [
+     "J412"
+    ]
+   },
+   "n_particle": 416707
+  },
+  "J415": {
+   "type": "hetero_refine",
+   "params": {
+    "multirefine_res_init": 7
+   },
+   "in": {
+    "volume": [
+     "J406",
+     "J411"
+    ],
+    "particles": [
+     "J413"
+    ]
+   },
+   "n_particle": 63889
+  },
+  "J416": {
+   "type": "hetero_refine",
+   "params": {
+    "multirefine_res_init": 7
+   },
+   "in": {
+    "volume": [
+     "J406",
+     "J411"
+    ],
+    "particles": [
+     "J414"
+    ]
+   },
+   "n_particle": 67463
+  },
+  "J417": {
+   "type": "hetero_refine",
+   "params": {
+    "multirefine_res_init": 7
+   },
+   "in": {
+    "volume": [
+     "J406",
+     "J411"
+    ],
+    "particles": [
+     "J415"
+    ]
+   },
+   "n_particle": 34323
+  },
+  "J418": {
+   "type": "hetero_refine",
+   "params": {
+    "multirefine_res_init": 7
+   },
+   "in": {
+    "volume": [
+     "J406",
+     "J411"
+    ],
+    "particles": [
+     "J416"
+    ]
+   },
+   "n_particle": 32444
+  },
+  "J419": {
+   "type": "remove_duplicate_particles",
+   "params": {
+    "min_dist_A": 30
+   },
+   "in": {
+    "micrographs": [
+     "J373"
+    ],
+    "particles": [
+     "J417",
+     "J418"
+    ]
+   },
+   "n_particle": 34113
+  },
+  "J420": {
+   "type": "class_2D_new",
+   "params": {
+    "class2D_K": 200,
+    "class2D_max_res": 3,
+    "class2D_num_full_iter_batch": 30,
+    "class2D_num_full_iter_batchsize_per_class": 200
+   },
+   "in": {
+    "particles": [
+     "J419"
+    ]
+   },
+   "n_particle": 33921
+  },
+  "J421": {
+   "type": "select_2D",
+   "in": {
+    "particles": [
+     "J420"
+    ],
+    "templates": [
+     "J420"
+    ]
+   },
+   "n_particle": 22822,
+   "select": {
+    "selected": 105,
+    "excluded": 95
+   }
+  },
+  "J422": {
+   "type": "nonuniform_refine_new",
+   "params": {
+    "refine_res_init": 6
+   },
+   "in": {
+    "volume": [
+     "J406"
+    ],
+    "particles": [
+     "J421"
+    ]
+   },
+   "n_particle": 22822,
+   "res_A": 3.347
+  },
+  "J423": {
+   "type": "new_local_refine",
+   "in": {
+    "mask": [
+     "J422"
+    ],
+    "particles": [
+     "J422"
+    ],
+    "volume": [
+     "J422"
+    ]
+   },
+   "n_particle": 22822,
+   "res_A": 3.146
+  },
+  "J424": {
+   "type": "homo_abinit",
+   "params": {
+    "abinit_K": 2,
+    "abinit_max_res": 5,
+    "abinit_init_res": 12
+   },
+   "in": {
+    "particles": [
+     "J423"
+    ]
+   }
+  },
+  "J425": {
+   "type": "homo_abinit",
+   "params": {
+    "abinit_K": 2,
+    "abinit_max_res": 5,
+    "abinit_init_res": 12
+   },
+   "in": {
+    "particles": [
+     "J423"
+    ]
+   },
+   "n_particle": 22822
+  },
+  "J426": {
+   "type": "nonuniform_refine_new",
+   "params": {
+    "refine_res_init": 6
+   },
+   "in": {
+    "particles": [
+     "J425"
+    ],
+    "volume": [
+     "J425"
+    ]
+   },
+   "n_particle": 17379,
+   "res_A": 3.167
+  },
+  "J427": {
+   "type": "new_local_refine",
+   "in": {
+    "mask": [
+     "J426"
+    ],
+    "particles": [
+     "J426"
+    ],
+    "volume": [
+     "J426"
+    ]
+   },
+   "n_particle": 17379,
+   "res_A": 3.021
+  },
+  "J428": {
+   "type": "hetero_refine",
+   "params": {
+    "multirefine_res_init": 7
+   },
+   "in": {
+    "volume": [
+     "J411",
+     "J427"
+    ],
+    "particles": [
+     "J427"
+    ]
+   },
+   "n_particle": 17379
+  },
+  "J429": {
+   "type": "nonuniform_refine_new",
+   "params": {
+    "refine_res_init": 6
+   },
+   "in": {
+    "volume": [
+     "J427"
+    ],
+    "particles": [
+     "J428"
+    ]
+   },
+   "n_particle": 16030,
+   "res_A": 3.129
+  },
+  "J430": {
+   "type": "new_local_refine",
+   "in": {
+    "mask": [
+     "J429"
+    ],
+    "particles": [
+     "J429"
+    ],
+    "volume": [
+     "J429"
+    ]
+   },
+   "n_particle": 16030,
+   "res_A": 3.07
+  },
+  "J431": {
+   "type": "extract_micrographs_multi",
+   "params": {
+    "box_size_pix": 360,
+    "update_location": true,
+    "update_alignments3D": true,
+    "update_alignments2D": true
+   },
+   "in": {
+    "micrographs": [
+     "J373"
+    ],
+    "particles": [
+     "J430"
+    ]
+   }
+  },
+  "J432": {
+   "type": "new_local_refine",
+   "in": {
+    "mask": [
+     "J429"
+    ],
+    "volume": [
+     "J429"
+    ],
+    "particles": [
+     "J431"
+    ]
+   },
+   "n_particle": 15649,
+   "res_A": 3.046
+  },
+  "J433": {
+   "type": "homo_abinit",
+   "params": {
+    "abinit_K": 2,
+    "abinit_max_res": 5,
+    "abinit_init_res": 12
+   },
+   "in": {
+    "particles": [
+     "J432"
+    ]
+   },
+   "n_particle": 15649
+  },
+  "J434": {
+   "type": "nonuniform_refine_new",
+   "params": {
+    "refine_res_init": 6
+   },
+   "in": {
+    "particles": [
+     "J433"
+    ],
+    "volume": [
+     "J433"
+    ]
+   },
+   "n_particle": 5312,
+   "res_A": 3.812
+  },
+  "J435": {
+   "type": "nonuniform_refine_new",
+   "params": {
+    "refine_res_init": 6
+   },
+   "in": {
+    "particles": [
+     "J433"
+    ],
+    "volume": [
+     "J433"
+    ]
+   },
+   "n_particle": 10337,
+   "res_A": 3.084
+  },
+  "J436": {
+   "type": "new_local_refine",
+   "in": {
+    "mask": [
+     "J435"
+    ],
+    "particles": [
+     "J435"
+    ],
+    "volume": [
+     "J435"
+    ]
+   },
+   "n_particle": 10337,
+   "res_A": 2.953
+  },
+  "J437": {
+   "type": "import_micrographs",
+   "params": {
+    "psize_A": 0.7300000190734863,
+    "accel_kv": 300.0,
+    "cs_mm": 2.700000047683716,
+    "total_dose_e_per_A2": 1.2999999523162842,
+    "blob_paths": "YOUR_DATA_PATH/*.mrc"
+   },
+   "env_fields": [
+    "blob_paths"
+   ]
+  },
+  "J438": {
+   "type": "patch_ctf_estimation_multi",
+   "params": {
+    "compute_num_gpus": 4
+   },
+   "in": {
+    "exposures": [
+     "J437"
+    ]
+   }
+  },
+  "J439": {
+   "type": "curate_exposures_v2",
+   "in": {
+    "exposures": [
+     "J438"
+    ]
+   }
+  },
+  "J440": {
+   "type": "volume_tools",
+   "params": {
+    "vol_lpf_A": 6
+   },
+   "in": {
+    "volume": [
+     "J436"
+    ]
+   }
+  },
+  "J441": {
+   "type": "create_templates",
+   "params": {
+    "n_templates": 20
+   },
+   "in": {
+    "volume": [
+     "J440"
+    ]
+   }
+  },
+  "J442": {
+   "type": "blob_picker_gpu",
+   "params": {
+    "diameter": 120,
+    "diameter_max": 300
+   },
+   "in": {
+    "micrographs": [
+     "J439"
+    ]
+   },
+   "n_particle": 2228432
+  },
+  "J443": {
+   "type": "template_picker_gpu",
+   "params": {
+    "diameter": 150
+   },
+   "in": {
+    "micrographs": [
+     "J439"
+    ],
+    "templates": [
+     "J441"
+    ]
+   },
+   "n_particle": 5809650
+  },
+  "J444": {
+   "type": "remove_duplicate_particles",
+   "params": {
+    "min_dist_A": 30
+   },
+   "in": {
+    "micrographs": [
+     "J439"
+    ],
+    "particles": [
+     "J442",
+     "J443"
+    ]
+   },
+   "n_particle": 6215209
+  },
+  "J445": {
+   "type": "extract_micrographs_multi",
+   "params": {
+    "box_size_pix": 320,
+    "bin_size_pix": 160,
+    "compute_num_gpus": 2
+   },
+   "in": {
+    "micrographs": [
+     "J439"
+    ],
+    "particles": [
+     "J444"
+    ]
+   }
+  },
+  "J446": {
+   "type": "class_2D_new",
+   "params": {
+    "class2D_K": 200,
+    "compute_num_gpus": 2
+   },
+   "in": {
+    "particles": [
+     "J445"
+    ]
+   },
+   "n_particle": 5139755
+  },
+  "J447": {
+   "type": "select_2D",
+   "in": {
+    "particles": [
+     "J446"
+    ],
+    "templates": [
+     "J446"
+    ]
+   },
+   "n_particle": 4823707,
+   "select": {
+    "selected": 188,
+    "excluded": 12
+   }
+  },
+  "J448": {
+   "type": "hetero_refine",
+   "params": {
+    "multirefine_res_init": 7,
+    "multirefine_N": 80
+   },
+   "in": {
+    "volume": [
+     "J411",
+     "J430"
+    ],
+    "particles": [
+     "J447"
+    ]
+   },
+   "n_particle": 4823707
+  },
+  "J449": {
+   "type": "hetero_refine",
+   "params": {
+    "multirefine_res_init": 7,
+    "multirefine_N": 80
+   },
+   "in": {
+    "volume": [
+     "J411",
+     "J430"
+    ],
+    "particles": [
+     "J448"
+    ]
+   },
+   "n_particle": 1211194
+  },
+  "J451": {
+   "type": "class_2D_new",
+   "params": {
+    "class2D_K": 120,
+    "compute_num_gpus": 2
+   },
+   "in": {
+    "particles": [
+     "J449"
+    ]
+   },
+   "n_particle": 597528
+  },
+  "J452": {
+   "type": "select_2D",
+   "in": {
+    "particles": [
+     "J451"
+    ],
+    "templates": [
+     "J451"
+    ]
+   },
+   "n_particle": 531688,
+   "select": {
+    "selected": 91,
+    "excluded": 29
+   }
+  },
+  "J453": {
+   "type": "extract_micrographs_multi",
+   "params": {
+    "box_size_pix": 320,
+    "compute_num_gpus": 4,
+    "update_location": true,
+    "update_alignments3D": true,
+    "update_alignments2D": true
+   },
+   "in": {
+    "micrographs": [
+     "J439"
+    ],
+    "particles": [
+     "J452"
+    ]
+   }
+  },
+  "J454": {
+   "type": "hetero_refine",
+   "params": {
+    "multirefine_res_init": 7,
+    "multirefine_N": 160
+   },
+   "in": {
+    "volume": [
+     "J411",
+     "J430"
+    ],
+    "particles": [
+     "J453"
+    ]
+   },
+   "n_particle": 529766
+  },
+  "J457": {
+   "type": "homo_abinit",
+   "params": {
+    "abinit_K": 3,
+    "abinit_max_res": 6,
+    "abinit_init_res": 12
+   },
+   "in": {
+    "particles": [
+     "J454"
+    ]
+   }
+  },
+  "J459": {
+   "type": "nonuniform_refine_new",
+   "params": {
+    "refine_res_init": 7
+   },
+   "in": {
+    "particles": [
+     "J457"
+    ],
+    "volume": [
+     "J457"
+    ]
+   },
+   "n_particle": 221160,
+   "res_A": 2.781
+  },
+  "J460": {
+   "type": "new_local_refine",
+   "in": {
+    "mask": [
+     "J459"
+    ],
+    "particles": [
+     "J459"
+    ],
+    "volume": [
+     "J459"
+    ]
+   },
+   "n_particle": 221160,
+   "res_A": 2.681
+  },
+  "J462": {
+   "type": "hetero_refine",
+   "params": {
+    "multirefine_res_init": 7,
+    "multirefine_N": 160
+   },
+   "in": {
+    "volume": [
+     "J411",
+     "J460"
+    ],
+    "particles": [
+     "J460"
+    ]
+   },
+   "n_particle": 221160
+  },
+  "J479": {
+   "type": "nonuniform_refine_new",
+   "params": {
+    "refine_res_init": 7,
+    "refine_ctf_global_refine": true,
+    "crg_do_spherical": true,
+    "crg_do_tetrafoil": true,
+    "crg_do_anisomag": true,
+    "refine_do_ews_correct": true,
+    "refine_symmetry": "C4"
+   },
+   "in": {
+    "particles": [
+     "J457"
+    ],
+    "volume": [
+     "J457"
+    ]
+   },
+   "n_particle": 221160,
+   "res_A": 2.186
+  },
+  "J480": {
+   "type": "new_local_refine",
+   "in": {
+    "mask": [
+     "J479"
+    ],
+    "particles": [
+     "J479"
+    ],
+    "volume": [
+     "J479"
+    ]
+   },
+   "n_particle": 221160,
+   "res_A": 2.338
+  },
+  "J481": {
+   "type": "new_local_refine",
+   "params": {
+    "refine_symmetry": "C4"
+   },
+   "in": {
+    "mask": [
+     "J479"
+    ],
+    "particles": [
+     "J479"
+    ],
+    "volume": [
+     "J479"
+    ]
+   },
+   "n_particle": 221160,
+   "res_A": 2.164
+  },
+  "J482": {
+   "type": "new_local_refine",
+   "params": {
+    "refine_symmetry": "C4",
+    "refine_res_init": 6
+   },
+   "in": {
+    "mask": [
+     "J479"
+    ],
+    "particles": [
+     "J479"
+    ],
+    "volume": [
+     "J479"
+    ]
+   },
+   "n_particle": 221160,
+   "res_A": 2.143
+  },
+  "J483": {
+   "type": "ctf_refine_local",
+   "in": {
+    "mask": [
+     "J479"
+    ],
+    "particles": [
+     "J479"
+    ],
+    "volume": [
+     "J479"
+    ]
+   }
+  },
+  "J484": {
+   "type": "new_local_refine",
+   "params": {
+    "refine_symmetry": "C4",
+    "refine_res_init": 6
+   },
+   "in": {
+    "mask": [
+     "J479"
+    ],
+    "volume": [
+     "J479"
+    ],
+    "particles": [
+     "J483"
+    ]
+   },
+   "n_particle": 221160,
+   "res_A": 2.11
+  },
+  "J485": {
+   "type": "topaz_train",
+   "params": {
+    "exec_path": "YOUR_TOOL_PATH/topaz",
+    "par_diam": 120,
+    "num_particles": 300
+   },
+   "env_fields": [
+    "exec_path"
+   ],
+   "in": {
+    "micrographs": [
+     "J439"
+    ],
+    "particles": [
+     "J482"
+    ]
+   }
+  },
+  "J486": {
+   "type": "topaz_train",
+   "params": {
+    "exec_path": "YOUR_TOOL_PATH/topaz",
+    "par_diam": 130,
+    "num_particles": 300
+   },
+   "env_fields": [
+    "exec_path"
+   ],
+   "in": {
+    "micrographs": [
+     "J439"
+    ],
+    "particles": [
+     "J482"
+    ]
+   }
+  },
+  "J487": {
+   "type": "topaz_train",
+   "params": {
+    "exec_path": "YOUR_TOOL_PATH/topaz",
+    "par_diam": 140,
+    "num_particles": 300
+   },
+   "env_fields": [
+    "exec_path"
+   ],
+   "in": {
+    "micrographs": [
+     "J439"
+    ],
+    "particles": [
+     "J482"
+    ]
+   }
+  },
+  "J488": {
+   "type": "topaz_extract",
+   "params": {
+    "par_diam": 120,
+    "exec_path": "YOUR_TOOL_PATH/topaz"
+   },
+   "env_fields": [
+    "exec_path"
+   ],
+   "in": {
+    "micrographs": [
+     "J439"
+    ],
+    "model": [
+     "J485"
+    ]
+   },
+   "n_particle": 1051409
+  },
+  "J489": {
+   "type": "topaz_extract",
+   "params": {
+    "par_diam": 130,
+    "exec_path": "YOUR_TOOL_PATH/topaz"
+   },
+   "env_fields": [
+    "exec_path"
+   ],
+   "in": {
+    "micrographs": [
+     "J439"
+    ],
+    "model": [
+     "J486"
+    ]
+   },
+   "n_particle": 1157309
+  },
+  "J490": {
+   "type": "topaz_extract",
+   "params": {
+    "par_diam": 140,
+    "exec_path": "YOUR_TOOL_PATH/topaz"
+   },
+   "env_fields": [
+    "exec_path"
+   ],
+   "in": {
+    "micrographs": [
+     "J439"
+    ],
+    "model": [
+     "J487"
+    ]
+   },
+   "n_particle": 1007694
+  },
+  "J491": {
+   "type": "remove_duplicate_particles",
+   "params": {
+    "min_dist_A": 30
+   },
+   "in": {
+    "micrographs": [
+     "J439"
+    ],
+    "particles": [
+     "J488",
+     "J489",
+     "J490"
+    ]
+   },
+   "n_particle": 1814668
+  },
+  "J492": {
+   "type": "extract_micrographs_multi",
+   "params": {
+    "box_size_pix": 320,
+    "bin_size_pix": 160,
+    "compute_num_gpus": 2
+   },
+   "in": {
+    "micrographs": [
+     "J439"
+    ],
+    "particles": [
+     "J491"
+    ]
+   }
+  },
+  "J493": {
+   "type": "import_volumes",
+   "params": {
+    "volume_blob_path": "YOUR_DATA_PATH/J484_004_volume_map.mrc"
+   },
+   "env_fields": [
+    "volume_blob_path"
+   ]
+  },
+  "J494": {
+   "type": "volume_tools",
+   "params": {
+    "volume_out_type": "mask",
+    "threshold": 0.296,
+    "dilator": 5,
+    "pad": 5
+   },
+   "in": {
+    "volume": [
+     "J493"
+    ]
+   }
+  },
+  "J495": {
+   "type": "new_local_refine",
+   "params": {
+    "refine_symmetry": "C4",
+    "refine_res_init": 5
+   },
+   "in": {
+    "particles": [
+     "J484"
+    ],
+    "volume": [
+     "J484"
+    ],
+    "mask": [
+     "J494"
+    ]
+   },
+   "n_particle": 221160,
+   "res_A": 2.101
+  },
+  "J497": {
+   "type": "class_2D_new",
+   "params": {
+    "class2D_K": 100,
+    "compute_num_gpus": 2
+   },
+   "in": {
+    "particles": [
+     "J492"
+    ]
+   },
+   "n_particle": 1334274
+  },
+  "J498": {
+   "type": "select_2D",
+   "in": {
+    "particles": [
+     "J497"
+    ],
+    "templates": [
+     "J497"
+    ]
+   },
+   "n_particle": 1185051,
+   "select": {
+    "selected": 87,
+    "excluded": 13
+   }
+  },
+  "J499": {
+   "type": "hetero_refine",
+   "params": {
+    "multirefine_res_init": 7,
+    "multirefine_N": 80
+   },
+   "in": {
+    "volume": [
+     "J411",
+     "J460"
+    ],
+    "particles": [
+     "J498"
+    ]
+   },
+   "n_particle": 1185051
+  },
+  "J500": {
+   "type": "hetero_refine",
+   "params": {
+    "multirefine_res_init": 7,
+    "multirefine_N": 80
+   },
+   "in": {
+    "volume": [
+     "J411",
+     "J460"
+    ],
+    "particles": [
+     "J499"
+    ]
+   },
+   "n_particle": 497045
+  },
+  "J501": {
+   "type": "hetero_refine",
+   "params": {
+    "multirefine_res_init": 7,
+    "multirefine_N": 160
+   },
+   "in": {
+    "volume": [
+     "J411",
+     "J460"
+    ],
+    "particles": [
+     "J500"
+    ]
+   },
+   "n_particle": 392651
+  },
+  "J502": {
+   "type": "hetero_refine",
+   "params": {
+    "multirefine_res_init": 7,
+    "multirefine_N": 160
+   },
+   "in": {
+    "volume": [
+     "J411",
+     "J460"
+    ],
+    "particles": [
+     "J501"
+    ]
+   },
+   "n_particle": 353276
+  },
+  "J503": {
+   "type": "extract_micrographs_multi",
+   "params": {
+    "box_size_pix": 320,
+    "compute_num_gpus": 2,
+    "update_location": true,
+    "update_alignments3D": true,
+    "update_alignments2D": true
+   },
+   "in": {
+    "micrographs": [
+     "J439"
+    ],
+    "particles": [
+     "J502"
+    ]
+   }
+  },
+  "J505": {
+   "type": "nonuniform_refine_new",
+   "params": {
+    "refine_res_init": 7,
+    "refine_ctf_global_refine": true,
+    "crg_do_spherical": true,
+    "crg_do_tetrafoil": true,
+    "crg_do_anisomag": true,
+    "refine_do_ews_correct": true,
+    "refine_symmetry": "C4"
+   },
+   "in": {
+    "volume": [
+     "J484"
+    ],
+    "particles": [
+     "J503"
+    ]
+   },
+   "n_particle": 326969,
+   "res_A": 2.117
+  },
+  "J506": {
+   "type": "new_local_refine",
+   "params": {
+    "refine_symmetry": "C4"
+   },
+   "in": {
+    "mask": [
+     "J505"
+    ],
+    "particles": [
+     "J505"
+    ],
+    "volume": [
+     "J505"
+    ]
+   },
+   "n_particle": 326969,
+   "res_A": 2.068
+  },
+  "J507": {
+   "type": "curate_exposures_v2",
+   "in": {
+    "exposures": [
+     "J438"
+    ],
+    "particles": [
+     "J506"
+    ]
+   },
+   "n_particle": 188489
+  },
+  "J508": {
+   "type": "new_local_refine",
+   "params": {
+    "refine_symmetry": "C4"
+   },
+   "in": {
+    "mask": [
+     "J505"
+    ],
+    "volume": [
+     "J505"
+    ],
+    "particles": [
+     "J507"
+    ]
+   },
+   "n_particle": 138480,
+   "res_A": 2.022
+  },
+  "J509": {
+   "type": "remove_duplicate_particles",
+   "params": {
+    "min_dist_A": 30
+   },
+   "in": {
+    "micrographs": [
+     "J439"
+    ],
+    "particles": [
+     "J495",
+     "J506"
+    ]
+   },
+   "n_particle": 376929
+  },
+  "J511": {
+   "type": "nonuniform_refine_new",
+   "params": {
+    "refine_res_init": 7,
+    "refine_ctf_global_refine": true,
+    "crg_do_spherical": true,
+    "crg_do_tetrafoil": true,
+    "crg_do_anisomag": true,
+    "refine_do_ews_correct": true,
+    "refine_symmetry": "C4",
+    "refine_defocus_refine": true
+   },
+   "in": {
+    "volume": [
+     "J484"
+    ],
+    "particles": [
+     "J508"
+    ]
+   },
+   "n_particle": 138480,
+   "res_A": 1.913
+  },
+  "J512": {
+   "type": "new_local_refine",
+   "params": {
+    "refine_symmetry": "C4"
+   },
+   "in": {
+    "mask": [
+     "J505"
+    ],
+    "volume": [
+     "J505"
+    ],
+    "particles": [
+     "J511"
+    ]
+   },
+   "n_particle": 138480,
+   "res_A": 1.893
+  },
+  "J513": {
+   "type": "curate_exposures_v2",
+   "in": {
+    "exposures": [
+     "J438"
+    ],
+    "particles": [
+     "J509"
+    ]
+   },
+   "n_particle": 216849
+  },
+  "J514": {
+   "type": "nonuniform_refine_new",
+   "params": {
+    "refine_res_init": 7,
+    "crg_do_spherical": true,
+    "crg_do_tetrafoil": true,
+    "crg_do_anisomag": true,
+    "refine_symmetry": "C4"
+   },
+   "in": {
+    "volume": [
+     "J484"
+    ],
+    "particles": [
+     "J513"
+    ]
+   },
+   "n_particle": 160080,
+   "res_A": 2.044
+  },
+  "J517": {
+   "type": "nonuniform_refine_new",
+   "params": {
+    "refine_res_init": 7,
+    "crg_do_spherical": true,
+    "crg_do_tetrafoil": true,
+    "crg_do_anisomag": true,
+    "refine_symmetry": "C4",
+    "refine_defocus_refine": true,
+    "refine_ctf_global_refine": true,
+    "refine_do_ews_correct": true
+   },
+   "in": {
+    "volume": [
+     "J514"
+    ],
+    "particles": [
+     "J520"
+    ]
+   },
+   "n_particle": 160080,
+   "res_A": 1.92
+  },
+  "J520": {
+   "type": "ctf_refine_global",
+   "params": {
+    "ctf_reset_tilt": true,
+    "ctf_reset_trefoil": true,
+    "ctf_reset_tetra": true,
+    "ctf_reset_anisomag": true,
+    "ctf_reset_spherical": 2.7
+   },
+   "in": {
+    "mask": [
+     "J514"
+    ],
+    "particles": [
+     "J514"
+    ],
+    "volume": [
+     "J514"
+    ]
+   }
+  },
+  "J521": {
+   "type": "class_2D_new",
+   "params": {
+    "class2D_K": 100,
+    "class2D_max_res": 3,
+    "class2D_num_full_iter_batch": 30
+   },
+   "in": {
+    "particles": [
+     "J517"
+    ]
+   },
+   "n_particle": 160042
+  },
+  "J522": {
+   "type": "class_2D_new",
+   "params": {
+    "class2D_K": 100,
+    "class2D_max_res": 3,
+    "class2D_num_full_iter_batch": 30,
+    "class2D_num_full_iter_batchsize_per_class": 200
+   },
+   "in": {
+    "particles": [
+     "J517"
+    ]
+   },
+   "n_particle": 160032
+  },
+  "J525": {
+   "type": "select_2D",
+   "in": {
+    "particles": [
+     "J522"
+    ],
+    "templates": [
+     "J522"
+    ]
+   },
+   "n_particle": 137182,
+   "select": {
+    "selected": 47,
+    "excluded": 53
+   }
+  },
+  "J532": {
+   "type": "import_volumes",
+   "params": {
+    "volume_blob_path": "YOUR_DATA_PATH/target_protein.mrc"
+   },
+   "env_fields": [
+    "volume_blob_path"
+   ]
+  },
+  "J533": {
+   "type": "volume_tools",
+   "params": {
+    "volume_out_type": "mask",
+    "threshold": 0.18,
+    "dilator": 5,
+    "pad": 5
+   },
+   "in": {
+    "volume": [
+     "J532"
+    ]
+   }
+  },
+  "J534": {
+   "type": "new_local_refine",
+   "params": {
+    "refine_symmetry": "C4",
+    "refine_res_init": 6
+   },
+   "in": {
+    "particles": [
+     "J512"
+    ],
+    "volume": [
+     "J512"
+    ],
+    "mask": [
+     "J533"
+    ]
+   },
+   "n_particle": 138480,
+   "res_A": 1.891
+  },
+  "J539": {
+   "type": "import_micrographs",
+   "params": {
+    "blob_paths": "YOUR_DATA_PATH/*.mrc",
+    "psize_A": 0.7300000190734863,
+    "accel_kv": 300.0,
+    "cs_mm": 2.700000047683716,
+    "total_dose_e_per_A2": 1.2999999523162842
+   },
+   "env_fields": [
+    "blob_paths"
+   ]
+  },
+  "J540": {
+   "type": "patch_ctf_estimation_multi",
+   "params": {
+    "compute_num_gpus": 4
+   },
+   "in": {
+    "exposures": [
+     "J539"
+    ]
+   }
+  },
+  "J541": {
+   "type": "curate_exposures_v2",
+   "in": {
+    "exposures": [
+     "J540"
+    ]
+   }
+  },
+  "J542": {
+   "type": "blob_picker_gpu",
+   "params": {
+    "diameter": 80,
+    "diameter_max": 240
+   },
+   "in": {
+    "micrographs": [
+     "J541"
+    ]
+   }
+  },
+  "J543": {
+   "type": "extract_micrographs_multi",
+   "params": {
+    "compute_num_gpus": 2,
+    "box_size_pix": 256
+   },
+   "in": {
+    "micrographs": [
+     "J541"
+    ],
+    "particles": [
+     "J542"
+    ]
+   }
+  },
+  "J544": {
+   "type": "class_2D_new",
+   "params": {
+    "class2D_K": 200,
+    "compute_num_gpus": 2
+   },
+   "in": {
+    "particles": [
+     "J543"
+    ]
+   }
+  },
+  "J545": {
+   "type": "select_2D",
+   "in": {
+    "particles": [
+     "J544"
+    ],
+    "templates": [
+     "J544"
+    ]
+   }
+  },
+  "J547": {
+   "type": "class_2D_new",
+   "params": {
+    "class2D_K": 200,
+    "class2D_max_res": 3,
+    "class2D_num_full_iter_batch": 40,
+    "class2D_num_full_iter_batchsize_per_class": 200,
+    "compute_num_gpus": 4
+   },
+   "in": {
+    "particles": [
+     "J545"
+    ]
+   }
+  },
+  "J548": {
+   "type": "select_2D",
+   "in": {
+    "particles": [
+     "J547"
+    ],
+    "templates": [
+     "J547"
+    ]
+   }
+  },
+  "J549": {
+   "type": "class_2D_new",
+   "params": {
+    "class2D_K": 150,
+    "class2D_max_res": 3,
+    "class2D_num_full_iter_batch": 40,
+    "class2D_num_full_iter_batchsize_per_class": 200,
+    "compute_num_gpus": 4
+   },
+   "in": {
+    "particles": [
+     "J548"
+    ]
+   }
+  },
+  "J550": {
+   "type": "select_2D",
+   "in": {
+    "particles": [
+     "J549"
+    ],
+    "templates": [
+     "J549"
+    ]
+   }
+  },
+  "J551": {
+   "type": "template_picker_gpu",
+   "params": {
+    "diameter": 150
+   },
+   "in": {
+    "micrographs": [
+     "J541"
+    ],
+    "templates": [
+     "J550"
+    ]
+   }
+  },
+  "J552": {
+   "type": "extract_micrographs_multi",
+   "params": {
+    "compute_num_gpus": 4,
+    "box_size_pix": 256
+   },
+   "in": {
+    "micrographs": [
+     "J551"
+    ],
+    "particles": [
+     "J551"
+    ]
+   }
+  },
+  "J553": {
+   "type": "class_2D_new",
+   "params": {
+    "class2D_K": 200,
+    "class2D_max_res": 3,
+    "class2D_num_full_iter_batch": 40,
+    "class2D_num_full_iter_batchsize_per_class": 200,
+    "compute_num_gpus": 4
+   },
+   "in": {
+    "particles": [
+     "J552"
+    ]
+   }
+  },
+  "J554": {
+   "type": "select_2D",
+   "in": {
+    "particles": [
+     "J553"
+    ],
+    "templates": [
+     "J553"
+    ]
+   }
+  },
+  "J555": {
+   "type": "class_2D_new",
+   "params": {
+    "class2D_K": 200,
+    "class2D_max_res": 5,
+    "compute_num_gpus": 4,
+    "class2D_num_full_iter_batch": 40,
+    "class2D_num_full_iter_batchsize_per_class": 200
+   },
+   "in": {
+    "particles": [
+     "J554"
+    ]
+   }
+  },
+  "J556": {
+   "type": "select_2D",
+   "in": {
+    "particles": [
+     "J555"
+    ],
+    "templates": [
+     "J555"
+    ]
+   }
+  },
+  "J559": {
+   "type": "class_2D_new",
+   "params": {
+    "class2D_K": 120,
+    "class2D_max_res": 3,
+    "class2D_num_full_iter_batch": 40,
+    "class2D_num_full_iter_batchsize_per_class": 200,
+    "compute_num_gpus": 4
+   },
+   "in": {
+    "particles": [
+     "J556"
+    ]
+   }
+  },
+  "J560": {
+   "type": "select_2D",
+   "in": {
+    "particles": [
+     "J559"
+    ],
+    "templates": [
+     "J559"
+    ]
+   }
+  },
+  "J561": {
+   "type": "homo_abinit",
+   "params": {
+    "abinit_K": 4,
+    "abinit_max_res": 6
+   },
+   "in": {
+    "particles": [
+     "J560"
+    ]
+   }
+  },
+  "J564": {
+   "type": "select_2D",
+   "in": {
+    "particles": [
+     "J559"
+    ],
+    "templates": [
+     "J559"
+    ]
+   }
+  },
+  "J565": {
+   "type": "class_2D_new",
+   "params": {
+    "class2D_K": 30,
+    "class2D_max_res": 3,
+    "class2D_num_full_iter_batch": 40,
+    "class2D_num_full_iter_batchsize_per_class": 200
+   },
+   "in": {
+    "particles": [
+     "J564"
+    ]
+   }
+  },
+  "J566": {
+   "type": "class_2D_new",
+   "params": {
+    "class2D_K": 20,
+    "class2D_max_res": 3,
+    "class2D_force_max": false,
+    "class2D_num_full_iter_batch": 40,
+    "class2D_num_full_iter_batchsize_per_class": 200,
+    "compute_num_gpus": 4
+   },
+   "in": {
+    "particles": [
+     "J561"
+    ]
+   }
+  },
+  "J567": {
+   "type": "select_2D",
+   "in": {
+    "particles": [
+     "J565"
+    ],
+    "templates": [
+     "J565"
+    ]
+   }
+  },
+  "J568": {
+   "type": "select_2D",
+   "in": {
+    "particles": [
+     "J566"
+    ],
+    "templates": [
+     "J566"
+    ]
+   }
+  },
+  "J569": {
+   "type": "template_picker_gpu",
+   "params": {
+    "diameter": 150
+   },
+   "in": {
+    "micrographs": [
+     "J541"
+    ],
+    "templates": [
+     "J567",
+     "J568"
+    ]
+   }
+  },
+  "J570": {
+   "type": "extract_micrographs_multi",
+   "params": {
+    "compute_num_gpus": 4
+   },
+   "in": {
+    "micrographs": [
+     "J569"
+    ],
+    "particles": [
+     "J569"
+    ]
+   }
+  },
+  "J571": {
+   "type": "class_2D_new",
+   "params": {
+    "class2D_K": 200,
+    "class2D_max_res": 4,
+    "class2D_num_full_iter_batch": 40,
+    "class2D_num_full_iter_batchsize_per_class": 200,
+    "compute_num_gpus": 4
+   },
+   "in": {
+    "particles": [
+     "J570"
+    ]
+   }
+  },
+  "J572": {
+   "type": "select_2D",
+   "in": {
+    "particles": [
+     "J571"
+    ],
+    "templates": [
+     "J571"
+    ]
+   }
+  },
+  "J573": {
+   "type": "class_2D_new",
+   "params": {
+    "class2D_K": 100,
+    "class2D_max_res": 3,
+    "class2D_num_full_iter_batch": 40,
+    "class2D_num_full_iter_batchsize_per_class": 200,
+    "compute_num_gpus": 4
+   },
+   "in": {
+    "particles": [
+     "J572"
+    ]
+   }
+  },
+  "J574": {
+   "type": "select_2D",
+   "in": {
+    "particles": [
+     "J573"
+    ],
+    "templates": [
+     "J573"
+    ]
+   }
+  },
+  "J575": {
+   "type": "homo_abinit",
+   "params": {
+    "abinit_K": 5,
+    "abinit_max_res": 6
+   },
+   "in": {
+    "particles": [
+     "J574"
+    ]
+   }
+  },
+  "J576": {
+   "type": "homo_abinit",
+   "params": {
+    "abinit_K": 3,
+    "abinit_max_res": 6
+   },
+   "in": {
+    "particles": [
+     "J574"
+    ]
+   }
+  },
+  "J578": {
+   "type": "select_2D",
+   "in": {
+    "particles": [
+     "J571"
+    ],
+    "templates": [
+     "J571"
+    ]
+   }
+  },
+  "J580": {
+   "type": "nonuniform_refine_new",
+   "params": {
+    "refine_res_align_max": 6
+   },
+   "in": {
+    "particles": [
+     "J575"
+    ],
+    "volume": [
+     "J575"
+    ]
+   }
+  },
+  "J581": {
+   "type": "homo_abinit",
+   "params": {
+    "abinit_K": 3
+   },
+   "in": {
+    "particles": [
+     "J578"
+    ]
+   }
+  },
+  "J582": {
+   "type": "nonuniform_refine_new",
+   "in": {
+    "particles": [
+     "J575"
+    ],
+    "volume": [
+     "J575"
+    ]
+   }
+  },
+  "J583": {
+   "type": "hetero_refine",
+   "params": {
+    "multirefine_res_align_max": 6
+   },
+   "in": {
+    "particles": [
+     "J570"
+    ],
+    "volume": [
+     "J575",
+     "J581"
+    ]
+   }
+  },
+  "J584": {
+   "type": "class_2D_new",
+   "params": {
+    "class2D_K": 20,
+    "class2D_force_max": false,
+    "class2D_num_full_iter_batch": 40,
+    "class2D_num_full_iter_batchsize_per_class": 200
+   },
+   "in": {
+    "particles": [
+     "J576"
+    ]
+   }
+  },
+  "J585": {
+   "type": "class_2D_new",
+   "params": {
+    "class2D_K": 40,
+    "class2D_force_max": false,
+    "class2D_num_full_iter_batch": 40,
+    "class2D_num_full_iter_batchsize_per_class": 200
+   },
+   "in": {
+    "particles": [
+     "J576"
+    ]
+   }
+  },
+  "J586": {
+   "type": "remove_duplicate_particles",
+   "in": {
+    "particles": [
+     "J587",
+     "J588"
+    ]
+   }
+  },
+  "J587": {
+   "type": "select_2D",
+   "in": {
+    "particles": [
+     "J584"
+    ],
+    "templates": [
+     "J584"
+    ]
+   }
+  },
+  "J588": {
+   "type": "select_2D",
+   "in": {
+    "particles": [
+     "J585"
+    ],
+    "templates": [
+     "J585"
+    ]
+   }
+  },
+  "J589": {
+   "type": "homo_abinit",
+   "params": {
+    "abinit_K": 3,
+    "abinit_max_res": 6
+   },
+   "in": {
+    "particles": [
+     "J586"
+    ]
+   }
+  },
+  "J590": {
+   "type": "hetero_refine",
+   "params": {
+    "multirefine_res_align_max": 6
+   },
+   "in": {
+    "volume": [
+     "J581",
+     "J589"
+    ],
+    "particles": [
+     "J583"
+    ]
+   }
+  },
+  "J591": {
+   "type": "class_2D_new",
+   "params": {
+    "class2D_K": 40,
+    "class2D_num_full_iter_batch": 40,
+    "class2D_num_full_iter_batchsize_per_class": 200,
+    "class2D_max_res": 3,
+    "compute_num_gpus": 4
+   },
+   "in": {
+    "particles": [
+     "J590"
+    ]
+   }
+  },
+  "J592": {
+   "type": "select_2D",
+   "in": {
+    "particles": [
+     "J591"
+    ],
+    "templates": [
+     "J591"
+    ]
+   }
+  },
+  "J593": {
+   "type": "homo_abinit",
+   "params": {
+    "abinit_K": 3,
+    "abinit_max_res": 6
+   },
+   "in": {
+    "particles": [
+     "J592"
+    ]
+   }
+  },
+  "J594": {
+   "type": "template_picker_gpu",
+   "params": {
+    "diameter": 150
+   },
+   "in": {
+    "micrographs": [
+     "J541"
+    ],
+    "templates": [
+     "J592"
+    ]
+   }
+  },
+  "J595": {
+   "type": "extract_micrographs_multi",
+   "params": {
+    "compute_num_gpus": 4
+   },
+   "in": {
+    "micrographs": [
+     "J594"
+    ],
+    "particles": [
+     "J594"
+    ]
+   }
+  },
+  "J598": {
+   "type": "hetero_refine",
+   "params": {
+    "multirefine_res_align_max": 6
+   },
+   "in": {
+    "volume": [
+     "J593",
+     "J600"
+    ],
+    "particles": [
+     "J595"
+    ]
+   }
+  },
+  "J599": {
+   "type": "nonuniform_refine_new",
+   "in": {
+    "particles": [
+     "J593"
+    ],
+    "volume": [
+     "J593"
+    ]
+   }
+  },
+  "J600": {
+   "type": "homo_abinit",
+   "params": {
+    "abinit_K": 4
+   },
+   "in": {
+    "particles": [
+     "J578"
+    ]
+   }
+  },
+  "J601": {
+   "type": "new_local_refine",
+   "in": {
+    "mask": [
+     "J599"
+    ],
+    "particles": [
+     "J599"
+    ],
+    "volume": [
+     "J599"
+    ]
+   }
+  },
+  "J602": {
+   "type": "hetero_refine",
+   "params": {
+    "multirefine_res_align_max": 6
+   },
+   "in": {
+    "particles": [
+     "J598"
+    ],
+    "volume": [
+     "J600",
+     "J601"
+    ]
+   }
+  },
+  "J603": {
+   "type": "class_2D_new",
+   "params": {
+    "class2D_K": 50,
+    "class2D_num_full_iter_batch": 40,
+    "class2D_num_full_iter_batchsize_per_class": 200,
+    "class2D_max_res": 3,
+    "compute_num_gpus": 4
+   },
+   "in": {
+    "particles": [
+     "J602"
+    ]
+   }
+  },
+  "J604": {
+   "type": "select_2D",
+   "in": {
+    "particles": [
+     "J603"
+    ],
+    "templates": [
+     "J603"
+    ]
+   }
+  },
+  "J605": {
+   "type": "homo_abinit",
+   "params": {
+    "abinit_K": 3,
+    "abinit_max_res": 6
+   },
+   "in": {
+    "particles": [
+     "J604"
+    ]
+   }
+  },
+  "J608": {
+   "type": "nonuniform_refine_new",
+   "in": {
+    "particles": [
+     "J605"
+    ],
+    "volume": [
+     "J605"
+    ]
+   }
+  },
+  "J612": {
+   "type": "nonuniform_refine_new",
+   "params": {
+    "refine_res_init": 6
+   },
+   "in": {
+    "particles": [
+     "J605"
+    ],
+    "volume": [
+     "J605"
+    ]
+   }
+  },
+  "J613": {
+   "type": "new_local_refine",
+   "in": {
+    "mask": [
+     "J612"
+    ],
+    "particles": [
+     "J612"
+    ],
+    "volume": [
+     "J612"
+    ]
+   }
+  },
+  "J614": {
+   "type": "hetero_refine",
+   "params": {
+    "multirefine_res_align_max": 6
+   },
+   "in": {
+    "particles": [
+     "J598"
+    ],
+    "volume": [
+     "J600",
+     "J613"
+    ]
+   }
+  },
+  "J615": {
+   "type": "hetero_refine",
+   "params": {
+    "multirefine_res_align_max": 6
+   },
+   "in": {
+    "volume": [
+     "J600",
+     "J613"
+    ],
+    "particles": [
+     "J614"
+    ]
+   }
+  },
+  "J616": {
+   "type": "class_2D_new",
+   "params": {
+    "class2D_num_full_iter_batch": 40,
+    "class2D_num_full_iter_batchsize_per_class": 200,
+    "class2D_max_res": 3,
+    "compute_num_gpus": 4
+   },
+   "in": {
+    "particles": [
+     "J615"
+    ]
+   },
+   "n_particle": 59284
+  },
+  "J617": {
+   "type": "select_2D",
+   "in": {
+    "particles": [
+     "J616"
+    ],
+    "templates": [
+     "J616"
+    ]
+   }
+  },
+  "J623": {
+   "type": "import_micrographs",
+   "params": {
+    "blob_paths": "YOUR_DATA_PATH/*.mrc",
+    "psize_A": 0.7300000190734863,
+    "accel_kv": 300.0,
+    "cs_mm": 2.700000047683716,
+    "total_dose_e_per_A2": 1.2999999523162842
+   },
+   "env_fields": [
+    "blob_paths"
+   ]
+  },
+  "J625": {
+   "type": "patch_ctf_estimation_multi",
+   "params": {
+    "compute_num_gpus": 4
+   },
+   "in": {
+    "exposures": [
+     "J623"
+    ]
+   }
+  },
+  "J628": {
+   "type": "curate_exposures_v2",
+   "in": {
+    "exposures": [
+     "J625"
+    ]
+   }
+  },
+  "J630": {
+   "type": "blob_picker_gpu",
+   "params": {
+    "diameter": 80,
+    "diameter_max": 240
+   },
+   "in": {
+    "micrographs": [
+     "J628"
+    ]
+   }
+  },
+  "J631": {
+   "type": "template_picker_gpu",
+   "params": {
+    "diameter": 150
+   },
+   "in": {
+    "templates": [
+     "J617"
+    ],
+    "micrographs": [
+     "J628"
+    ]
+   }
+  },
+  "J633": {
+   "type": "remove_duplicate_particles",
+   "in": {
+    "micrographs": [
+     "J628"
+    ],
+    "particles": [
+     "J630",
+     "J631"
+    ]
+   },
+   "n_particle": 8974049
+  },
+  "J634": {
+   "type": "extract_micrographs_multi",
+   "params": {
+    "compute_num_gpus": 4
+   },
+   "in": {
+    "micrographs": [
+     "J628"
+    ],
+    "particles": [
+     "J633"
+    ]
+   }
+  },
+  "J656": {
+   "type": "particle_sets",
+   "params": {
+    "set_split_size": 2600000
+   },
+   "in": {
+    "particles_A": [
+     "J634"
+    ]
+   }
+  },
+  "J824": {
+   "type": "import_micrographs",
+   "params": {
+    "blob_paths": "YOUR_DATA_PATH/*.mrc",
+    "psize_A": 0.7300000190734863,
+    "accel_kv": 300.0,
+    "cs_mm": 2.700000047683716,
+    "total_dose_e_per_A2": 1.2999999523162842
+   },
+   "env_fields": [
+    "blob_paths"
+   ]
+  },
+  "J825": {
+   "type": "patch_ctf_estimation_multi",
+   "params": {
+    "compute_num_gpus": 4
+   },
+   "in": {
+    "exposures": [
+     "J824"
+    ]
+   }
+  },
+  "J826": {
+   "type": "curate_exposures_v2",
+   "in": {
+    "exposures": [
+     "J825"
+    ]
+   }
+  },
+  "J827": {
+   "type": "import_micrographs",
+   "params": {
+    "blob_paths": "YOUR_DATA_PATH/*.mrc",
+    "psize_A": 0.7300000190734863,
+    "accel_kv": 300.0,
+    "cs_mm": 2.700000047683716,
+    "total_dose_e_per_A2": 1.2999999523162842
+   },
+   "env_fields": [
+    "blob_paths"
+   ]
+  },
+  "J828": {
+   "type": "patch_ctf_estimation_multi",
+   "params": {
+    "compute_num_gpus": 2
+   },
+   "in": {
+    "exposures": [
+     "J827"
+    ]
+   }
+  },
+  "J829": {
+   "type": "curate_exposures_v2",
+   "in": {
+    "exposures": [
+     "J828"
+    ]
+   }
+  },
+  "J830": {
+   "type": "template_picker_gpu",
+   "params": {
+    "diameter": 150
+   },
+   "in": {
+    "templates": [
+     "J525"
+    ],
+    "micrographs": [
+     "J829"
+    ]
+   },
+   "n_particle": 770955
+  },
+  "J831": {
+   "type": "extract_micrographs_multi",
+   "params": {
+    "compute_num_gpus": 4,
+    "box_size_pix": 320
+   },
+   "in": {
+    "micrographs": [
+     "J830"
+    ],
+    "particles": [
+     "J830"
+    ]
+   }
+  },
+  "J832": {
+   "type": "class_2D_new",
+   "params": {
+    "class2D_K": 200,
+    "compute_num_gpus": 4
+   },
+   "in": {
+    "particles": [
+     "J831"
+    ]
+   },
+   "n_particle": 644202
+  },
+  "J833": {
+   "type": "select_2D",
+   "in": {
+    "particles": [
+     "J832"
+    ],
+    "templates": [
+     "J832"
+    ]
+   },
+   "n_particle": 417797,
+   "select": {
+    "selected": 48,
+    "excluded": 152
+   }
+  },
+  "J834": {
+   "type": "class_2D_new",
+   "params": {
+    "class2D_K": 200,
+    "compute_num_gpus": 2
+   },
+   "in": {
+    "particles": [
+     "J833"
+    ]
+   },
+   "n_particle": 226405
+  },
+  "J838": {
+   "type": "select_2D",
+   "in": {
+    "particles": [
+     "J834"
+    ],
+    "templates": [
+     "J834"
+    ]
+   },
+   "n_particle": 172970,
+   "select": {
+    "selected": 30,
+    "excluded": 170
+   }
+  },
+  "J839": {
+   "type": "class_2D_new",
+   "params": {
+    "compute_num_gpus": 2
+   },
+   "in": {
+    "particles": [
+     "J838"
+    ]
+   },
+   "n_particle": 53435
+  },
+  "J840": {
+   "type": "volume_tools",
+   "params": {
+    "vol_lpf_A": 6
+   },
+   "in": {
+    "volume": [
+     "J534"
+    ]
+   }
+  },
+  "J841": {
+   "type": "create_templates",
+   "params": {
+    "n_templates": 20
+   },
+   "in": {
+    "volume": [
+     "J840"
+    ]
+   }
+  },
+  "J842": {
+   "type": "blob_picker_gpu",
+   "params": {
+    "diameter": 120,
+    "diameter_max": 300
+   },
+   "in": {
+    "micrographs": [
+     "J826"
+    ]
+   },
+   "n_particle": 2467958
+  },
+  "J843": {
+   "type": "template_picker_gpu",
+   "params": {
+    "diameter": 150
+   },
+   "in": {
+    "micrographs": [
+     "J826"
+    ],
+    "templates": [
+     "J841"
+    ]
+   },
+   "n_particle": 6828623
+  },
+  "J844": {
+   "type": "remove_duplicate_particles",
+   "params": {
+    "min_dist_A": 30
+   },
+   "in": {
+    "micrographs": [
+     "J826"
+    ],
+    "particles": [
+     "J842",
+     "J843"
+    ]
+   },
+   "n_particle": 7183024
+  },
+  "J845": {
+   "type": "extract_micrographs_multi",
+   "params": {
+    "box_size_pix": 320,
+    "bin_size_pix": 160,
+    "compute_num_gpus": 2
+   },
+   "in": {
+    "micrographs": [
+     "J826"
+    ],
+    "particles": [
+     "J844"
+    ]
+   }
+  },
+  "J846": {
+   "type": "blob_picker_gpu",
+   "params": {
+    "diameter": 120,
+    "diameter_max": 300
+   },
+   "in": {
+    "micrographs": [
+     "J829"
+    ]
+   },
+   "n_particle": 311805
+  },
+  "J847": {
+   "type": "template_picker_gpu",
+   "params": {
+    "diameter": 150
+   },
+   "in": {
+    "micrographs": [
+     "J829"
+    ],
+    "templates": [
+     "J841"
+    ]
+   },
+   "n_particle": 884626
+  },
+  "J848": {
+   "type": "remove_duplicate_particles",
+   "params": {
+    "min_dist_A": 30
+   },
+   "in": {
+    "micrographs": [
+     "J829"
+    ],
+    "particles": [
+     "J846",
+     "J847"
+    ]
+   },
+   "n_particle": 935753
+  },
+  "J849": {
+   "type": "extract_micrographs_multi",
+   "params": {
+    "box_size_pix": 320,
+    "bin_size_pix": 160,
+    "compute_num_gpus": 2
+   },
+   "in": {
+    "micrographs": [
+     "J829"
+    ],
+    "particles": [
+     "J848"
+    ]
+   }
+  },
+  "J850": {
+   "type": "class_2D_new",
+   "params": {
+    "compute_num_gpus": 2,
+    "class2D_K": 200
+   },
+   "in": {
+    "particles": [
+     "J845",
+     "J849"
+    ]
+   },
+   "n_particle": 6707353
+  },
+  "J851": {
+   "type": "select_2D",
+   "in": {
+    "particles": [
+     "J839"
+    ],
+    "templates": [
+     "J839"
+    ]
+   },
+   "n_particle": 44832,
+   "select": {
+    "selected": 33,
+    "excluded": 17
+   }
+  },
+  "J853": {
+   "type": "homo_abinit",
+   "params": {
+    "abinit_K": 3
+   },
+   "in": {
+    "particles": [
+     "J851"
+    ]
+   },
+   "n_particle": 44832
+  },
+  "J854": {
+   "type": "hetero_refine",
+   "in": {
+    "particles": [
+     "J853"
+    ],
+    "volume": [
+     "J853"
+    ]
+   },
+   "n_particle": 44832
+  },
+  "J855": {
+   "type": "nonuniform_refine_new",
+   "in": {
+    "particles": [
+     "J854"
+    ],
+    "volume": [
+     "J854"
+    ]
+   },
+   "n_particle": 24817,
+   "res_A": 3.247
+  },
+  "J856": {
+   "type": "new_local_refine",
+   "in": {
+    "mask": [
+     "J855"
+    ],
+    "particles": [
+     "J855"
+    ],
+    "volume": [
+     "J855"
+    ]
+   },
+   "n_particle": 24817,
+   "res_A": 3.192
+  },
+  "J857": {
+   "type": "hetero_refine",
+   "params": {
+    "multirefine_res_init": 7,
+    "multirefine_N": 80
+   },
+   "in": {
+    "volume": [
+     "J411",
+     "J856"
+    ],
+    "particles": [
+     "J858"
+    ]
+   },
+   "n_particle": 2007310
+  },
+  "J858": {
+   "type": "select_2D",
+   "in": {
+    "particles": [
+     "J860"
+    ],
+    "templates": [
+     "J860"
+    ]
+   },
+   "n_particle": 2007310,
+   "select": {
+    "selected": 182,
+    "excluded": 18
+   }
+  },
+  "J859": {
+   "type": "particle_sets",
+   "params": {
+    "set_split_size": 2100000
+   },
+   "in": {
+    "particles_A": [
+     "J845",
+     "J849"
+    ]
+   },
+   "n_particle": 2572335
+  },
+  "J860": {
+   "type": "class_2D_new",
+   "params": {
+    "compute_num_gpus": 4,
+    "class2D_K": 200
+   },
+   "in": {
+    "particles": [
+     "J859"
+    ]
+   },
+   "n_particle": 2079309
+  },
+  "J861": {
+   "type": "class_2D_new",
+   "params": {
+    "compute_num_gpus": 4,
+    "class2D_K": 200
+   },
+   "in": {
+    "particles": [
+     "J859"
+    ]
+   },
+   "n_particle": 2080410
+  },
+  "J862": {
+   "type": "class_2D_new",
+   "params": {
+    "compute_num_gpus": 4,
+    "class2D_K": 200
+   },
+   "in": {
+    "particles": [
+     "J859"
+    ]
+   },
+   "n_particle": 2548006
+  },
+  "J863": {
+   "type": "select_2D",
+   "in": {
+    "particles": [
+     "J861"
+    ],
+    "templates": [
+     "J861"
+    ]
+   },
+   "n_particle": 2025427,
+   "select": {
+    "selected": 183,
+    "excluded": 17
+   }
+  },
+  "J864": {
+   "type": "select_2D",
+   "in": {
+    "particles": [
+     "J862"
+    ],
+    "templates": [
+     "J862"
+    ]
+   },
+   "n_particle": 2503984,
+   "select": {
+    "selected": 189,
+    "excluded": 11
+   }
+  },
+  "J865": {
+   "type": "hetero_refine",
+   "params": {
+    "multirefine_res_init": 7,
+    "multirefine_N": 80
+   },
+   "in": {
+    "volume": [
+     "J411",
+     "J856"
+    ],
+    "particles": [
+     "J863"
+    ]
+   },
+   "n_particle": 2025427
+  },
+  "J866": {
+   "type": "hetero_refine",
+   "params": {
+    "multirefine_res_init": 7,
+    "multirefine_N": 80
+   },
+   "in": {
+    "volume": [
+     "J411",
+     "J856"
+    ],
+    "particles": [
+     "J864"
+    ]
+   },
+   "n_particle": 2503984
+  },
+  "J867": {
+   "type": "class_2D_new",
+   "params": {
+    "compute_num_gpus": 4,
+    "class2D_K": 200
+   },
+   "in": {
+    "particles": [
+     "J857",
+     "J865",
+     "J866"
+    ]
+   },
+   "n_particle": 1501956
+  },
+  "J868": {
+   "type": "select_2D",
+   "in": {
+    "particles": [
+     "J867"
+    ],
+    "templates": [
+     "J867"
+    ]
+   },
+   "n_particle": 1465760,
+   "select": {
+    "selected": 190,
+    "excluded": 10
+   }
+  },
+  "J869": {
+   "type": "extract_micrographs_multi",
+   "params": {
+    "update_location": true,
+    "update_alignments3D": true,
+    "update_alignments2D": true,
+    "compute_num_gpus": 4,
+    "box_size_pix": 320
+   },
+   "in": {
+    "micrographs": [
+     "J826",
+     "J829"
+    ],
+    "particles": [
+     "J868"
+    ]
+   },
+   "n_particle": 1459623
+  },
+  "J870": {
+   "type": "hetero_refine",
+   "params": {
+    "multirefine_res_init": 7,
+    "multirefine_N": 160
+   },
+   "in": {
+    "volume": [
+     "J411",
+     "J534"
+    ],
+    "particles": [
+     "J869"
+    ]
+   },
+   "n_particle": 1459623
+  },
+  "J880": {
+   "type": "hetero_refine",
+   "params": {
+    "multirefine_res_init": 7,
+    "multirefine_N": 160
+   },
+   "in": {
+    "volume": [
+     "J411",
+     "J534"
+    ],
+    "particles": [
+     "J870"
+    ]
+   },
+   "n_particle": 655041
+  },
+  "J882": {
+   "type": "class_2D_new",
+   "params": {
+    "compute_num_gpus": 4,
+    "class2D_K": 100
+   },
+   "in": {
+    "particles": [
+     "J880"
+    ]
+   },
+   "n_particle": 451816
+  },
+  "J884": {
+   "type": "select_2D",
+   "in": {
+    "particles": [
+     "J882"
+    ],
+    "templates": [
+     "J882"
+    ]
+   },
+   "n_particle": 411702,
+   "select": {
+    "selected": 62,
+    "excluded": 38
+   }
+  },
+  "J885": {
+   "type": "homo_abinit",
+   "params": {
+    "abinit_K": 4
+   },
+   "in": {
+    "particles": [
+     "J884"
+    ]
+   },
+   "n_particle": 411702
+  },
+  "J895": {
+   "type": "select_2D",
+   "in": {
+    "particles": [
+     "J882"
+    ],
+    "templates": [
+     "J882"
+    ]
+   },
+   "n_particle": 405103,
+   "select": {
+    "selected": 63,
+    "excluded": 37
+   }
+  },
+  "J896": {
+   "type": "hetero_refine",
+   "params": {
+    "multirefine_res_init": 7,
+    "multirefine_N": 160
+   },
+   "in": {
+    "volume": [
+     "J411",
+     "J534"
+    ],
+    "particles": [
+     "J895"
+    ]
+   },
+   "n_particle": 405103
+  },
+  "J897": {
+   "type": "hetero_refine",
+   "params": {
+    "multirefine_res_init": 7,
+    "multirefine_N": 160
+   },
+   "in": {
+    "volume": [
+     "J411",
+     "J534"
+    ],
+    "particles": [
+     "J885"
+    ]
+   },
+   "n_particle": 186606
+  },
+  "J899": {
+   "type": "nonuniform_refine_new",
+   "in": {
+    "particles": [
+     "J897"
+    ],
+    "volume": [
+     "J897"
+    ]
+   },
+   "n_particle": 172031,
+   "res_A": 2.701
+  },
+  "J903": {
+   "type": "nonuniform_refine_new",
+   "in": {
+    "particles": [
+     "J896"
+    ],
+    "volume": [
+     "J896"
+    ]
+   },
+   "n_particle": 372630,
+   "res_A": 2.655
+  },
+  "J904": {
+   "type": "new_local_refine",
+   "in": {
+    "mask": [
+     "J903"
+    ],
+    "particles": [
+     "J903"
+    ],
+    "volume": [
+     "J903"
+    ]
+   },
+   "n_particle": 372630,
+   "res_A": 2.63
+  },
+  "J905": {
+   "type": "curate_exposures_v2",
+   "in": {
+    "exposures": [
+     "J825",
+     "J828"
+    ],
+    "particles": [
+     "J896"
+    ]
+   },
+   "n_particle": 291658
+  },
+  "J906": {
+   "type": "nonuniform_refine_new",
+   "in": {
+    "volume": [
+     "J904"
+    ],
+    "particles": [
+     "J905"
+    ]
+   },
+   "n_particle": 291658,
+   "res_A": 2.636
+  },
+  "J907": {
+   "type": "new_local_refine",
+   "in": {
+    "mask": [
+     "J906"
+    ],
+    "particles": [
+     "J906"
+    ],
+    "volume": [
+     "J906"
+    ]
+   },
+   "n_particle": 291658,
+   "res_A": 2.522
+  },
+  "J911": {
+   "type": "hetero_refine",
+   "params": {
+    "multirefine_res_init": 7,
+    "multirefine_N": 160
+   },
+   "in": {
+    "volume": [
+     "J411",
+     "J907"
+    ],
+    "particles": [
+     "J907"
+    ]
+   },
+   "n_particle": 291658
+  },
+  "J913": {
+   "type": "homo_abinit",
+   "params": {
+    "abinit_K": 3,
+    "abinit_max_res": 6
+   },
+   "in": {
+    "particles": [
+     "J911"
+    ]
+   },
+   "n_particle": 275085
+  },
+  "J914": {
+   "type": "nonuniform_refine_new",
+   "params": {
+    "refine_res_init": 7,
+    "refine_ctf_global_refine": true,
+    "crg_do_spherical": true,
+    "crg_do_tetrafoil": true,
+    "crg_do_anisomag": true,
+    "refine_do_ews_correct": true,
+    "refine_symmetry": "C4"
+   },
+   "in": {
+    "particles": [
+     "J913"
+    ],
+    "volume": [
+     "J913"
+    ]
+   },
+   "n_particle": 42543,
+   "res_A": 2.885
+  },
+  "J915": {
+   "type": "nonuniform_refine_new",
+   "params": {
+    "refine_res_init": 7,
+    "refine_ctf_global_refine": true,
+    "crg_do_spherical": true,
+    "crg_do_tetrafoil": true,
+    "crg_do_anisomag": true,
+    "refine_do_ews_correct": true,
+    "refine_symmetry": "C4"
+   },
+   "in": {
+    "particles": [
+     "J913"
+    ],
+    "volume": [
+     "J913"
+    ]
+   },
+   "n_particle": 121971,
+   "res_A": 2.463
+  },
+  "J916": {
+   "type": "nonuniform_refine_new",
+   "params": {
+    "refine_res_init": 7,
+    "refine_ctf_global_refine": true,
+    "crg_do_spherical": true,
+    "crg_do_tetrafoil": true,
+    "crg_do_anisomag": true,
+    "refine_do_ews_correct": true,
+    "refine_symmetry": "C4"
+   },
+   "in": {
+    "particles": [
+     "J913"
+    ],
+    "volume": [
+     "J913"
+    ]
+   },
+   "n_particle": 110571,
+   "res_A": 2.422
+  },
+  "J917": {
+   "type": "new_local_refine",
+   "params": {
+    "refine_symmetry": "C4",
+    "refine_res_init": 6
+   },
+   "in": {
+    "mask": [
+     "J914"
+    ],
+    "particles": [
+     "J914"
+    ],
+    "volume": [
+     "J914"
+    ]
+   },
+   "n_particle": 42543,
+   "res_A": 2.734
+  },
+  "J918": {
+   "type": "new_local_refine",
+   "params": {
+    "refine_symmetry": "C4",
+    "refine_res_init": 6
+   },
+   "in": {
+    "mask": [
+     "J915"
+    ],
+    "particles": [
+     "J915"
+    ],
+    "volume": [
+     "J915"
+    ]
+   },
+   "n_particle": 121971,
+   "res_A": 2.395
+  },
+  "J919": {
+   "type": "new_local_refine",
+   "params": {
+    "refine_symmetry": "C4",
+    "refine_res_init": 6
+   },
+   "in": {
+    "mask": [
+     "J916"
+    ],
+    "particles": [
+     "J916"
+    ],
+    "volume": [
+     "J916"
+    ]
+   },
+   "n_particle": 110571,
+   "res_A": 2.38
+  },
+  "J920": {
+   "type": "curate_exposures_v2",
+   "in": {
+    "exposures": [
+     "J825",
+     "J828"
+    ],
+    "particles": [
+     "J896"
+    ]
+   },
+   "n_particle": 198401
+  },
+  "J922": {
+   "type": "nonuniform_refine_new",
+   "params": {
+    "refine_res_init": 7,
+    "refine_ctf_global_refine": true,
+    "crg_do_spherical": true,
+    "crg_do_tetrafoil": true,
+    "crg_do_anisomag": true,
+    "refine_do_ews_correct": true,
+    "refine_symmetry": "C4"
+   },
+   "in": {
+    "volume": [
+     "J907"
+    ],
+    "particles": [
+     "J920"
+    ]
+   },
+   "n_particle": 198401,
+   "res_A": 2.318
+  },
+  "J924": {
+   "type": "new_local_refine",
+   "params": {
+    "refine_symmetry": "C4",
+    "refine_res_init": 12
+   },
+   "in": {
+    "mask": [
+     "J922"
+    ],
+    "particles": [
+     "J922"
+    ],
+    "volume": [
+     "J922"
+    ]
+   },
+   "n_particle": 198401,
+   "res_A": 2.329
+  },
+  "J928": {
+   "type": "homo_abinit",
+   "params": {
+    "abinit_K": 2,
+    "abinit_max_res": 6
+   },
+   "in": {
+    "particles": [
+     "J922"
+    ]
+   },
+   "n_particle": 198401
+  },
+  "J930": {
+   "type": "nonuniform_refine_new",
+   "params": {
+    "refine_res_init": 7,
+    "refine_ctf_global_refine": true,
+    "crg_do_spherical": true,
+    "crg_do_tetrafoil": true,
+    "crg_do_anisomag": true,
+    "refine_do_ews_correct": true,
+    "refine_symmetry": "C4"
+   },
+   "in": {
+    "particles": [
+     "J928"
+    ],
+    "volume": [
+     "J928"
+    ]
+   },
+   "n_particle": 181139,
+   "res_A": 2.329
+  },
+  "J933": {
+   "type": "new_local_refine",
+   "params": {
+    "refine_symmetry": "C4"
+   },
+   "in": {
+    "mask": [
+     "J930"
+    ],
+    "particles": [
+     "J930"
+    ],
+    "volume": [
+     "J930"
+    ]
+   },
+   "n_particle": 181139,
+   "res_A": 2.312
+  },
+  "J935": {
+   "type": "remove_duplicate_particles",
+   "params": {
+    "min_dist_A": 30
+   },
+   "in": {
+    "particles": [
+     "J918",
+     "J919",
+     "J928"
+    ],
+    "micrographs": [
+     "J920"
+    ]
+   },
+   "n_particle": 264519
+  },
+  "J936": {
+   "type": "topaz_train",
+   "params": {
+    "exec_path": "YOUR_TOOL_PATH/topaz",
+    "par_diam": 140,
+    "num_particles": 300
+   },
+   "env_fields": [
+    "exec_path"
+   ],
+   "in": {
+    "micrographs": [
+     "J920"
+    ],
+    "particles": [
+     "J935"
+    ]
+   }
+  },
+  "J937": {
+   "type": "topaz_extract",
+   "params": {
+    "par_diam": 140,
+    "exec_path": "YOUR_TOOL_PATH/topaz"
+   },
+   "env_fields": [
+    "exec_path"
+   ],
+   "in": {
+    "micrographs": [
+     "J936"
+    ],
+    "model": [
+     "J936"
+    ]
+   },
+   "n_particle": 759696
+  },
+  "J939": {
+   "type": "extract_micrographs_multi",
+   "params": {
+    "box_size_pix": 320,
+    "compute_num_gpus": 2,
+    "update_location": false,
+    "update_alignments3D": false,
+    "update_alignments2D": false
+   },
+   "in": {
+    "micrographs": [
+     "J937"
+    ],
+    "particles": [
+     "J937"
+    ]
+   },
+   "n_particle": 749372
+  },
+  "J940": {
+   "type": "hetero_refine",
+   "params": {
+    "multirefine_res_init": 7,
+    "multirefine_N": 160
+   },
+   "in": {
+    "volume": [
+     "J411",
+     "J933"
+    ],
+    "particles": [
+     "J939"
+    ]
+   },
+   "n_particle": 749372
+  },
+  "J941": {
+   "type": "nonuniform_refine_new",
+   "params": {
+    "refine_res_init": 7,
+    "refine_ctf_global_refine": true,
+    "crg_do_spherical": true,
+    "crg_do_tetrafoil": true,
+    "crg_do_anisomag": true,
+    "refine_do_ews_correct": true,
+    "refine_symmetry": "C4"
+   },
+   "in": {
+    "particles": [
+     "J940"
+    ],
+    "volume": [
+     "J940"
+    ]
+   },
+   "n_particle": 302655,
+   "res_A": 2.356
+  },
+  "J942": {
+   "type": "new_local_refine",
+   "params": {
+    "refine_symmetry": "C4"
+   },
+   "in": {
+    "mask": [
+     "J941"
+    ],
+    "particles": [
+     "J941"
+    ],
+    "volume": [
+     "J941"
+    ]
+   },
+   "n_particle": 302655,
+   "res_A": 2.365
+  },
+  "J967": {
+   "type": "class_2D_new",
+   "params": {
+    "class2D_K": 100,
+    "class2D_max_res": 3,
+    "compute_num_gpus": 4
+   },
+   "in": {
+    "particles": [
+     "J914"
+    ]
+   }
+  },
+  "J968": {
+   "type": "class_2D_new",
+   "params": {
+    "class2D_K": 100,
+    "class2D_max_res": 3,
+    "compute_num_gpus": 4
+   },
+   "in": {
+    "particles": [
+     "J896"
+    ]
+   }
+  },
+  "J969": {
+   "type": "select_2D",
+   "in": {
+    "particles": [
+     "J968"
+    ],
+    "templates": [
+     "J968"
+    ]
+   }
+  },
+  "J970": {
+   "type": "homo_abinit",
+   "params": {
+    "abinit_K": 2,
+    "abinit_max_res": 4,
+    "abinit_init_res": 12
+   },
+   "in": {
+    "particles": [
+     "J969"
+    ]
+   }
+  },
+  "J974": {
+   "type": "nonuniform_refine_new",
+   "params": {
+    "refine_symmetry": "C4",
+    "refine_res_init": 7,
+    "refine_defocus_refine": true,
+    "refine_ctf_global_refine": true,
+    "crg_do_spherical": true,
+    "crg_do_tetrafoil": true,
+    "crg_do_anisomag": true,
+    "refine_do_ews_correct": true
+   },
+   "in": {
+    "particles": [
+     "J970"
+    ],
+    "volume": [
+     "J970"
+    ]
+   }
+  },
+  "J994": {
+   "type": "nonuniform_refine_new",
+   "params": {
+    "refine_symmetry": "C4",
+    "refine_defocus_refine": true,
+    "refine_ctf_global_refine": true,
+    "crg_do_spherical": true,
+    "crg_do_tetrafoil": true,
+    "crg_do_anisomag": true,
+    "refine_do_ews_correct": true
+   },
+   "in": {
+    "particles": [
+     "J534",
+     "J970"
+    ],
+    "volume": [
+     "J970"
+    ]
+   }
+  },
+  "J995": {
+   "type": "homo_abinit",
+   "params": {
+    "abinit_K": 3,
+    "abinit_max_res": 6,
+    "abinit_init_res": 12
+   },
+   "in": {
+    "particles": [
+     "J994"
+    ]
+   }
+  },
+  "J997": {
+   "type": "nonuniform_refine_new",
+   "params": {
+    "refine_symmetry": "C4",
+    "refine_defocus_refine": true,
+    "refine_ctf_global_refine": true,
+    "crg_do_spherical": true,
+    "crg_do_tetrafoil": true,
+    "crg_do_anisomag": true,
+    "refine_do_ews_correct": true
+   },
+   "in": {
+    "volume": [
+     "J970"
+    ],
+    "particles": [
+     "J995"
+    ]
+   }
+  },
+  "J998": {
+   "type": "new_local_refine",
+   "params": {
+    "refine_symmetry": "C4"
+   },
+   "in": {
+    "mask": [
+     "J997"
+    ],
+    "particles": [
+     "J997"
+    ],
+    "volume": [
+     "J997"
+    ]
+   }
+  },
+  "J1730": {
+   "type": "import_micrographs",
+   "params": {
+    "blob_paths": "YOUR_DATA_PATH/*.mrc",
+    "psize_A": 0.7300000190734863,
+    "accel_kv": 300.0,
+    "cs_mm": 2.700000047683716,
+    "total_dose_e_per_A2": 1.2999999523162842
+   },
+   "env_fields": [
+    "blob_paths"
+   ]
+  },
+  "J1731": {
+   "type": "patch_ctf_estimation_multi",
+   "params": {
+    "compute_num_gpus": 4
+   },
+   "in": {
+    "exposures": [
+     "J1730"
+    ]
+   }
+  },
+  "J1732": {
+   "type": "blob_picker_gpu",
+   "params": {
+    "diameter": 80,
+    "diameter_max": 300
+   },
+   "in": {
+    "micrographs": [
+     "J1731"
+    ]
+   },
+   "n_particle": 4272680
+  },
+  "J1733": {
+   "type": "extract_micrographs_multi",
+   "params": {
+    "compute_num_gpus": 4,
+    "box_size_pix": 320,
+    "bin_size_pix": 160
+   },
+   "in": {
+    "micrographs": [
+     "J1732"
+    ],
+    "particles": [
+     "J1732"
+    ]
+   }
+  },
+  "J1734": {
+   "type": "particle_sets",
+   "params": {
+    "set_split_num": 3
+   },
+   "in": {
+    "particles_A": [
+     "J1733"
+    ]
+   },
+   "n_particle": 1199665
+  },
+  "J1735": {
+   "type": "class_2D_new",
+   "params": {
+    "class2D_K": 200,
+    "class2D_max_res": 3,
+    "compute_num_gpus": 4
+   },
+   "in": {
+    "particles": [
+     "J1734"
+    ]
+   }
+  },
+  "J1736": {
+   "type": "class_2D_new",
+   "params": {
+    "class2D_K": 200,
+    "class2D_max_res": 3,
+    "compute_num_gpus": 4
+   },
+   "in": {
+    "particles": [
+     "J1734"
+    ]
+   }
+  },
+  "J1737": {
+   "type": "class_2D_new",
+   "params": {
+    "class2D_K": 200,
+    "class2D_max_res": 3,
+    "compute_num_gpus": 4
+   },
+   "in": {
+    "particles": [
+     "J1734"
+    ]
+   }
+  },
+  "J1738": {
+   "type": "select_2D",
+   "in": {
+    "particles": [
+     "J1735"
+    ],
+    "templates": [
+     "J1735"
+    ]
+   }
+  },
+  "J1739": {
+   "type": "select_2D",
+   "in": {
+    "particles": [
+     "J1736"
+    ],
+    "templates": [
+     "J1736"
+    ]
+   }
+  },
+  "J1740": {
+   "type": "select_2D",
+   "in": {
+    "particles": [
+     "J1737"
+    ],
+    "templates": [
+     "J1737"
+    ]
+   }
+  },
+  "J1741": {
+   "type": "class_2D_new",
+   "params": {
+    "class2D_K": 150,
+    "class2D_max_res": 3,
+    "compute_num_gpus": 4
+   },
+   "in": {
+    "particles": [
+     "J1738",
+     "J1739",
+     "J1740"
+    ]
+   }
+  },
+  "J1742": {
+   "type": "curate_exposures_v2",
+   "in": {
+    "exposures": [
+     "J1731"
+    ]
+   }
+  },
+  "J1743": {
+   "type": "select_2D",
+   "in": {
+    "particles": [
+     "J1741"
+    ],
+    "templates": [
+     "J1741"
+    ]
+   },
+   "n_particle": 593170,
+   "select": {
+    "selected": 58,
+    "excluded": 92
+   }
+  },
+  "J1744": {
+   "type": "template_picker_gpu",
+   "params": {
+    "diameter": 150
+   },
+   "in": {
+    "micrographs": [
+     "J1742"
+    ],
+    "templates": [
+     "J1743"
+    ]
+   },
+   "n_particle": 5631777
+  },
+  "J1747": {
+   "type": "extract_micrographs_multi",
+   "params": {
+    "compute_num_gpus": 4,
+    "box_size_pix": 320
+   },
+   "in": {
+    "micrographs": [
+     "J1744"
+    ],
+    "particles": [
+     "J1744"
+    ]
+   }
+  },
+  "J1748": {
+   "type": "particle_sets",
+   "params": {
+    "set_split_num": 2
+   },
+   "in": {
+    "particles_A": [
+     "J1747"
+    ]
+   },
+   "n_particle": 2350984
+  },
+  "J1749": {
+   "type": "class_2D_new",
+   "params": {
+    "class2D_K": 200,
+    "class2D_max_res": 3,
+    "compute_num_gpus": 4
+   },
+   "in": {
+    "particles": [
+     "J1748"
+    ]
+   },
+   "n_particle": 2350984
+  },
+  "J1750": {
+   "type": "class_2D_new",
+   "params": {
+    "class2D_K": 200,
+    "class2D_max_res": 3,
+    "compute_num_gpus": 4
+   },
+   "in": {
+    "particles": [
+     "J1748"
+    ]
+   },
+   "n_particle": 2350984
+  },
+  "J1761": {
+   "type": "select_2D",
+   "in": {
+    "particles": [
+     "J1750"
+    ],
+    "templates": [
+     "J1750"
+    ]
+   },
+   "n_particle": 1902586,
+   "select": {
+    "selected": 148,
+    "excluded": 52
+   }
+  },
+  "J1762": {
+   "type": "select_2D",
+   "in": {
+    "particles": [
+     "J1749"
+    ],
+    "templates": [
+     "J1749"
+    ]
+   },
+   "n_particle": 1886550,
+   "select": {
+    "selected": 149,
+    "excluded": 51
+   }
+  },
+  "J1763": {
+   "type": "class_2D_new",
+   "params": {
+    "class2D_K": 200,
+    "class2D_max_res": 3,
+    "compute_num_gpus": 4
+   },
+   "in": {
+    "particles": [
+     "J1761",
+     "J1762"
+    ]
+   },
+   "n_particle": 3789136
+  },
+  "J1764": {
+   "type": "select_2D",
+   "in": {
+    "particles": [
+     "J1763"
+    ],
+    "templates": [
+     "J1763"
+    ]
+   },
+   "n_particle": 2521998,
+   "select": {
+    "selected": 34,
+    "excluded": 166
+   }
+  },
+  "J1765": {
+   "type": "class_2D_new",
+   "params": {
+    "class2D_K": 150,
+    "class2D_max_res": 3,
+    "class2D_num_full_iter_batch": 30,
+    "class2D_num_full_iter_batchsize_per_class": 200,
+    "compute_num_gpus": 4
+   },
+   "in": {
+    "particles": [
+     "J1764"
+    ]
+   },
+   "n_particle": 1267138
+  },
+  "J1767": {
+   "type": "select_2D",
+   "in": {
+    "particles": [
+     "J1765"
+    ],
+    "templates": [
+     "J1765"
+    ]
+   },
+   "n_particle": 807612,
+   "select": {
+    "selected": 49,
+    "excluded": 101
+   }
+  },
+  "J1768": {
+   "type": "homo_abinit",
+   "params": {
+    "abinit_K": 5,
+    "abinit_max_res": 6,
+    "abinit_init_res": 12
+   },
+   "in": {
+    "particles": [
+     "J1767"
+    ]
+   },
+   "n_particle": 807612
+  },
+  "J1769": {
+   "type": "select_2D",
+   "in": {
+    "particles": [
+     "J1735"
+    ],
+    "templates": [
+     "J1735"
+    ]
+   },
+   "n_particle": 612550,
+   "select": {
+    "selected": 81,
+    "excluded": 119
+   }
+  },
+  "J1770": {
+   "type": "select_2D",
+   "in": {
+    "particles": [
+     "J1736"
+    ],
+    "templates": [
+     "J1736"
+    ]
+   },
+   "n_particle": 940134,
+   "select": {
+    "selected": 140,
+    "excluded": 60
+   }
+  },
+  "J1771": {
+   "type": "select_2D",
+   "in": {
+    "particles": [
+     "J1737"
+    ],
+    "templates": [
+     "J1737"
+    ]
+   },
+   "n_particle": 969528,
+   "select": {
+    "selected": 141,
+    "excluded": 59
+   }
+  },
+  "J1772": {
+   "type": "class_2D_new",
+   "params": {
+    "class2D_K": 200,
+    "class2D_max_res": 6,
+    "compute_num_gpus": 4
+   },
+   "in": {
+    "particles": [
+     "J1769",
+     "J1770",
+     "J1771"
+    ]
+   },
+   "n_particle": 2496777
+  },
+  "J1773": {
+   "type": "nonuniform_refine_new",
+   "params": {
+    "refine_res_align_max": 6,
+    "refine_res_init": 12
+   },
+   "in": {
+    "particles": [
+     "J1768"
+    ],
+    "volume": [
+     "J1768"
+    ]
+   },
+   "n_particle": 258348,
+   "res_A": 2.758
+  },
+  "J1774": {
+   "type": "select_2D",
+   "in": {
+    "particles": [
+     "J1772"
+    ],
+    "templates": [
+     "J1772"
+    ]
+   },
+   "n_particle": 1953953,
+   "select": {
+    "selected": 137,
+    "excluded": 63
+   }
+  },
+  "J1775": {
+   "type": "new_local_refine",
+   "params": {
+    "refine_res_align_max": 3
+   },
+   "in": {
+    "mask": [
+     "J1773"
+    ],
+    "particles": [
+     "J1773"
+    ],
+    "volume": [
+     "J1773"
+    ]
+   },
+   "n_particle": 258348,
+   "res_A": 2.461
+  },
+  "J1776": {
+   "type": "extract_micrographs_multi",
+   "params": {
+    "compute_num_gpus": 4,
+    "box_size_pix": 320,
+    "update_location": true,
+    "update_alignments2D": true,
+    "recenter_key": "alignments2D"
+   },
+   "in": {
+    "micrographs": [
+     "J1744"
+    ],
+    "particles": [
+     "J1774"
+    ]
+   }
+  },
+  "J1777": {
+   "type": "hetero_refine",
+   "in": {
+    "particles": [
+     "J1761",
+     "J1762",
+     "J1776"
+    ],
+    "volume": [
+     "J1775",
+     "J1778"
+    ]
+   },
+   "n_particle": 5686879
+  },
+  "J1778": {
+   "type": "homo_abinit",
+   "params": {
+    "abinit_K": 4,
+    "abinit_max_res": 6,
+    "abinit_init_res": 35
+   },
+   "in": {
+    "particles": [
+     "J1779"
+    ]
+   },
+   "n_particle": 460092
+  },
+  "J1779": {
+   "type": "select_2D",
+   "in": {
+    "particles": [
+     "J1763"
+    ],
+    "templates": [
+     "J1763"
+    ]
+   },
+   "n_particle": 3329044,
+   "select": {
+    "selected": 30,
+    "excluded": 170
+   }
+  },
+  "J1780": {
+   "type": "hetero_refine",
+   "in": {
+    "volume": [
+     "J1775",
+     "J1778"
+    ],
+    "particles": [
+     "J1777"
+    ]
+   },
+   "n_particle": 2121518
+  },
+  "J1781": {
+   "type": "hetero_refine",
+   "in": {
+    "volume": [
+     "J1775",
+     "J1778"
+    ],
+    "particles": [
+     "J1780"
+    ]
+   },
+   "n_particle": 1461360
+  },
+  "J1782": {
+   "type": "class_2D_new",
+   "params": {
+    "class2D_K": 200,
+    "compute_num_gpus": 2,
+    "class2D_max_res": 3,
+    "class2D_num_full_iter_batch": 30,
+    "class2D_num_full_iter_batchsize_per_class": 200
+   },
+   "in": {
+    "particles": [
+     "J1781"
+    ]
+   },
+   "n_particle": 908558
+  },
+  "J1783": {
+   "type": "nonuniform_refine_new",
+   "params": {
+    "refine_res_align_max": 3,
+    "refine_res_init": 12,
+    "refine_symmetry": "C4"
+   },
+   "in": {
+    "particles": [
+     "J1787"
+    ],
+    "volume": [
+     "J1787"
+    ]
+   },
+   "n_particle": 328928,
+   "res_A": 2.422
+  },
+  "J1784": {
+   "type": "new_local_refine",
+   "params": {
+    "refine_symmetry": "C1",
+    "refine_symmetry_do_align": true,
+    "refine_res_align_max": 3
+   },
+   "in": {
+    "mask": [
+     "J1783"
+    ],
+    "particles": [
+     "J1783"
+    ],
+    "volume": [
+     "J1783"
+    ]
+   },
+   "n_particle": 328928,
+   "res_A": 2.646
+  },
+  "J1785": {
+   "type": "select_2D",
+   "in": {
+    "particles": [
+     "J1782"
+    ],
+    "templates": [
+     "J1782"
+    ]
+   },
+   "n_particle": 758763,
+   "select": {
+    "selected": 85,
+    "excluded": 115
+   }
+  },
+  "J1786": {
+   "type": "remove_duplicate_particles",
+   "in": {
+    "micrographs": [
+     "J1742"
+    ],
+    "particles": [
+     "J1785"
+    ]
+   },
+   "n_particle": 755024
+  },
+  "J1787": {
+   "type": "homo_abinit",
+   "params": {
+    "abinit_K": 3,
+    "abinit_max_res": 6
+   },
+   "in": {
+    "particles": [
+     "J1786"
+    ]
+   },
+   "n_particle": 755024
+  },
+  "J1788": {
+   "type": "remove_duplicate_particles",
+   "in": {
+    "micrographs": [
+     "J1742"
+    ],
+    "particles": [
+     "J1761",
+     "J1762",
+     "J1776"
+    ]
+   },
+   "n_particle": 4791129
+  },
+  "J1789": {
+   "type": "hetero_refine",
+   "in": {
+    "volume": [
+     "J1778",
+     "J1784"
+    ],
+    "particles": [
+     "J1788"
+    ]
+   },
+   "n_particle": 4791129
+  },
+  "J1790": {
+   "type": "hetero_refine",
+   "in": {
+    "volume": [
+     "J1778",
+     "J1784"
+    ],
+    "particles": [
+     "J1789"
+    ]
+   },
+   "n_particle": 1770402
+  },
+  "J1792": {
+   "type": "class_2D_new",
+   "params": {
+    "class2D_K": 150,
+    "compute_num_gpus": 2,
+    "class2D_max_res": 3,
+    "class2D_num_full_iter_batch": 30,
+    "class2D_num_full_iter_batchsize_per_class": 200
+   },
+   "in": {
+    "particles": [
+     "J1790"
+    ]
+   },
+   "n_particle": 1029178
+  },
+  "J1793": {
+   "type": "select_2D",
+   "in": {
+    "particles": [
+     "J1792"
+    ],
+    "templates": [
+     "J1792"
+    ]
+   },
+   "n_particle": 793729,
+   "select": {
+    "selected": 64,
+    "excluded": 86
+   }
+  },
+  "J1794": {
+   "type": "homo_abinit",
+   "params": {
+    "abinit_K": 3,
+    "abinit_max_res": 6
+   },
+   "in": {
+    "particles": [
+     "J1795"
+    ]
+   },
+   "n_particle": 903360
+  },
+  "J1795": {
+   "type": "remove_duplicate_particles",
+   "in": {
+    "micrographs": [
+     "J1742"
+    ],
+    "particles": [
+     "J1785",
+     "J1793"
+    ]
+   },
+   "n_particle": 903360
+  },
+  "J1797": {
+   "type": "nonuniform_refine_new",
+   "params": {
+    "refine_symmetry": "C4",
+    "crg_do_tetrafoil": true,
+    "crg_do_anisomag": true,
+    "crg_do_spherical": true,
+    "refine_do_ews_correct": true,
+    "refine_ctf_global_refine": true
+   },
+   "in": {
+    "particles": [
+     "J1794"
+    ],
+    "volume": [
+     "J1794"
+    ]
+   },
+   "n_particle": 403249,
+   "res_A": 2.113
+  },
+  "J1798": {
+   "type": "new_local_refine",
+   "params": {
+    "refine_symmetry": "C4"
+   },
+   "in": {
+    "mask": [
+     "J1797"
+    ],
+    "particles": [
+     "J1797"
+    ],
+    "volume": [
+     "J1797"
+    ]
+   },
+   "n_particle": 403249,
+   "res_A": 2.113
+  },
+  "J1799": {
+   "type": "topaz_train",
+   "params": {
+    "exec_path": "YOUR_TOOL_PATH/topaz",
+    "par_diam": 140,
+    "num_particles": 300
+   },
+   "env_fields": [
+    "exec_path"
+   ],
+   "in": {
+    "micrographs": [
+     "J1742"
+    ],
+    "particles": [
+     "J1794"
+    ]
+   }
+  },
+  "J1800": {
+   "type": "topaz_extract",
+   "params": {
+    "par_diam": 140,
+    "exec_path": "YOUR_TOOL_PATH/topaz"
+   },
+   "env_fields": [
+    "exec_path"
+   ],
+   "in": {
+    "micrographs": [
+     "J1799"
+    ],
+    "model": [
+     "J1799"
+    ]
+   },
+   "n_particle": 1498663
+  },
+  "J1801": {
+   "type": "extract_micrographs_multi",
+   "params": {
+    "compute_num_gpus": 4,
+    "box_size_pix": 320
+   },
+   "in": {
+    "micrographs": [
+     "J1800"
+    ],
+    "particles": [
+     "J1800"
+    ]
+   },
+   "n_particle": 1476215
+  },
+  "J1802": {
+   "type": "hetero_refine",
+   "in": {
+    "volume": [
+     "J1778",
+     "J1798"
+    ],
+    "particles": [
+     "J1801"
+    ]
+   },
+   "n_particle": 1476215
+  },
+  "J1803": {
+   "type": "nonuniform_refine_new",
+   "params": {
+    "refine_symmetry": "C4",
+    "refine_ctf_global_refine": true,
+    "crg_do_spherical": true,
+    "crg_do_tetrafoil": true,
+    "crg_do_anisomag": true,
+    "refine_do_ews_correct": true
+   },
+   "in": {
+    "particles": [
+     "J1802"
+    ],
+    "volume": [
+     "J1802"
+    ]
+   },
+   "n_particle": 865323,
+   "res_A": 2.095
+  },
+  "J1804": {
+   "type": "new_local_refine",
+   "params": {
+    "refine_symmetry": "C4"
+   },
+   "in": {
+    "mask": [
+     "J1803"
+    ],
+    "particles": [
+     "J1803"
+    ],
+    "volume": [
+     "J1803"
+    ]
+   },
+   "n_particle": 865323,
+   "res_A": 2.062
+  },
+  "J1806": {
+   "type": "hetero_refine",
+   "in": {
+    "volume": [
+     "J1778",
+     "J1804"
+    ],
+    "particles": [
+     "J1802"
+    ]
+   },
+   "n_particle": 865323
+  },
+  "J1824": {
+   "type": "hetero_refine",
+   "params": {
+    "multirefine_symmetry": "C4"
+   },
+   "in": {
+    "volume": [
+     "J1778",
+     "J1798"
+    ],
+    "particles": [
+     "J1802"
+    ]
+   },
+   "n_particle": 865323
+  },
+  "J1825": {
+   "type": "class_2D_new",
+   "params": {
+    "class2D_K": 100,
+    "compute_num_gpus": 4,
+    "class2D_max_res": 3,
+    "class2D_num_full_iter_batch": 30,
+    "class2D_num_full_iter_batchsize_per_class": 200
+   },
+   "in": {
+    "particles": [
+     "J1806"
+    ]
+   },
+   "n_particle": 702026
+  },
+  "J1828": {
+   "type": "select_2D",
+   "in": {
+    "particles": [
+     "J1825"
+    ],
+    "templates": [
+     "J1825"
+    ]
+   },
+   "n_particle": 617667,
+   "select": {
+    "selected": 47,
+    "excluded": 53
+   }
+  },
+  "J1829": {
+   "type": "homo_abinit",
+   "params": {
+    "abinit_K": 2,
+    "abinit_max_res": 6
+   },
+   "in": {
+    "particles": [
+     "J1828"
+    ]
+   },
+   "n_particle": 617667
+  },
+  "J1830": {
+   "type": "hetero_refine",
+   "in": {
+    "particles": [
+     "J1829"
+    ],
+    "volume": [
+     "J1829"
+    ]
+   },
+   "n_particle": 617667
+  },
+  "J1831": {
+   "type": "nonuniform_refine_new",
+   "params": {
+    "refine_symmetry": "C4",
+    "refine_ctf_global_refine": true,
+    "crg_do_spherical": true,
+    "crg_do_tetrafoil": true,
+    "crg_do_anisomag": true,
+    "refine_do_ews_correct": true
+   },
+   "in": {
+    "particles": [
+     "J1824"
+    ],
+    "volume": [
+     "J1824"
+    ]
+   },
+   "n_particle": 692363,
+   "res_A": 2.082
+  },
+  "J1832": {
+   "type": "new_local_refine",
+   "params": {
+    "refine_symmetry": "C4"
+   },
+   "in": {
+    "mask": [
+     "J1831"
+    ],
+    "particles": [
+     "J1831"
+    ],
+    "volume": [
+     "J1831"
+    ]
+   },
+   "n_particle": 692363,
+   "res_A": 2.055
+  },
+  "J1833": {
+   "type": "nonuniform_refine_new",
+   "params": {
+    "refine_symmetry": "C4",
+    "crg_do_tetrafoil": true,
+    "crg_do_anisomag": true,
+    "crg_do_spherical": true,
+    "refine_do_ews_correct": true,
+    "refine_ctf_global_refine": true
+   },
+   "in": {
+    "particles": [
+     "J1830"
+    ],
+    "volume": [
+     "J1830"
+    ]
+   },
+   "n_particle": 300987,
+   "res_A": 2.139
+  },
+  "J1834": {
+   "type": "new_local_refine",
+   "params": {
+    "refine_symmetry": "C4"
+   },
+   "in": {
+    "mask": [
+     "J1833"
+    ],
+    "particles": [
+     "J1833"
+    ],
+    "volume": [
+     "J1833"
+    ]
+   },
+   "n_particle": 300987,
+   "res_A": 2.159
+  },
+  "J1837": {
+   "type": "curate_exposures_v2",
+   "in": {
+    "exposures": [
+     "J1731"
+    ],
+    "particles": [
+     "J1833"
+    ]
+   },
+   "n_particle": 288692
+  },
+  "J1838": {
+   "type": "nonuniform_refine_new",
+   "params": {
+    "refine_symmetry": "C4",
+    "crg_do_tetrafoil": true,
+    "crg_do_anisomag": true,
+    "crg_do_spherical": true,
+    "refine_do_ews_correct": true,
+    "refine_ctf_global_refine": true
+   },
+   "in": {
+    "volume": [
+     "J1834"
+    ],
+    "particles": [
+     "J1837"
+    ]
+   },
+   "n_particle": 288692,
+   "res_A": 2.148
+  },
+  "J1840": {
+   "type": "nonuniform_refine_new",
+   "params": {
+    "refine_symmetry": "C4",
+    "crg_do_tetrafoil": true,
+    "crg_do_anisomag": true,
+    "crg_do_spherical": true,
+    "refine_do_ews_correct": true,
+    "refine_ctf_global_refine": true,
+    "refine_res_init": 7,
+    "refine_defocus_refine": true
+   },
+   "in": {
+    "volume": [
+     "J1834"
+    ],
+    "particles": [
+     "J1837"
+    ]
+   },
+   "n_particle": 288692,
+   "res_A": 2.169
+  },
+  "J1841": {
+   "type": "new_local_refine",
+   "params": {
+    "refine_symmetry": "C4",
+    "refine_res_init": 6
+   },
+   "in": {
+    "mask": [
+     "J1840"
+    ],
+    "particles": [
+     "J1840"
+    ],
+    "volume": [
+     "J1840"
+    ]
+   },
+   "n_particle": 288692,
+   "res_A": 2.189
+  },
+  "J1842": {
+   "type": "curate_exposures_v2",
+   "in": {
+    "exposures": [
+     "J1731"
+    ],
+    "particles": [
+     "J1833"
+    ]
+   },
+   "n_particle": 252241
+  },
+  "J1843": {
+   "type": "nonuniform_refine_new",
+   "params": {
+    "refine_symmetry": "C4",
+    "crg_do_tetrafoil": true,
+    "crg_do_anisomag": true,
+    "crg_do_spherical": true,
+    "refine_do_ews_correct": true,
+    "refine_ctf_global_refine": true,
+    "refine_res_init": 7,
+    "refine_defocus_refine": true
+   },
+   "in": {
+    "volume": [
+     "J1841"
+    ],
+    "particles": [
+     "J1842"
+    ]
+   },
+   "n_particle": 252241,
+   "res_A": 2.201
+  },
+  "J1844": {
+   "type": "new_local_refine",
+   "params": {
+    "refine_symmetry": "C4",
+    "refine_res_init": 6
+   },
+   "in": {
+    "mask": [
+     "J1843"
+    ],
+    "particles": [
+     "J1843"
+    ],
+    "volume": [
+     "J1843"
+    ]
+   },
+   "n_particle": 252241,
+   "res_A": 2.235
+  },
+  "J1845": {
+   "type": "select_2D",
+   "in": {
+    "particles": [
+     "J1825"
+    ],
+    "templates": [
+     "J1825"
+    ]
+   },
+   "n_particle": 596796,
+   "select": {
+    "selected": 10,
+    "excluded": 90
+   }
+  },
+  "J1846": {
+   "type": "topaz_train",
+   "params": {
+    "exec_path": "YOUR_TOOL_PATH/topaz",
+    "par_diam": 140,
+    "num_particles": 300
+   },
+   "env_fields": [
+    "exec_path"
+   ],
+   "in": {
+    "micrographs": [
+     "J1742"
+    ],
+    "particles": [
+     "J1845"
+    ]
+   }
+  },
+  "J1847": {
+   "type": "topaz_extract",
+   "params": {
+    "par_diam": 140,
+    "exec_path": "YOUR_TOOL_PATH/topaz"
+   },
+   "env_fields": [
+    "exec_path"
+   ],
+   "in": {
+    "micrographs": [
+     "J1846"
+    ],
+    "model": [
+     "J1846"
+    ]
+   },
+   "n_particle": 1877654
+  },
+  "J1848": {
+   "type": "extract_micrographs_multi",
+   "params": {
+    "compute_num_gpus": 3,
+    "box_size_pix": 320
+   },
+   "in": {
+    "micrographs": [
+     "J1847"
+    ],
+    "particles": [
+     "J1847"
+    ]
+   },
+   "n_particle": 1848901
+  },
+  "J1849": {
+   "type": "class_2D_new",
+   "params": {
+    "class2D_K": 200,
+    "class2D_max_res": 3,
+    "class2D_num_full_iter_batch": 30,
+    "class2D_num_full_iter_batchsize_per_class": 200,
+    "compute_num_gpus": 4
+   },
+   "in": {
+    "particles": [
+     "J1848"
+    ]
+   },
+   "n_particle": 1848901
+  },
+  "J1850": {
+   "type": "curate_exposures_v2",
+   "in": {
+    "exposures": [
+     "J1731"
+    ],
+    "particles": [
+     "J1833"
+    ]
+   },
+   "n_particle": 252718
+  },
+  "J1854": {
+   "type": "select_2D",
+   "in": {
+    "particles": [
+     "J1849"
+    ],
+    "templates": [
+     "J1849"
+    ]
+   },
+   "n_particle": 939100,
+   "select": {
+    "selected": 39,
+    "excluded": 161
+   }
+  },
+  "J1855": {
+   "type": "class_2D_new",
+   "params": {
+    "class2D_K": 80,
+    "class2D_max_res": 3,
+    "class2D_num_full_iter_batchsize_per_class": 200,
+    "class2D_num_full_iter_batch": 30,
+    "compute_num_gpus": 4
+   },
+   "in": {
+    "particles": [
+     "J1854"
+    ]
+   },
+   "n_particle": 939100
+  },
+  "J1856": {
+   "type": "remove_duplicate_particles",
+   "in": {
+    "particles": [
+     "J1828",
+     "J1857"
+    ],
+    "micrographs": [
+     "J1850"
+    ]
+   },
+   "n_particle": 925942
+  },
+  "J1857": {
+   "type": "select_2D",
+   "in": {
+    "particles": [
+     "J1855"
+    ],
+    "templates": [
+     "J1855"
+    ]
+   },
+   "n_particle": 830883,
+   "select": {
+    "selected": 43,
+    "excluded": 37
+   }
+  },
+  "J1858": {
+   "type": "extract_micrographs_multi",
+   "params": {
+    "compute_num_gpus": 4,
+    "box_size_pix": 320,
+    "update_location": true,
+    "update_alignments2D": true,
+    "recenter_key": "alignments2D"
+   },
+   "in": {
+    "micrographs": [
+     "J1850"
+    ],
+    "particles": [
+     "J1856"
+    ]
+   },
+   "n_particle": 780276
+  },
+  "J1859": {
+   "type": "class_2D_new",
+   "params": {
+    "class2D_K": 200,
+    "class2D_num_full_iter_batchsize_per_class": 200,
+    "class2D_num_full_iter_batch": 30,
+    "class2D_max_res": 3,
+    "compute_num_gpus": 4
+   },
+   "in": {
+    "particles": [
+     "J1858"
+    ]
+   },
+   "n_particle": 765900
+  },
+  "J1860": {
+   "type": "select_2D",
+   "in": {
+    "particles": [
+     "J1859"
+    ],
+    "templates": [
+     "J1859"
+    ]
+   },
+   "n_particle": 688101,
+   "select": {
+    "selected": 82,
+    "excluded": 118
+   }
+  },
+  "J1861": {
+   "type": "hetero_refine",
+   "in": {
+    "volume": [
+     "J1778",
+     "J1844"
+    ],
+    "particles": [
+     "J1860"
+    ]
+   },
+   "n_particle": 688101
+  },
+  "J1862": {
+   "type": "nonuniform_refine_new",
+   "params": {
+    "refine_symmetry": "C4",
+    "crg_do_tetrafoil": true,
+    "crg_do_anisomag": true,
+    "crg_do_spherical": true,
+    "refine_do_ews_correct": true,
+    "refine_ctf_global_refine": true,
+    "refine_res_init": 7,
+    "refine_defocus_refine": true
+   },
+   "in": {
+    "particles": [
+     "J1861"
+    ],
+    "volume": [
+     "J1861"
+    ]
+   },
+   "n_particle": 585391,
+   "res_A": 2.145
+  },
+  "J1863": {
+   "type": "new_local_refine",
+   "params": {
+    "refine_symmetry": "C4",
+    "refine_res_init": 6
+   },
+   "in": {
+    "mask": [
+     "J1862"
+    ],
+    "particles": [
+     "J1862"
+    ],
+    "volume": [
+     "J1862"
+    ]
+   },
+   "n_particle": 585391,
+   "res_A": 2.135
+  },
+  "J1908": {
+   "type": "curate_exposures_v2",
+   "in": {
+    "exposures": [
+     "J1731"
+    ],
+    "particles": [
+     "J1806"
+    ]
+   }
+  },
+  "J1910": {
+   "type": "extract_micrographs_multi",
+   "params": {
+    "compute_num_gpus": 4,
+    "box_size_pix": 360,
+    "update_location": true,
+    "update_alignments3D": true,
+    "force_reextract_CTF": true
+   },
+   "in": {
+    "micrographs": [
+     "J1908"
+    ],
+    "particles": [
+     "J1908"
+    ]
+   }
+  },
+  "J1932": {
+   "type": "volume_tools",
+   "params": {
+    "volume_out_type": "mask",
+    "threshold": 0.818,
+    "dilator": 10,
+    "pad": 18
+   },
+   "in": {
+    "volume": [
+     "J1832"
+    ]
+   }
+  },
+  "J1933": {
+   "type": "new_local_refine",
+   "params": {
+    "use_alignment_prior": true,
+    "reinitialize_ss": true,
+    "reinitialize_rs": true,
+    "refine_symmetry": "C4",
+    "refine_res_init": 3
+   },
+   "in": {
+    "particles": [
+     "J1832"
+    ],
+    "volume": [
+     "J1832"
+    ],
+    "mask": [
+     "J1932"
+    ]
+   }
+  },
+  "J1934": {
+   "type": "extract_micrographs_multi",
+   "params": {
+    "compute_num_gpus": 4,
+    "box_size_pix": 360,
+    "update_location": true,
+    "update_alignments3D": true
+   },
+   "in": {
+    "particles": [
+     "J1832"
+    ],
+    "micrographs": [
+     "J1937"
+    ]
+   },
+   "n_particle": 515658
+  },
+  "J1935": {
+   "type": "nonuniform_refine_new",
+   "params": {
+    "refine_symmetry": "C4",
+    "refine_ctf_global_refine": true,
+    "crg_do_spherical": true,
+    "crg_do_tetrafoil": true,
+    "crg_do_anisomag": true,
+    "refine_do_ews_correct": true
+   },
+   "in": {
+    "volume": [
+     "J1824"
+    ],
+    "particles": [
+     "J1934"
+    ]
+   },
+   "n_particle": 515658,
+   "res_A": 1.978
+  },
+  "J1937": {
+   "type": "curate_exposures_v2",
+   "in": {
+    "exposures": [
+     "J1731"
+    ],
+    "particles": [
+     "J1933"
+    ]
+   }
+  },
+  "J1940": {
+   "type": "new_local_refine",
+   "params": {
+    "use_alignment_prior": true,
+    "reinitialize_ss": true,
+    "reinitialize_rs": true,
+    "refine_symmetry": "C4",
+    "refine_res_init": 3,
+    "sigma_prior_r": 7,
+    "sigma_prior_s": 3
+   },
+   "in": {
+    "mask": [
+     "J1932"
+    ],
+    "volume": [
+     "J1933"
+    ],
+    "particles": [
+     "J1937"
+    ]
+   },
+   "n_particle": 529113,
+   "res_A": 1.994
+  },
+  "J1965": {
+   "type": "volume_tools",
+   "params": {
+    "vol_lpf_A": 6
+   },
+   "in": {
+    "mask": [
+     "J1863"
+    ],
+    "volume": [
+     "J1863"
+    ]
+   }
+  },
+  "J1966": {
+   "type": "create_templates",
+   "params": {
+    "n_templates": 30
+   },
+   "in": {
+    "volume": [
+     "J1965"
+    ]
+   }
+  },
+  "J1967": {
+   "type": "template_picker_gpu",
+   "params": {
+    "diameter": 150
+   },
+   "in": {
+    "micrographs": [
+     "J1850"
+    ],
+    "templates": [
+     "J1966"
+    ]
+   },
+   "n_particle": 4782420
+  },
+  "J1968": {
+   "type": "extract_micrographs_multi",
+   "params": {
+    "compute_num_gpus": 4,
+    "box_size_pix": 320
+   },
+   "in": {
+    "micrographs": [
+     "J1967"
+    ],
+    "particles": [
+     "J1967"
+    ]
+   },
+   "n_particle": 3994533
+  },
+  "J1991": {
+   "type": "hetero_refine",
+   "in": {
+    "volume": [
+     "J1778",
+     "J1863"
+    ],
+    "particles": [
+     "J1968"
+    ]
+   },
+   "n_particle": 3994533
+  },
+  "J2239": {
+   "type": "nonuniform_refine_new",
+   "params": {
+    "refine_symmetry": "C4",
+    "refine_ctf_global_refine": true,
+    "crg_do_spherical": true,
+    "crg_do_tetrafoil": true,
+    "crg_do_anisomag": true,
+    "refine_do_ews_correct": true
+   },
+   "in": {
+    "volume": [
+     "J1940"
+    ],
+    "particles": [
+     "J2259"
+    ]
+   },
+   "n_particle": 422197,
+   "res_A": 2.248
+  },
+  "J2250": {
+   "type": "class_2D_new",
+   "params": {
+    "class2D_K": 200,
+    "class2D_num_full_iter_batchsize_per_class": 200,
+    "class2D_num_full_iter_batch": 30,
+    "class2D_max_res": 3,
+    "compute_num_gpus": 4
+   },
+   "in": {
+    "particles": [
+     "J2239"
+    ]
+   },
+   "n_particle": 1413442
+  },
+  "J2258": {
+   "type": "select_2D",
+   "in": {
+    "particles": [
+     "J2250"
+    ],
+    "templates": [
+     "J2250"
+    ]
+   },
+   "n_particle": 823049,
+   "select": {
+    "selected": 31,
+    "excluded": 169
+   }
+  },
+  "J2259": {
+   "type": "hetero_refine",
+   "in": {
+    "volume": [
+     "J1778",
+     "J1863"
+    ],
+    "particles": [
+     "J2258"
+    ]
+   },
+   "n_particle": 590393
+  },
+  "J2279": {
+   "type": "remove_duplicate_particles",
+   "in": {
+    "micrographs": [
+     "J1934"
+    ],
+    "particles": [
+     "J1940",
+     "J2239"
+    ]
+   },
+   "n_particle": 663262
+  },
+  "J2280": {
+   "type": "nonuniform_refine_new",
+   "params": {
+    "refine_symmetry": "C4",
+    "crg_do_spherical": true,
+    "crg_do_tetrafoil": true,
+    "crg_do_anisomag": true,
+    "refine_do_ews_correct": true
+   },
+   "in": {
+    "volume": [
+     "J1940"
+    ],
+    "particles": [
+     "J2279"
+    ]
+   },
+   "n_particle": 663262,
+   "res_A": 2.043
+  },
+  "J2288": {
+   "type": "new_local_refine",
+   "params": {
+    "use_alignment_prior": true,
+    "reinitialize_ss": true,
+    "reinitialize_rs": true,
+    "refine_symmetry": "C4",
+    "refine_res_init": 6,
+    "sigma_prior_r": 7,
+    "sigma_prior_s": 3
+   },
+   "in": {
+    "mask": [
+     "J2280"
+    ],
+    "particles": [
+     "J2280"
+    ],
+    "volume": [
+     "J2280"
+    ]
+   },
+   "n_particle": 663262,
+   "res_A": 2.002
+  },
+  "J2289": {
+   "type": "homo_abinit",
+   "params": {
+    "abinit_K": 2,
+    "abinit_max_res": 6
+   },
+   "in": {
+    "particles": [
+     "J2288"
+    ]
+   },
+   "n_particle": 663262
+  },
+  "J2290": {
+   "type": "hetero_refine",
+   "in": {
+    "particles": [
+     "J2289"
+    ],
+    "volume": [
+     "J2289"
+    ]
+   },
+   "n_particle": 663262
+  },
+  "J2299": {
+   "type": "nonuniform_refine_new",
+   "params": {
+    "refine_symmetry": "C4",
+    "crg_do_spherical": true,
+    "crg_do_tetrafoil": true,
+    "crg_do_anisomag": true,
+    "refine_do_ews_correct": true
+   },
+   "in": {
+    "volume": [
+     "J1940"
+    ],
+    "particles": [
+     "J2290"
+    ]
+   },
+   "n_particle": 283317,
+   "res_A": 2.077
+  },
+  "J2300": {
+   "type": "new_local_refine",
+   "params": {
+    "use_alignment_prior": true,
+    "reinitialize_ss": true,
+    "reinitialize_rs": true,
+    "refine_symmetry": "C4",
+    "refine_res_init": 6,
+    "sigma_prior_r": 7,
+    "sigma_prior_s": 3
+   },
+   "in": {
+    "mask": [
+     "J2280"
+    ],
+    "particles": [
+     "J2299"
+    ],
+    "volume": [
+     "J2299"
+    ]
+   },
+   "n_particle": 283317,
+   "res_A": 2.055
+  },
+  "J2307": {
+   "type": "remove_duplicate_particles",
+   "in": {
+    "micrographs": [
+     "J1742"
+    ],
+    "particles": [
+     "J1844",
+     "J1863",
+     "J1940",
+     "J2300"
+    ]
+   },
+   "n_particle": 773090
+  },
+  "J2308": {
+   "type": "extract_micrographs_multi",
+   "params": {
+    "compute_num_gpus": 4,
+    "box_size_pix": 360,
+    "update_location": true,
+    "update_alignments3D": true
+   },
+   "in": {
+    "micrographs": [
+     "J1742"
+    ],
+    "particles": [
+     "J2307"
+    ]
+   },
+   "n_particle": 751933
+  },
+  "J2320": {
+   "type": "nonuniform_refine_new",
+   "params": {
+    "refine_symmetry": "C4",
+    "crg_do_spherical": true,
+    "crg_do_tetrafoil": true,
+    "crg_do_anisomag": true,
+    "refine_do_ews_correct": true,
+    "refine_noise_init_from_imgs": true,
+    "refine_defocus_refine": true
+   },
+   "in": {
+    "volume": [
+     "J2300"
+    ],
+    "particles": [
+     "J2308"
+    ]
+   },
+   "n_particle": 751933,
+   "res_A": 2.062
+  },
+  "J2321": {
+   "type": "new_local_refine",
+   "params": {
+    "use_alignment_prior": true,
+    "reinitialize_ss": true,
+    "reinitialize_rs": true,
+    "refine_symmetry": "C4",
+    "refine_res_init": 6,
+    "sigma_prior_r": 7,
+    "sigma_prior_s": 3
+   },
+   "in": {
+    "mask": [
+     "J2280"
+    ],
+    "particles": [
+     "J2320"
+    ],
+    "volume": [
+     "J2320"
+    ]
+   },
+   "n_particle": 751933,
+   "res_A": 2.043
+  },
+  "J2340": {
+   "type": "homo_abinit",
+   "params": {
+    "abinit_K": 2
+   },
+   "in": {
+    "particles": [
+     "J2308"
+    ]
+   },
+   "n_particle": 751933
+  },
+  "J2341": {
+   "type": "class_2D_new",
+   "params": {
+    "class2D_K": 200
+   },
+   "in": {
+    "particles": [
+     "J2308"
+    ]
+   },
+   "n_particle": 738344
+  },
+  "J2342": {
+   "type": "hetero_refine",
+   "in": {
+    "particles": [
+     "J2340"
+    ],
+    "volume": [
+     "J2340"
+    ]
+   },
+   "n_particle": 751933
+  },
+  "J2349": {
+   "type": "nonuniform_refine_new",
+   "params": {
+    "refine_symmetry": "C4",
+    "crg_do_spherical": true,
+    "crg_do_tetrafoil": true,
+    "crg_do_anisomag": true,
+    "refine_do_ews_correct": true,
+    "refine_noise_init_from_imgs": true,
+    "refine_defocus_refine": true
+   },
+   "in": {
+    "particles": [
+     "J2342"
+    ],
+    "volume": [
+     "J2342"
+    ]
+   },
+   "n_particle": 351041,
+   "res_A": 2.166
+  },
+  "J2350": {
+   "type": "new_local_refine",
+   "params": {
+    "use_alignment_prior": true,
+    "reinitialize_ss": true,
+    "reinitialize_rs": true,
+    "refine_symmetry": "C4",
+    "refine_res_init": 6,
+    "sigma_prior_r": 7,
+    "sigma_prior_s": 3
+   },
+   "in": {
+    "mask": [
+     "J2280"
+    ],
+    "particles": [
+     "J2349"
+    ],
+    "volume": [
+     "J2349"
+    ]
+   },
+   "n_particle": 351041,
+   "res_A": 2.129
+  },
+  "J2351": {
+   "type": "nonuniform_refine_new",
+   "params": {
+    "refine_symmetry": "C4",
+    "crg_do_spherical": true,
+    "crg_do_tetrafoil": true,
+    "crg_do_anisomag": true,
+    "refine_do_ews_correct": true,
+    "refine_noise_init_from_imgs": true,
+    "refine_defocus_refine": true
+   },
+   "in": {
+    "particles": [
+     "J2340"
+    ],
+    "volume": [
+     "J2340"
+    ]
+   },
+   "n_particle": 399471,
+   "res_A": 2.133
+  },
+  "J2352": {
+   "type": "new_local_refine",
+   "params": {
+    "use_alignment_prior": true,
+    "reinitialize_ss": true,
+    "reinitialize_rs": true,
+    "refine_symmetry": "C4",
+    "refine_res_init": 6,
+    "sigma_prior_r": 7,
+    "sigma_prior_s": 3
+   },
+   "in": {
+    "mask": [
+     "J2280"
+    ],
+    "particles": [
+     "J2351"
+    ],
+    "volume": [
+     "J2351"
+    ]
+   },
+   "n_particle": 399471,
+   "res_A": 2.104
+  },
+  "J2469": {
+   "type": "nonuniform_refine_new",
+   "params": {
+    "refine_symmetry": "C4",
+    "crg_do_spherical": true,
+    "crg_do_tetrafoil": true,
+    "crg_do_anisomag": true,
+    "refine_do_ews_correct": true,
+    "refine_noise_init_from_imgs": true,
+    "refine_defocus_refine": true
+   },
+   "in": {
+    "volume": [
+     "J1863"
+    ],
+    "particles": [
+     "J2476"
+    ]
+   },
+   "n_particle": 573003,
+   "res_A": 2.175
+  },
+  "J2471": {
+   "type": "new_local_refine",
+   "params": {
+    "use_alignment_prior": true,
+    "reinitialize_ss": true,
+    "reinitialize_rs": true,
+    "refine_symmetry": "C4",
+    "refine_res_init": 6,
+    "sigma_prior_r": 7,
+    "sigma_prior_s": 3,
+    "refine_dynamic_mask_use_abs": true
+   },
+   "in": {
+    "mask": [
+     "J2469"
+    ],
+    "particles": [
+     "J2469"
+    ],
+    "volume": [
+     "J2469"
+    ]
+   },
+   "n_particle": 573003,
+   "res_A": 2.086
+  },
+  "J2476": {
+   "type": "extract_micrographs_multi",
+   "params": {
+    "compute_num_gpus": 4,
+    "box_size_pix": 360,
+    "update_location": true,
+    "update_alignments3D": true,
+    "update_alignments2D": true
+   },
+   "in": {
+    "micrographs": [
+     "J1850"
+    ],
+    "particles": [
+     "J1863"
+    ]
+   },
+   "n_particle": 573003
+  },
+  "J2508": {
+   "type": "hetero_refine",
+   "in": {
+    "volume": [
+     "J2340",
+     "J2471"
+    ],
+    "particles": [
+     "J2471"
+    ]
+   },
+   "n_particle": 573003
+  },
+  "J2512": {
+   "type": "nonuniform_refine_new",
+   "params": {
+    "refine_symmetry": "C4",
+    "crg_do_spherical": true,
+    "crg_do_tetrafoil": true,
+    "crg_do_anisomag": true,
+    "refine_do_ews_correct": true,
+    "refine_noise_init_from_imgs": true,
+    "refine_defocus_refine": true
+   },
+   "in": {
+    "volume": [
+     "J1940"
+    ],
+    "particles": [
+     "J2508"
+    ]
+   },
+   "n_particle": 426067,
+   "res_A": 2.144
+  },
+  "J2516": {
+   "type": "hetero_refine",
+   "in": {
+    "particles": [
+     "J2321"
+    ],
+    "volume": [
+     "J2321",
+     "J2340"
+    ]
+   },
+   "n_particle": 751933
+  },
+  "J2522": {
+   "type": "nonuniform_refine_new",
+   "params": {
+    "refine_symmetry": "C4",
+    "crg_do_spherical": true,
+    "crg_do_tetrafoil": true,
+    "crg_do_anisomag": true,
+    "refine_do_ews_correct": true,
+    "refine_noise_init_from_imgs": true,
+    "refine_defocus_refine": true
+   },
+   "in": {
+    "particles": [
+     "J2516"
+    ],
+    "volume": [
+     "J2516"
+    ]
+   },
+   "n_particle": 548343,
+   "res_A": 2.09
+  },
+  "J2662": {
+   "type": "class_2D_new",
+   "params": {
+    "class2D_K": 200,
+    "class2D_max_res": 3,
+    "class2D_num_full_iter_batch": 40,
+    "class2D_num_full_iter_batchsize_per_class": 400,
+    "compute_num_gpus": 4
+   },
+   "in": {
+    "particles": [
+     "J2308"
+    ]
+   },
+   "n_particle": 737576
+  },
+  "J2663": {
+   "type": "select_2D",
+   "in": {
+    "particles": [
+     "J2662"
+    ],
+    "templates": [
+     "J2662"
+    ]
+   },
+   "n_particle": 709406,
+   "select": {
+    "selected": 111,
+    "excluded": 89
+   }
+  },
+  "J2664": {
+   "type": "homo_abinit",
+   "params": {
+    "abinit_K": 3,
+    "abinit_max_res": 6,
+    "abinit_init_res": 18
+   },
+   "in": {
+    "particles": [
+     "J2663"
+    ]
+   },
+   "n_particle": 709406
+  },
+  "J2667": {
+   "type": "nonuniform_refine_new",
+   "params": {
+    "refine_symmetry": "C4",
+    "crg_do_spherical": true,
+    "crg_do_tetrafoil": true,
+    "crg_do_anisomag": true,
+    "refine_do_ews_correct": true,
+    "refine_noise_init_from_imgs": true,
+    "refine_defocus_refine": true
+   },
+   "in": {
+    "particles": [
+     "J2664"
+    ],
+    "volume": [
+     "J2664"
+    ]
+   },
+   "n_particle": 310317,
+   "res_A": 2.124
+  },
+  "J2690": {
+   "type": "var_3D",
+   "params": {
+    "var_num_iterations": 25,
+    "var_filter_res": 5
+   },
+   "in": {
+    "mask": [
+     "J942"
+    ],
+    "particles": [
+     "J942"
+    ]
+   },
+   "n_particle": 302655
+  },
+  "J2691": {
+   "type": "var_3D_disp",
+   "params": {
+    "var_output_mode": "cluster",
+    "var_num_frames": 10,
+    "var_filter_res": 5
+   },
+   "in": {
+    "particles": [
+     "J2690"
+    ],
+    "volume": [
+     "J2690"
+    ]
+   },
+   "n_particle": 302655
+  },
+  "J2694": {
+   "type": "import_volumes",
+   "params": {
+    "volume_blob_path": "YOUR_DATA_PATH/model_15_for_mask.mrc"
+   },
+   "env_fields": [
+    "volume_blob_path"
+   ]
+  },
+  "J2696": {
+   "type": "nonuniform_refine_new",
+   "params": {
+    "refine_res_init": 7,
+    "refine_ctf_global_refine": true,
+    "crg_do_spherical": true,
+    "crg_do_tetrafoil": true,
+    "crg_do_anisomag": true,
+    "refine_do_ews_correct": true,
+    "refine_symmetry": "C4"
+   },
+   "in": {
+    "particles": [
+     "J2691"
+    ],
+    "volume": [
+     "J2697"
+    ]
+   },
+   "n_particle": 130164,
+   "res_A": 2.498
+  },
+  "J2697": {
+   "type": "import_volumes",
+   "params": {
+    "volume_blob_path": "YOUR_DATA_PATH/J2692_volume_class_01_map_sharp.mrc"
+   },
+   "env_fields": [
+    "volume_blob_path"
+   ]
+  },
+  "J2710": {
+   "type": "topaz_train",
+   "params": {
+    "exec_path": "YOUR_TOOL_PATH/topaz",
+    "par_diam": 140,
+    "num_particles": 300
+   },
+   "env_fields": [
+    "exec_path"
+   ],
+   "in": {
+    "micrographs": [
+     "J826",
+     "J829"
+    ],
+    "particles": [
+     "J935"
+    ]
+   }
+  },
+  "J2711": {
+   "type": "topaz_extract",
+   "params": {
+    "par_diam": 150,
+    "exec_path": "YOUR_TOOL_PATH/topaz"
+   },
+   "env_fields": [
+    "exec_path"
+   ],
+   "in": {
+    "micrographs": [
+     "J2710"
+    ],
+    "model": [
+     "J2710"
+    ]
+   },
+   "n_particle": 1586864
+  },
+  "J2712": {
+   "type": "extract_micrographs_multi",
+   "params": {
+    "box_size_pix": 320,
+    "compute_num_gpus": 4
+   },
+   "in": {
+    "micrographs": [
+     "J2711"
+    ],
+    "particles": [
+     "J2711"
+    ]
+   },
+   "n_particle": 1564819
+  },
+  "J2713": {
+   "type": "class_2D_new",
+   "params": {
+    "class2D_K": 200,
+    "compute_num_gpus": 4
+   },
+   "in": {
+    "particles": [
+     "J2712"
+    ]
+   },
+   "n_particle": 1564819
+  },
+  "J2714": {
+   "type": "select_2D",
+   "in": {
+    "particles": [
+     "J2713"
+    ],
+    "templates": [
+     "J2713"
+    ]
+   },
+   "n_particle": 1158826,
+   "select": {
+    "selected": 25,
+    "excluded": 175
+   }
+  },
+  "J2715": {
+   "type": "class_2D_new",
+   "params": {
+    "class2D_K": 200,
+    "class2D_max_res": 4,
+    "class2D_num_full_iter_batch": 40,
+    "class2D_num_full_iter_batchsize_per_class": 200,
+    "compute_num_gpus": 4
+   },
+   "in": {
+    "particles": [
+     "J2714"
+    ]
+   },
+   "n_particle": 405993
+  },
+  "J2716": {
+   "type": "remove_duplicate_particles",
+   "params": {
+    "min_dist_A": 30
+   },
+   "in": {
+    "micrographs": [
+     "J826",
+     "J829"
+    ],
+    "particles": [
+     "J870",
+     "J2717"
+    ]
+   },
+   "n_particle": 725844
+  },
+  "J2717": {
+   "type": "select_2D",
+   "in": {
+    "particles": [
+     "J2715"
+    ],
+    "templates": [
+     "J2715"
+    ]
+   },
+   "n_particle": 313337,
+   "select": {
+    "selected": 84,
+    "excluded": 116
+   }
+  },
+  "J2718": {
+   "type": "class_2D_new",
+   "params": {
+    "class2D_K": 200,
+    "class2D_max_res": 4,
+    "class2D_num_full_iter_batch": 40,
+    "class2D_num_full_iter_batchsize_per_class": 200,
+    "compute_num_gpus": 4
+   },
+   "in": {
+    "particles": [
+     "J2717"
+    ]
+   },
+   "n_particle": 313337
+  },
+  "J2720": {
+   "type": "class_2D_new",
+   "params": {
+    "class2D_K": 200,
+    "class2D_max_res": 4,
+    "class2D_num_full_iter_batch": 40,
+    "class2D_num_full_iter_batchsize_per_class": 200,
+    "compute_num_gpus": 4
+   },
+   "in": {
+    "particles": [
+     "J2716"
+    ]
+   },
+   "n_particle": 720169
+  },
+  "J2721": {
+   "type": "select_2D",
+   "in": {
+    "particles": [
+     "J2720"
+    ],
+    "templates": [
+     "J2720"
+    ]
+   },
+   "n_particle": 501749,
+   "select": {
+    "selected": 66,
+    "excluded": 134
+   }
+  },
+  "J2724": {
+   "type": "homo_abinit",
+   "params": {
+    "abinit_K": 2,
+    "abinit_max_res": 6
+   },
+   "in": {
+    "particles": [
+     "J2721"
+    ]
+   },
+   "n_particle": 501749
+  },
+  "J2725": {
+   "type": "nonuniform_refine_new",
+   "params": {
+    "refine_res_init": 7,
+    "refine_symmetry": "C1"
+   },
+   "in": {
+    "volume": [
+     "J2697"
+    ],
+    "particles": [
+     "J2724"
+    ]
+   },
+   "n_particle": 416530,
+   "res_A": 2.663
+  },
+  "J2726": {
+   "type": "new_local_refine",
+   "params": {
+    "refine_res_init": 7
+   },
+   "in": {
+    "mask": [
+     "J2725"
+    ],
+    "particles": [
+     "J2725"
+    ],
+    "volume": [
+     "J2725"
+    ]
+   },
+   "n_particle": 416530,
+   "res_A": 2.657
+  },
+  "J2729": {
+   "type": "select_2D",
+   "in": {
+    "particles": [
+     "J2713"
+    ],
+    "templates": [
+     "J2713"
+    ]
+   },
+   "n_particle": 1477174,
+   "select": {
+    "selected": 181,
+    "excluded": 19
+   }
+  },
+  "J2730": {
+   "type": "homo_abinit",
+   "params": {
+    "abinit_K": 3
+   },
+   "in": {
+    "particles": [
+     "J2729"
+    ]
+   },
+   "n_particle": 87645
+  },
+  "J2731": {
+   "type": "volume_tools",
+   "params": {
+    "vol_lpf_A": 6
+   },
+   "in": {
+    "volume": [
+     "J2726"
+    ]
+   }
+  },
+  "J2732": {
+   "type": "hetero_refine",
+   "params": {
+    "multirefine_N": 160,
+    "multirefine_res_init": 6,
+    "multirefine_batch_size_per_class": 3000
+   },
+   "in": {
+    "volume": [
+     "J2726",
+     "J2730",
+     "J2731"
+    ],
+    "particles": [
+     "J2729"
+    ]
+   },
+   "n_particle": 1477174
+  },
+  "J2733": {
+   "type": "hetero_refine",
+   "params": {
+    "multirefine_N": 160,
+    "multirefine_batch_size_per_class": 3000,
+    "multirefine_res_init": 6
+   },
+   "in": {
+    "volume": [
+     "J2726",
+     "J2730",
+     "J2731"
+    ],
+    "particles": [
+     "J2732"
+    ]
+   },
+   "n_particle": 725654
+  },
+  "J2734": {
+   "type": "hetero_refine",
+   "params": {
+    "multirefine_N": 160,
+    "multirefine_batch_size_per_class": 3000,
+    "multirefine_res_init": 6
+   },
+   "in": {
+    "volume": [
+     "J2726",
+     "J2730",
+     "J2731"
+    ],
+    "particles": [
+     "J2733"
+    ]
+   },
+   "n_particle": 551848
+  },
+  "J2735": {
+   "type": "nonuniform_refine_new",
+   "params": {
+    "refine_res_init": 7,
+    "refine_defocus_refine": true,
+    "refine_ctf_global_refine": true,
+    "crg_do_spherical": true,
+    "crg_do_tetrafoil": true,
+    "crg_do_anisomag": true,
+    "refine_do_ews_correct": true
+   },
+   "in": {
+    "volume": [
+     "J2731"
+    ],
+    "particles": [
+     "J2734"
+    ]
+   },
+   "n_particle": 477445,
+   "res_A": 2.417
+  },
+  "J2736": {
+   "type": "new_local_refine",
+   "in": {
+    "mask": [
+     "J2735"
+    ],
+    "particles": [
+     "J2735"
+    ],
+    "volume": [
+     "J2735"
+    ]
+   },
+   "n_particle": 477445,
+   "res_A": 2.382
+  },
+  "J2737": {
+   "type": "homo_abinit",
+   "params": {
+    "abinit_K": 3,
+    "abinit_max_res": 7,
+    "abinit_init_res": 12,
+    "abinit_minisize_init": 400,
+    "abinit_minisize": 1200
+   },
+   "in": {
+    "particles": [
+     "J2736"
+    ]
+   },
+   "n_particle": 477445
+  },
+  "J2738": {
+   "type": "nonuniform_refine_new",
+   "params": {
+    "refine_res_init": 7,
+    "refine_defocus_refine": true,
+    "refine_ctf_global_refine": true,
+    "crg_do_spherical": true,
+    "crg_do_tetrafoil": true,
+    "crg_do_anisomag": true,
+    "refine_do_ews_correct": true
+   },
+   "in": {
+    "particles": [
+     "J2737"
+    ],
+    "volume": [
+     "J2737"
+    ]
+   },
+   "n_particle": 257596,
+   "res_A": 2.467
+  },
+  "J2739": {
+   "type": "var_3D",
+   "params": {
+    "var_filter_res": 4,
+    "var_num_iterations": 25
+   },
+   "in": {
+    "mask": [
+     "J2736"
+    ],
+    "particles": [
+     "J2736"
+    ]
+   },
+   "n_particle": 477445
+  },
+  "J2743": {
+   "type": "import_volumes",
+   "params": {
+    "volume_blob_path": "YOUR_DATA_PATH/model_15_for_mask_2.mrc"
+   },
+   "env_fields": [
+    "volume_blob_path"
+   ]
+  },
+  "J2746": {
+   "type": "import_volumes",
+   "params": {
+    "volume_blob_path": "YOUR_DATA_PATH/P250_J2742.mrc"
+   },
+   "env_fields": [
+    "volume_blob_path"
+   ]
+  },
+  "J2747": {
+   "type": "import_volumes",
+   "params": {
+    "volume_blob_path": "YOUR_DATA_PATH/P250_J2742_Mask.mrc"
+   },
+   "env_fields": [
+    "volume_blob_path"
+   ]
+  },
+  "J2748": {
+   "type": "nonuniform_refine_new",
+   "params": {
+    "refine_res_init": 7,
+    "refine_defocus_refine": true,
+    "refine_ctf_global_refine": true,
+    "crg_do_spherical": true,
+    "crg_do_tetrafoil": true,
+    "crg_do_anisomag": true,
+    "refine_do_ews_correct": true
+   },
+   "in": {
+    "particles": [
+     "J2737"
+    ],
+    "volume": [
+     "J2746"
+    ]
+   },
+   "n_particle": 257596,
+   "res_A": 2.478
+  },
+  "J2749": {
+   "type": "new_local_refine",
+   "params": {
+    "use_alignment_prior": true,
+    "refine_res_init": 7
+   },
+   "in": {
+    "mask": [
+     "J2748"
+    ],
+    "particles": [
+     "J2748"
+    ],
+    "volume": [
+     "J2748"
+    ]
+   },
+   "n_particle": 257596,
+   "res_A": 2.441
+  },
+  "J2750": {
+   "type": "import_volumes",
+   "params": {
+    "volume_blob_path": "YOUR_DATA_PATH/P250_J2742M.mrc"
+   },
+   "env_fields": [
+    "volume_blob_path"
+   ]
+  },
+  "J2751": {
+   "type": "volume_tools",
+   "params": {
+    "volume_out_type": "mask",
+    "threshold": 0.0336,
+    "dilator": 4,
+    "pad": 4
+   },
+   "in": {
+    "volume": [
+     "J2750"
+    ]
+   }
+  },
+  "J2752": {
+   "type": "new_local_refine",
+   "params": {
+    "use_alignment_prior": true,
+    "sigma_prior_r": 7,
+    "sigma_prior_s": 3
+   },
+   "in": {
+    "particles": [
+     "J2749"
+    ],
+    "volume": [
+     "J2749"
+    ],
+    "mask": [
+     "J2751"
+    ]
+   },
+   "n_particle": 257596,
+   "res_A": 2.447
+  },
+  "J2753": {
+   "type": "var_3D",
+   "params": {
+    "var_filter_res": 4,
+    "var_num_iterations": 25
+   },
+   "in": {
+    "mask": [
+     "J2752"
+    ],
+    "particles": [
+     "J2752"
+    ]
+   },
+   "n_particle": 257596
+  },
+  "J2754": {
+   "type": "var_3D_disp",
+   "params": {
+    "var_output_mode": "cluster",
+    "var_num_frames": 10
+   },
+   "in": {
+    "particles": [
+     "J2753"
+    ],
+    "volume": [
+     "J2753"
+    ]
+   },
+   "n_particle": 257596
+  },
+  "J2756": {
+   "type": "import_volumes",
+   "params": {
+    "volume_blob_path": "YOUR_DATA_PATH/cryosparc_P250_J2752_005_volume_map_A.mrc"
+   },
+   "env_fields": [
+    "volume_blob_path"
+   ]
+  },
+  "J2757": {
+   "type": "nonuniform_refine_new",
+   "params": {
+    "refine_symmetry": "C4",
+    "refine_res_init": 6
+   },
+   "in": {
+    "particles": [
+     "J2752"
+    ],
+    "volume": [
+     "J2756"
+    ]
+   },
+   "n_particle": 257596,
+   "res_A": 2.339
+  },
+  "J2762": {
+   "type": "nonuniform_refine_new",
+   "params": {
+    "refine_symmetry": "C4",
+    "refine_res_init": 6
+   },
+   "in": {
+    "particles": [
+     "J2752"
+    ],
+    "volume": [
+     "J2752"
+    ]
+   },
+   "n_particle": 257596,
+   "res_A": 2.33
+  },
+  "J2763": {
+   "type": "new_local_refine",
+   "params": {
+    "use_alignment_prior": true,
+    "sigma_prior_r": 7,
+    "sigma_prior_s": 3
+   },
+   "in": {
+    "mask": [
+     "J2762"
+    ],
+    "particles": [
+     "J2762"
+    ],
+    "volume": [
+     "J2762"
+    ]
+   },
+   "n_particle": 257596,
+   "res_A": 2.461
+  },
+  "J2764": {
+   "type": "new_local_refine",
+   "params": {
+    "use_alignment_prior": true,
+    "sigma_prior_r": 7,
+    "sigma_prior_s": 3,
+    "refine_symmetry": "C4"
+   },
+   "in": {
+    "mask": [
+     "J2762"
+    ],
+    "particles": [
+     "J2762"
+    ],
+    "volume": [
+     "J2762"
+    ]
+   },
+   "n_particle": 257596,
+   "res_A": 2.305
+  },
+  "J2771": {
+   "type": "nonuniform_refine_new",
+   "params": {
+    "refine_symmetry": "C4",
+    "refine_res_init": 6
+   },
+   "in": {
+    "particles": [
+     "J2754"
+    ],
+    "volume": [
+     "J2764"
+    ]
+   },
+   "n_particle": 138627,
+   "res_A": 2.398
+  },
+  "J2772": {
+   "type": "new_local_refine",
+   "params": {
+    "use_alignment_prior": true,
+    "sigma_prior_r": 7,
+    "sigma_prior_s": 3,
+    "refine_symmetry": "C4"
+   },
+   "in": {
+    "mask": [
+     "J2762"
+    ],
+    "particles": [
+     "J2771"
+    ],
+    "volume": [
+     "J2771"
+    ]
+   },
+   "n_particle": 138627,
+   "res_A": 2.344
+  },
+  "J2773": {
+   "type": "nonuniform_refine_new",
+   "params": {
+    "refine_symmetry": "C4",
+    "refine_res_init": 6
+   },
+   "in": {
+    "particles": [
+     "J2754"
+    ],
+    "volume": [
+     "J2764"
+    ]
+   },
+   "n_particle": 120136,
+   "res_A": 2.422
+  },
+  "J2774": {
+   "type": "new_local_refine",
+   "params": {
+    "use_alignment_prior": true,
+    "sigma_prior_r": 7,
+    "sigma_prior_s": 3,
+    "refine_symmetry": "C4"
+   },
+   "in": {
+    "mask": [
+     "J2762"
+    ],
+    "particles": [
+     "J2773"
+    ],
+    "volume": [
+     "J2773"
+    ]
+   },
+   "n_particle": 120136,
+   "res_A": 2.384
+  },
+  "J2775": {
+   "type": "homo_abinit",
+   "params": {
+    "abinit_max_res": 6,
+    "abinit_init_res": 35
+   },
+   "in": {
+    "particles": [
+     "J2754"
+    ]
+   },
+   "n_particle": 120136
+  },
+  "J2776": {
+   "type": "nonuniform_refine_new",
+   "params": {
+    "refine_symmetry": "C4",
+    "refine_res_init": 6
+   },
+   "in": {
+    "particles": [
+     "J2775"
+    ],
+    "volume": [
+     "J2775"
+    ]
+   },
+   "n_particle": 120136,
+   "res_A": 2.408
+  },
+  "J2777": {
+   "type": "new_local_refine",
+   "params": {
+    "use_alignment_prior": true,
+    "sigma_prior_r": 7,
+    "sigma_prior_s": 3,
+    "refine_symmetry": "C4"
+   },
+   "in": {
+    "mask": [
+     "J2762"
+    ],
+    "particles": [
+     "J2776"
+    ],
+    "volume": [
+     "J2776"
+    ]
+   },
+   "n_particle": 120136,
+   "res_A": 2.366
+  },
+  "J2780": {
+   "type": "homo_abinit",
+   "params": {
+    "abinit_max_res": 7,
+    "abinit_init_res": 12,
+    "abinit_K": 2
+   },
+   "in": {
+    "particles": [
+     "J2754"
+    ]
+   },
+   "n_particle": 120136
+  },
+  "J2781": {
+   "type": "nonuniform_refine_new",
+   "params": {
+    "refine_symmetry": "C4",
+    "refine_res_init": 6
+   },
+   "in": {
+    "particles": [
+     "J2780"
+    ],
+    "volume": [
+     "J2780"
+    ]
+   },
+   "n_particle": 98297,
+   "res_A": 2.415
+  },
+  "J2782": {
+   "type": "new_local_refine",
+   "params": {
+    "use_alignment_prior": true,
+    "sigma_prior_r": 7,
+    "sigma_prior_s": 3,
+    "refine_symmetry": "C4"
+   },
+   "in": {
+    "mask": [
+     "J2762"
+    ],
+    "particles": [
+     "J2781"
+    ],
+    "volume": [
+     "J2781"
+    ]
+   },
+   "n_particle": 98297,
+   "res_A": 2.336
+  },
+  "J2783": {
+   "type": "hetero_refine",
+   "in": {
+    "particles": [
+     "J2780"
+    ],
+    "volume": [
+     "J2780"
+    ]
+   },
+   "n_particle": 120136
+  },
+  "J2784": {
+   "type": "nonuniform_refine_new",
+   "params": {
+    "refine_symmetry": "C4",
+    "refine_res_init": 6
+   },
+   "in": {
+    "particles": [
+     "J2783"
+    ],
+    "volume": [
+     "J2783"
+    ]
+   },
+   "n_particle": 100342,
+   "res_A": 2.41
+  },
+  "J2785": {
+   "type": "new_local_refine",
+   "params": {
+    "use_alignment_prior": true,
+    "sigma_prior_r": 7,
+    "sigma_prior_s": 3,
+    "refine_symmetry": "C4"
+   },
+   "in": {
+    "mask": [
+     "J2762"
+    ],
+    "particles": [
+     "J2784"
+    ],
+    "volume": [
+     "J2784"
+    ]
+   },
+   "n_particle": 100342,
+   "res_A": 2.346
+  },
+  "J2786": {
+   "type": "homo_abinit",
+   "params": {
+    "abinit_max_res": 6,
+    "abinit_init_res": 12,
+    "abinit_K": 2
+   },
+   "in": {
+    "particles": [
+     "J2785"
+    ]
+   }
+  },
+  "J2787": {
+   "type": "hetero_refine",
+   "in": {
+    "particles": [
+     "J2786"
+    ],
+    "volume": [
+     "J2786"
+    ]
+   }
+  },
+  "J2788": {
+   "type": "nonuniform_refine_new",
+   "params": {
+    "refine_symmetry": "C4",
+    "refine_res_init": 6
+   },
+   "in": {
+    "particles": [
+     "J2787"
+    ],
+    "volume": [
+     "J2787"
+    ]
+   }
+  },
+  "J2791": {
+   "type": "homo_abinit",
+   "params": {
+    "abinit_max_res": 7,
+    "abinit_init_res": 12,
+    "abinit_K": 2
+   },
+   "in": {
+    "particles": [
+     "J2764"
+    ]
+   },
+   "n_particle": 257596
+  },
+  "J2792": {
+   "type": "hetero_refine",
+   "in": {
+    "particles": [
+     "J2791"
+    ],
+    "volume": [
+     "J2791"
+    ]
+   },
+   "n_particle": 257596
+  },
+  "J2793": {
+   "type": "nonuniform_refine_new",
+   "params": {
+    "refine_symmetry": "C4",
+    "refine_res_init": 6
+   },
+   "in": {
+    "particles": [
+     "J2787"
+    ],
+    "volume": [
+     "J2787"
+    ]
+   }
+  },
+  "J2796": {
+   "type": "nonuniform_refine_new",
+   "params": {
+    "refine_symmetry": "C4",
+    "refine_res_init": 6
+   },
+   "in": {
+    "particles": [
+     "J2792"
+    ],
+    "volume": [
+     "J2792"
+    ]
+   },
+   "n_particle": 219643,
+   "res_A": 2.31
+  },
+  "J2797": {
+   "type": "new_local_refine",
+   "params": {
+    "use_alignment_prior": true,
+    "sigma_prior_r": 7,
+    "sigma_prior_s": 3,
+    "refine_symmetry": "C4"
+   },
+   "in": {
+    "mask": [
+     "J2762"
+    ],
+    "particles": [
+     "J2796"
+    ],
+    "volume": [
+     "J2796"
+    ]
+   },
+   "n_particle": 219643,
+   "res_A": 2.297
+  },
+  "J2799": {
+   "type": "homo_abinit",
+   "params": {
+    "abinit_max_res": 6,
+    "abinit_init_res": 12,
+    "abinit_K": 2
+   },
+   "in": {
+    "particles": [
+     "J2797"
+    ]
+   },
+   "n_particle": 219643
+  },
+  "J2801": {
+   "type": "homo_abinit",
+   "params": {
+    "abinit_max_res": 7,
+    "abinit_init_res": 12,
+    "abinit_K": 2
+   },
+   "in": {
+    "particles": [
+     "J2797"
+    ]
+   },
+   "n_particle": 219643
+  },
+  "J2803": {
+   "type": "nonuniform_refine_new",
+   "params": {
+    "refine_symmetry": "C4",
+    "refine_res_init": 6
+   },
+   "in": {
+    "particles": [
+     "J2801"
+    ],
+    "volume": [
+     "J2801"
+    ]
+   },
+   "n_particle": 195869,
+   "res_A": 2.313
+  },
+  "J2804": {
+   "type": "new_local_refine",
+   "params": {
+    "use_alignment_prior": true,
+    "sigma_prior_r": 7,
+    "sigma_prior_s": 3,
+    "refine_symmetry": "C4"
+   },
+   "in": {
+    "mask": [
+     "J2762"
+    ],
+    "particles": [
+     "J2803"
+    ],
+    "volume": [
+     "J2803"
+    ]
+   },
+   "n_particle": 195869,
+   "res_A": 2.281
+  },
+  "J2805": {
+   "type": "homo_abinit",
+   "params": {
+    "abinit_max_res": 7,
+    "abinit_init_res": 12,
+    "abinit_K": 2
+   },
+   "in": {
+    "particles": [
+     "J2804"
+    ]
+   },
+   "n_particle": 195869
+  },
+  "J2807": {
+   "type": "hetero_refine",
+   "in": {
+    "particles": [
+     "J2805"
+    ],
+    "volume": [
+     "J2805"
+    ]
+   },
+   "n_particle": 195869
+  },
+  "J2808": {
+   "type": "nonuniform_refine_new",
+   "params": {
+    "refine_symmetry": "C4",
+    "refine_res_init": 6
+   },
+   "in": {
+    "particles": [
+     "J2807"
+    ],
+    "volume": [
+     "J2807"
+    ]
+   },
+   "n_particle": 175692,
+   "res_A": 2.308
+  },
+  "J2809": {
+   "type": "new_local_refine",
+   "params": {
+    "use_alignment_prior": true,
+    "sigma_prior_r": 7,
+    "sigma_prior_s": 3,
+    "refine_symmetry": "C4"
+   },
+   "in": {
+    "mask": [
+     "J2762"
+    ],
+    "particles": [
+     "J2808"
+    ],
+    "volume": [
+     "J2808"
+    ]
+   },
+   "n_particle": 175692,
+   "res_A": 2.283
+  },
+  "J2822": {
+   "type": "homo_abinit",
+   "params": {
+    "abinit_K": 2
+   },
+   "in": {
+    "particles": [
+     "J1940"
+    ]
+   },
+   "n_particle": 529113
+  },
+  "J2823": {
+   "type": "hetero_refine",
+   "in": {
+    "particles": [
+     "J2822"
+    ],
+    "volume": [
+     "J2822"
+    ]
+   },
+   "n_particle": 529113
+  },
+  "J2824": {
+   "type": "nonuniform_refine_new",
+   "params": {
+    "refine_symmetry": "C4",
+    "crg_do_spherical": true,
+    "crg_do_tetrafoil": true,
+    "crg_do_anisomag": true
+   },
+   "in": {
+    "particles": [
+     "J2823"
+    ],
+    "volume": [
+     "J2823"
+    ]
+   },
+   "n_particle": 272345,
+   "res_A": 2.087
+  },
+  "J2828": {
+   "type": "nonuniform_refine_new",
+   "params": {
+    "refine_symmetry": "C4",
+    "crg_do_spherical": true,
+    "crg_do_tetrafoil": true,
+    "crg_do_anisomag": true,
+    "refine_dynamic_mask_thresh_factor": 0.15,
+    "refine_dynamic_mask_far_ang": 16,
+    "refine_noise_init_from_imgs": true,
+    "refine_batchsize_epsilon": 0.0001,
+    "refine_batchsize_snrfactor": 75,
+    "refine_scale_reset": false,
+    "refine_scale_min": true
+   },
+   "in": {
+    "particles": [
+     "J2823"
+    ],
+    "volume": [
+     "J2823"
+    ]
+   },
+   "n_particle": 272345,
+   "res_A": 2.079
+  },
+  "J2829": {
+   "type": "new_local_refine",
+   "params": {
+    "refine_symmetry": "C4",
+    "init_r_extent": 5,
+    "init_s_extent": 4
+   },
+   "in": {
+    "mask": [
+     "J2828"
+    ],
+    "particles": [
+     "J2828"
+    ],
+    "volume": [
+     "J2828"
+    ]
+   },
+   "n_particle": 272345,
+   "res_A": 2.047
+  },
+  "J2833": {
+   "type": "new_local_refine",
+   "params": {
+    "refine_symmetry": "C4",
+    "init_r_extent": 5,
+    "init_s_extent": 6,
+    "use_alignment_prior": true,
+    "sigma_prior_r": 4,
+    "sigma_prior_s": 2,
+    "reinitialize_rs": true,
+    "reinitialize_ss": true,
+    "refine_res_align_max": 2.2,
+    "refine_res_init": 8,
+    "refine_scale_reset": true,
+    "refine_scale_start_iter": 1
+   },
+   "in": {
+    "mask": [
+     "J2829"
+    ],
+    "particles": [
+     "J2829"
+    ],
+    "volume": [
+     "J2829"
+    ]
+   },
+   "n_particle": 272345,
+   "res_A": 2.043
+  },
+  "J2835": {
+   "type": "new_local_refine",
+   "params": {
+    "use_alignment_prior": true,
+    "sigma_prior_r": 3,
+    "sigma_prior_s": 2,
+    "init_r_extent": 2,
+    "init_s_extent": 3,
+    "reinitialize_rs": true,
+    "reinitialize_ss": true,
+    "refine_symmetry": "C4",
+    "refine_res_align_max": 2,
+    "refine_res_init": 6,
+    "refine_scale_reset": true
+   },
+   "in": {
+    "mask": [
+     "J2833"
+    ],
+    "particles": [
+     "J2833"
+    ],
+    "volume": [
+     "J2833"
+    ]
+   },
+   "n_particle": 272345,
+   "res_A": 2.019
+  },
+  "J2865": {
+   "type": "new_local_refine",
+   "params": {
+    "sigma_prior_r": 5,
+    "sigma_prior_s": 2,
+    "use_alignment_prior": true,
+    "init_r_extent": 12,
+    "reinitialize_rs": true,
+    "reinitialize_ss": true,
+    "refine_symmetry": "C4",
+    "refine_num_final_iterations": 2,
+    "refine_res_init": 4
+   },
+   "in": {
+    "mask": [
+     "J1940"
+    ],
+    "particles": [
+     "J1940"
+    ],
+    "volume": [
+     "J1940"
+    ]
+   },
+   "n_particle": 529113,
+   "res_A": 1.993
+  },
+  "J2866": {
+   "type": "new_local_refine",
+   "params": {
+    "sigma_prior_r": 5,
+    "sigma_prior_s": 2,
+    "use_alignment_prior": true,
+    "init_r_extent": 12,
+    "reinitialize_rs": true,
+    "reinitialize_ss": true,
+    "refine_symmetry": "C4",
+    "refine_num_final_iterations": 2,
+    "refine_res_init": 4
+   },
+   "in": {
+    "particles": [
+     "J2865"
+    ],
+    "volume": [
+     "J2865"
+    ],
+    "mask": [
+     "J2868"
+    ]
+   },
+   "n_particle": 529113,
+   "res_A": 2.0
+  },
+  "J2867": {
+   "type": "import_volumes",
+   "params": {
+    "volume_blob_path": "YOUR_DATA_PATH/target_mask.mrc"
+   },
+   "env_fields": [
+    "volume_blob_path"
+   ]
+  },
+  "J2868": {
+   "type": "volume_tools",
+   "params": {
+    "dilator": 4,
+    "volume_out_type": "mask",
+    "threshold": 0.04,
+    "pad": 4
+   },
+   "in": {
+    "volume": [
+     "J2867"
+    ]
+   }
+  },
+  "J2869": {
+   "type": "new_local_refine",
+   "params": {
+    "sigma_prior_r": 4,
+    "sigma_prior_s": 1.8,
+    "use_alignment_prior": true,
+    "init_r_extent": 10,
+    "reinitialize_rs": true,
+    "reinitialize_ss": true,
+    "refine_symmetry": "C4",
+    "refine_num_final_iterations": 2,
+    "refine_res_init": 3.5,
+    "init_s_extent": 5,
+    "refine_res_align_max": 1.8
+   },
+   "in": {
+    "particles": [
+     "J2865"
+    ],
+    "volume": [
+     "J2865"
+    ],
+    "mask": [
+     "J2868"
+    ]
+   },
+   "n_particle": 529113,
+   "res_A": 2.002
+  },
+  "J2872": {
+   "type": "curate_exposures_v2",
+   "params": {
+    "auto_threshold_ctf_fit_to_A": "1.9, 3.5",
+    "auto_threshold_ice_thickness_rel": "1, 1.05",
+    "auto_threshold_num_particles": "100,225"
+   },
+   "in": {
+    "exposures": [
+     "J1731"
+    ],
+    "particles": [
+     "J2869"
+    ]
+   },
+   "n_particle": 349146
+  },
+  "J2875": {
+   "type": "import_volumes",
+   "params": {
+    "volume_blob_path": "YOUR_DATA_PATH/target_NAG_mask.mrc"
+   },
+   "env_fields": [
+    "volume_blob_path"
+   ]
+  },
+  "J2876": {
+   "type": "volume_tools",
+   "params": {
+    "dilator": 4,
+    "volume_out_type": "mask",
+    "threshold": 0.06,
+    "pad": 4
+   },
+   "in": {
+    "volume": [
+     "J2875"
+    ]
+   }
+  },
+  "J2877": {
+   "type": "curate_exposures_v2",
+   "params": {
+    "auto_threshold_ctf_fit_to_A": "1.9, 3.3",
+    "auto_threshold_ice_thickness_rel": "1, 1.05",
+    "auto_threshold_motion_curvature": "0,30"
+   },
+   "in": {
+    "exposures": [
+     "J1731"
+    ],
+    "particles": [
+     "J2869"
+    ]
+   },
+   "n_particle": 509732
+  },
+  "J2881": {
+   "type": "volume_tools",
+   "params": {
+    "dilator": 6,
+    "volume_out_type": "mask",
+    "threshold": 0.04,
+    "pad": 6
+   },
+   "in": {
+    "volume": [
+     "J2875"
+    ]
+   }
+  },
+  "J2882": {
+   "type": "new_local_refine",
+   "params": {
+    "use_alignment_prior": true,
+    "sigma_prior_r": 3,
+    "sigma_prior_s": 2,
+    "init_r_extent": 2,
+    "init_s_extent": 3,
+    "reinitialize_rs": true,
+    "reinitialize_ss": true,
+    "refine_symmetry": "C4",
+    "refine_res_align_max": 2,
+    "refine_res_init": 6,
+    "refine_scale_reset": true
+   },
+   "in": {
+    "volume": [
+     "J2835"
+    ],
+    "mask": [
+     "J2881"
+    ],
+    "particles": [
+     "J2883"
+    ]
+   },
+   "n_particle": 347736,
+   "res_A": 2.004
+  },
+  "J2883": {
+   "type": "curate_exposures_v2",
+   "params": {
+    "auto_threshold_ctf_fit_to_A": "0, 2.8",
+    "auto_threshold_ice_thickness_rel": "1, 1.05",
+    "auto_threshold_motion_curvature": "0,30"
+   },
+   "in": {
+    "exposures": [
+     "J1731"
+    ],
+    "particles": [
+     "J2869"
+    ]
+   },
+   "n_particle": 347736
+  },
+  "J2893": {
+   "type": "import_micrographs",
+   "params": {
+    "blob_paths": "YOUR_DATA_PATH/*.mrc",
+    "psize_A": 0.7300000190734863,
+    "accel_kv": 300.0,
+    "cs_mm": 2.700000047683716,
+    "total_dose_e_per_A2": 1.2999999523162842
+   },
+   "env_fields": [
+    "blob_paths"
+   ]
+  },
+  "J2895": {
+   "type": "patch_ctf_estimation_multi",
+   "params": {
+    "compute_num_gpus": 2
+   },
+   "in": {
+    "exposures": [
+     "J2893"
+    ]
+   }
+  },
+  "J2898": {
+   "type": "template_picker_gpu",
+   "params": {
+    "diameter": 160
+   },
+   "in": {
+    "micrographs": [
+     "J2895"
+    ],
+    "templates": [
+     "J2901"
+    ]
+   },
+   "n_particle": 5657382
+  },
+  "J2900": {
+   "type": "volume_tools",
+   "params": {
+    "vol_lpf_A": 6
+   },
+   "in": {
+    "mask": [
+     "J2865"
+    ],
+    "volume": [
+     "J2865"
+    ]
+   }
+  },
+  "J2901": {
+   "type": "create_templates",
+   "params": {
+    "n_templates": 30
+   },
+   "in": {
+    "volume": [
+     "J2900"
+    ]
+   }
+  },
+  "J2904": {
+   "type": "extract_micrographs_multi",
+   "params": {
+    "compute_num_gpus": 4,
+    "box_size_pix": 320,
+    "bin_size_pix": 80
+   },
+   "in": {
+    "particles": [
+     "J2898"
+    ],
+    "micrographs": [
+     "J2910"
+    ]
+   }
+  },
+  "J2905": {
+   "type": "class_2D_new",
+   "params": {
+    "class2D_K": 200,
+    "compute_num_gpus": 2
+   },
+   "in": {
+    "particles": [
+     "J2912"
+    ]
+   },
+   "n_particle": 1460069
+  },
+  "J2910": {
+   "type": "curate_exposures_v2",
+   "params": {
+    "auto_threshold_ctf_fit_to_A": "0,5",
+    "auto_threshold_df_tilt_normal": "0,20",
+    "auto_threshold_ice_thickness_rel": "0,1.1"
+   },
+   "in": {
+    "exposures": [
+     "J2895"
+    ]
+   }
+  },
+  "J2912": {
+   "type": "particle_sets",
+   "params": {
+    "set_split_num": 3
+   },
+   "in": {
+    "particles_A": [
+     "J2904"
+    ]
+   },
+   "n_particle": 1460069
+  },
+  "J2914": {
+   "type": "class_2D_new",
+   "params": {
+    "class2D_K": 200,
+    "compute_num_gpus": 2
+   },
+   "in": {
+    "particles": [
+     "J2912"
+    ]
+   },
+   "n_particle": 1460069
+  },
+  "J2915": {
+   "type": "class_2D_new",
+   "params": {
+    "class2D_K": 200,
+    "compute_num_gpus": 2
+   },
+   "in": {
+    "particles": [
+     "J2912"
+    ]
+   },
+   "n_particle": 1460069
+  },
+  "J2919": {
+   "type": "select_2D",
+   "in": {
+    "particles": [
+     "J2905"
+    ],
+    "templates": [
+     "J2905"
+    ]
+   },
+   "n_particle": 1108585,
+   "select": {
+    "selected": 26,
+    "excluded": 174
+   }
+  },
+  "J2920": {
+   "type": "select_2D",
+   "in": {
+    "particles": [
+     "J2915"
+    ],
+    "templates": [
+     "J2915"
+    ]
+   },
+   "n_particle": 1158743,
+   "select": {
+    "selected": 26,
+    "excluded": 174
+   }
+  },
+  "J2921": {
+   "type": "select_2D",
+   "in": {
+    "particles": [
+     "J2914"
+    ],
+    "templates": [
+     "J2914"
+    ]
+   },
+   "n_particle": 1174985,
+   "select": {
+    "selected": 21,
+    "excluded": 179
+   }
+  },
+  "J2922": {
+   "type": "class_2D_new",
+   "params": {
+    "class2D_K": 200,
+    "compute_num_gpus": 2
+   },
+   "in": {
+    "particles": [
+     "J2919",
+     "J2920",
+     "J2921"
+    ]
+   },
+   "n_particle": 937894
+  },
+  "J2927": {
+   "type": "select_2D",
+   "in": {
+    "particles": [
+     "J2922"
+    ],
+    "templates": [
+     "J2922"
+    ]
+   },
+   "n_particle": 504773,
+   "select": {
+    "selected": 34,
+    "excluded": 166
+   }
+  },
+  "J2928": {
+   "type": "topaz_train",
+   "params": {
+    "exec_path": "YOUR_TOOL_PATH/topaz",
+    "par_diam": 150,
+    "num_particles": 300
+   },
+   "env_fields": [
+    "exec_path"
+   ],
+   "in": {
+    "micrographs": [
+     "J2910"
+    ],
+    "particles": [
+     "J2927"
+    ]
+   }
+  },
+  "J2929": {
+   "type": "topaz_extract",
+   "params": {
+    "exec_path": "YOUR_TOOL_PATH/topaz",
+    "par_diam": 150
+   },
+   "env_fields": [
+    "exec_path"
+   ],
+   "in": {
+    "micrographs": [
+     "J2928"
+    ],
+    "model": [
+     "J2928"
+    ]
+   },
+   "n_particle": 1321153
+  },
+  "J2931": {
+   "type": "extract_micrographs_multi",
+   "params": {
+    "box_size_pix": 320,
+    "compute_num_gpus": 2
+   },
+   "in": {
+    "micrographs": [
+     "J2929"
+    ],
+    "particles": [
+     "J2929"
+    ]
+   },
+   "n_particle": 1311261
+  },
+  "J3236": {
+   "type": "new_local_refine",
+   "params": {
+    "use_alignment_prior": true,
+    "sigma_prior_r": 7,
+    "sigma_prior_s": 3,
+    "refine_symmetry": "C4"
+   },
+   "in": {
+    "mask": [
+     "J2808"
+    ],
+    "particles": [
+     "J2808"
+    ],
+    "volume": [
+     "J2808"
+    ]
+   },
+   "n_particle": 175692,
+   "res_A": 2.207
+  },
+  "J3237": {
+   "type": "var_3D",
+   "params": {
+    "var_filter_res": 4,
+    "var_num_iterations": 25
+   },
+   "in": {
+    "mask": [
+     "J3236"
+    ],
+    "particles": [
+     "J3236"
+    ]
+   },
+   "n_particle": 175692
+  },
+  "J3238": {
+   "type": "var_3D_disp",
+   "params": {
+    "var_output_mode": "cluster",
+    "var_num_frames": 15
+   },
+   "in": {
+    "particles": [
+     "J3237"
+    ],
+    "volume": [
+     "J3237"
+    ]
+   },
+   "n_particle": 175692
+  },
+  "J3240": {
+   "type": "new_local_refine",
+   "params": {
+    "use_alignment_prior": true,
+    "sigma_prior_r": 7,
+    "sigma_prior_s": 3,
+    "refine_symmetry": "C4"
+   },
+   "in": {
+    "mask": [
+     "J2808"
+    ],
+    "volume": [
+     "J2808"
+    ],
+    "particles": [
+     "J3238"
+    ]
+   },
+   "n_particle": 116576,
+   "res_A": 2.275
+  },
+  "J3315": {
+   "type": "new_local_refine",
+   "params": {
+    "use_alignment_prior": true,
+    "sigma_prior_r": 3,
+    "sigma_prior_s": 2,
+    "init_r_extent": 2,
+    "init_s_extent": 3,
+    "reinitialize_rs": true,
+    "reinitialize_ss": true,
+    "refine_symmetry": "C4",
+    "refine_res_init": 5,
+    "refine_scale_reset": true,
+    "refine_dynamic_mask_use_abs": true,
+    "refine_scale_min": true
+   },
+   "in": {
+    "volume": [
+     "J2835"
+    ],
+    "mask": [
+     "J2881"
+    ],
+    "particles": [
+     "J2883"
+    ]
+   }
+  },
+  "J3317": {
+   "type": "new_local_refine",
+   "params": {
+    "use_alignment_prior": true,
+    "sigma_prior_r": 3,
+    "sigma_prior_s": 2,
+    "init_r_extent": 2,
+    "init_s_extent": 3,
+    "reinitialize_rs": true,
+    "reinitialize_ss": true,
+    "refine_symmetry": "C4",
+    "refine_res_init": 3,
+    "refine_scale_reset": true,
+    "refine_dynamic_mask_use_abs": true,
+    "refine_scale_min": true,
+    "refine_dynamic_mask_far_ang": 8,
+    "refine_dynamic_mask_start_res": 8
+   },
+   "in": {
+    "volume": [
+     "J2835"
+    ],
+    "mask": [
+     "J2881"
+    ],
+    "particles": [
+     "J2883"
+    ]
+   }
+  },
+  "J3321": {
+   "type": "new_local_refine",
+   "params": {
+    "use_alignment_prior": true,
+    "sigma_prior_r": 3,
+    "sigma_prior_s": 2,
+    "init_r_extent": 2,
+    "init_s_extent": 3,
+    "reinitialize_rs": true,
+    "reinitialize_ss": true,
+    "refine_symmetry": "C4",
+    "refine_res_init": 2,
+    "refine_scale_reset": true,
+    "refine_dynamic_mask_use_abs": true,
+    "refine_scale_min": true,
+    "refine_dynamic_mask_far_ang": 8,
+    "refine_dynamic_mask_start_res": 8
+   },
+   "in": {
+    "mask": [
+     "J2881"
+    ],
+    "particles": [
+     "J3317"
+    ],
+    "volume": [
+     "J3317"
+    ]
+   }
+  },
+  "J3330": {
+   "type": "import_micrographs",
+   "params": {
+    "blob_paths": "YOUR_DATA_PATH/*.mrc",
+    "psize_A": 0.7300000190734863,
+    "accel_kv": 300.0,
+    "cs_mm": 2.700000047683716,
+    "total_dose_e_per_A2": 1.2999999523162842
+   },
+   "env_fields": [
+    "blob_paths"
+   ]
+  },
+  "J3331": {
+   "type": "patch_ctf_estimation_multi",
+   "params": {
+    "compute_num_gpus": 4,
+    "df_search_max": 30000,
+    "res_max_align": 2.5
+   },
+   "in": {
+    "exposures": [
+     "J3330"
+    ]
+   }
+  },
+  "J3332": {
+   "type": "template_picker_gpu",
+   "params": {
+    "diameter": 150
+   },
+   "in": {
+    "micrographs": [
+     "J3331"
+    ],
+    "templates": [
+     "J3333"
+    ]
+   },
+   "n_particle": 6693356
+  },
+  "J3333": {
+   "type": "create_templates",
+   "params": {
+    "n_templates": 30
+   },
+   "in": {
+    "volume": [
+     "J3321"
+    ]
+   }
+  },
+  "J3334": {
+   "type": "curate_exposures_v2",
+   "params": {
+    "auto_threshold_ctf_fit_to_A": "0,3.5",
+    "auto_threshold_ice_thickness_rel": "0,1.1"
+   },
+   "in": {
+    "exposures": [
+     "J3331"
+    ]
+   }
+  },
+  "J3335": {
+   "type": "extract_micrographs_multi",
+   "params": {
+    "box_size_pix": 320,
+    "compute_num_gpus": 2
+   },
+   "in": {
+    "particles": [
+     "J3332"
+    ],
+    "micrographs": [
+     "J3334"
+    ]
+   },
+   "n_particle": 4926190
+  },
+  "J3336": {
+   "type": "particle_sets",
+   "in": {
+    "particles_A": [
+     "J3335"
+    ]
+   },
+   "n_particle": 2463095
+  },
+  "J3337": {
+   "type": "class_2D_new",
+   "params": {
+    "class2D_K": 200,
+    "compute_num_gpus": 2
+   },
+   "in": {
+    "particles": [
+     "J3336"
+    ]
+   },
+   "n_particle": 2463095
+  },
+  "J3338": {
+   "type": "class_2D_new",
+   "params": {
+    "class2D_K": 200,
+    "compute_num_gpus": 1
+   },
+   "in": {
+    "particles": [
+     "J3336"
+    ]
+   },
+   "n_particle": 2463095
+  },
+  "J3339": {
+   "type": "select_2D",
+   "in": {
+    "particles": [
+     "J3337"
+    ],
+    "templates": [
+     "J3337"
+    ]
+   },
+   "n_particle": 1489569,
+   "select": {
+    "selected": 37,
+    "excluded": 163
+   }
+  },
+  "J3340": {
+   "type": "select_2D",
+   "in": {
+    "particles": [
+     "J3338"
+    ],
+    "templates": [
+     "J3338"
+    ]
+   },
+   "n_particle": 1491779,
+   "select": {
+    "selected": 44,
+    "excluded": 156
+   }
+  },
+  "J3341": {
+   "type": "class_2D_new",
+   "params": {
+    "class2D_K": 200,
+    "class2D_max_res": 4,
+    "compute_num_gpus": 4
+   },
+   "in": {
+    "particles": [
+     "J3339",
+     "J3340"
+    ]
+   },
+   "n_particle": 1944842
+  },
+  "J3342": {
+   "type": "select_2D",
+   "in": {
+    "particles": [
+     "J3341"
+    ],
+    "templates": [
+     "J3341"
+    ]
+   },
+   "n_particle": 1459131,
+   "select": {
+    "selected": 61,
+    "excluded": 139
+   }
+  },
+  "J3343": {
+   "type": "homo_abinit",
+   "params": {
+    "abinit_K": 3,
+    "abinit_max_res": 6,
+    "abinit_init_res": 18
+   },
+   "in": {
+    "particles": [
+     "J3342"
+    ]
+   },
+   "n_particle": 1459131
+  },
+  "J3344": {
+   "type": "hetero_refine",
+   "in": {
+    "particles": [
+     "J3343"
+    ],
+    "volume": [
+     "J3343"
+    ]
+   },
+   "n_particle": 1459131
+  },
+  "J3345": {
+   "type": "nonuniform_refine_new",
+   "params": {
+    "refine_res_init": 18
+   },
+   "in": {
+    "particles": [
+     "J3344"
+    ],
+    "volume": [
+     "J3344"
+    ]
+   },
+   "n_particle": 516982,
+   "res_A": 2.319
+  },
+  "J3346": {
+   "type": "new_local_refine",
+   "params": {
+    "use_alignment_prior": true
+   },
+   "in": {
+    "mask": [
+     "J3345"
+    ],
+    "particles": [
+     "J3345"
+    ],
+    "volume": [
+     "J3345"
+    ]
+   },
+   "n_particle": 516982,
+   "res_A": 2.269
+  },
+  "J3347": {
+   "type": "homo_abinit",
+   "params": {
+    "abinit_K": 2
+   },
+   "in": {
+    "particles": [
+     "J3349"
+    ]
+   },
+   "n_particle": 412959
+  },
+  "J3348": {
+   "type": "hetero_refine",
+   "in": {
+    "particles": [
+     "J3347"
+    ],
+    "volume": [
+     "J3347"
+    ]
+   },
+   "n_particle": 412959
+  },
+  "J3349": {
+   "type": "curate_exposures_v2",
+   "params": {
+    "auto_threshold_ctf_fit_to_A": "0,3.5",
+    "auto_threshold_ice_thickness_rel": "0,1.05"
+   },
+   "in": {
+    "exposures": [
+     "J3331"
+    ],
+    "particles": [
+     "J3346"
+    ]
+   },
+   "n_particle": 412959
+  },
+  "J3350": {
+   "type": "nonuniform_refine_new",
+   "params": {
+    "refine_res_init": 18
+   },
+   "in": {
+    "particles": [
+     "J3348"
+    ],
+    "volume": [
+     "J3348"
+    ]
+   },
+   "n_particle": 349773,
+   "res_A": 2.284
+  },
+  "J3351": {
+   "type": "new_local_refine",
+   "in": {
+    "mask": [
+     "J3350"
+    ],
+    "particles": [
+     "J3350"
+    ],
+    "volume": [
+     "J3350"
+    ]
+   },
+   "n_particle": 349773,
+   "res_A": 2.249
+  },
+  "J3354": {
+   "type": "topaz_train",
+   "params": {
+    "exec_path": "YOUR_TOOL_PATH/topaz",
+    "par_diam": 150,
+    "num_particles": 300
+   },
+   "env_fields": [
+    "exec_path"
+   ],
+   "in": {
+    "micrographs": [
+     "J3334"
+    ],
+    "particles": [
+     "J3351"
+    ]
+   }
+  },
+  "J3355": {
+   "type": "topaz_extract",
+   "params": {
+    "exec_path": "YOUR_TOOL_PATH/topaz",
+    "par_diam": 150
+   },
+   "env_fields": [
+    "exec_path"
+   ],
+   "in": {
+    "micrographs": [
+     "J3354"
+    ],
+    "model": [
+     "J3354"
+    ]
+   },
+   "n_particle": 1542111
+  },
+  "J3356": {
+   "type": "extract_micrographs_multi",
+   "params": {
+    "box_size_pix": 320,
+    "compute_num_gpus": 4,
+    "update_location": false,
+    "update_alignments3D": false,
+    "update_alignments2D": false
+   },
+   "in": {
+    "micrographs": [
+     "J3355"
+    ],
+    "particles": [
+     "J3355"
+    ]
+   },
+   "n_particle": 1532323
+  },
+  "J3358": {
+   "type": "select_2D",
+   "in": {
+    "particles": [
+     "J3337"
+    ],
+    "templates": [
+     "J3337"
+    ]
+   },
+   "n_particle": 2308072,
+   "select": {
+    "selected": 17,
+    "excluded": 183
+   }
+  },
+  "J3359": {
+   "type": "homo_abinit",
+   "params": {
+    "abinit_K": 4
+   },
+   "in": {
+    "particles": [
+     "J3358"
+    ]
+   },
+   "n_particle": 155023
+  },
+  "J3360": {
+   "type": "class_2D_new",
+   "params": {
+    "class2D_K": 200
+   },
+   "in": {
+    "particles": [
+     "J3356"
+    ]
+   },
+   "n_particle": 1532323
+  },
+  "J3361": {
+   "type": "select_2D",
+   "in": {
+    "particles": [
+     "J3360"
+    ],
+    "templates": [
+     "J3360"
+    ]
+   },
+   "n_particle": 1002306,
+   "select": {
+    "selected": 60,
+    "excluded": 140
+   }
+  },
+  "J3363": {
+   "type": "hetero_refine",
+   "in": {
+    "volume": [
+     "J3351",
+     "J3359"
+    ],
+    "particles": [
+     "J3361"
+    ]
+   },
+   "n_particle": 1002306
+  },
+  "J3364": {
+   "type": "nonuniform_refine_new",
+   "params": {
+    "refine_res_init": 18
+   },
+   "in": {
+    "particles": [
+     "J3363"
+    ],
+    "volume": [
+     "J3363"
+    ]
+   },
+   "n_particle": 792816,
+   "res_A": 2.216
+  },
+  "J3365": {
+   "type": "new_local_refine",
+   "in": {
+    "mask": [
+     "J3364"
+    ],
+    "particles": [
+     "J3364"
+    ],
+    "volume": [
+     "J3364"
+    ]
+   },
+   "n_particle": 792816,
+   "res_A": 2.169
+  },
+  "J3367": {
+   "type": "remove_duplicate_particles",
+   "in": {
+    "micrographs": [
+     "J3331"
+    ],
+    "particles": [
+     "J3351",
+     "J3365"
+    ]
+   },
+   "n_particle": 953408
+  },
+  "J3368": {
+   "type": "hetero_refine",
+   "in": {
+    "volume": [
+     "J3359",
+     "J3365"
+    ],
+    "particles": [
+     "J3367"
+    ]
+   },
+   "n_particle": 953408
+  },
+  "J3369": {
+   "type": "nonuniform_refine_new",
+   "params": {
+    "refine_res_init": 18
+   },
+   "in": {
+    "particles": [
+     "J3368"
+    ],
+    "volume": [
+     "J3368"
+    ]
+   },
+   "n_particle": 901062,
+   "res_A": 2.193
+  },
+  "J3370": {
+   "type": "new_local_refine",
+   "in": {
+    "mask": [
+     "J3369"
+    ],
+    "particles": [
+     "J3369"
+    ],
+    "volume": [
+     "J3369"
+    ]
+   },
+   "n_particle": 901062,
+   "res_A": 2.156
+  },
+  "J3371": {
+   "type": "curate_exposures_v2",
+   "params": {
+    "auto_threshold_ctf_fit_to_A": "0,3",
+    "auto_threshold_ice_thickness_rel": "0,1.05",
+    "auto_threshold_df_avg": "10000,20000",
+    "auto_threshold_num_particles": "50,300"
+   },
+   "in": {
+    "exposures": [
+     "J3331"
+    ],
+    "particles": [
+     "J3370"
+    ]
+   },
+   "n_particle": 602416
+  },
+  "J3373": {
+   "type": "nonuniform_refine_new",
+   "params": {
+    "refine_res_init": 7,
+    "refine_symmetry": "C4",
+    "refine_defocus_refine": true,
+    "refine_ctf_global_refine": true,
+    "crg_do_spherical": true,
+    "crg_do_tetrafoil": true,
+    "crg_do_anisomag": true,
+    "refine_do_ews_correct": true
+   },
+   "in": {
+    "volume": [
+     "J3370"
+    ],
+    "particles": [
+     "J3371"
+    ]
+   },
+   "n_particle": 602416,
+   "res_A": 2.02
+  },
+  "J3374": {
+   "type": "new_local_refine",
+   "params": {
+    "refine_symmetry": "C4"
+   },
+   "in": {
+    "mask": [
+     "J3373"
+    ],
+    "particles": [
+     "J3373"
+    ],
+    "volume": [
+     "J3373"
+    ]
+   },
+   "n_particle": 602416,
+   "res_A": 1.992
+  },
+  "J3375": {
+   "type": "curate_exposures_v2",
+   "params": {
+    "auto_threshold_ctf_fit_to_A": "0,3",
+    "auto_threshold_df_avg": "10000,20000",
+    "auto_threshold_num_particles": "50,300",
+    "auto_threshold_ice_thickness_rel": "0.5,1.04"
+   },
+   "in": {
+    "exposures": [
+     "J3331"
+    ],
+    "particles": [
+     "J3374"
+    ]
+   },
+   "n_particle": 463963
+  },
+  "J3376": {
+   "type": "nonuniform_refine_new",
+   "params": {
+    "refine_res_init": 7,
+    "refine_symmetry": "C4",
+    "refine_defocus_refine": true,
+    "refine_ctf_global_refine": true,
+    "crg_do_spherical": true,
+    "crg_do_tetrafoil": true,
+    "crg_do_anisomag": true,
+    "refine_do_ews_correct": true
+   },
+   "in": {
+    "volume": [
+     "J3374"
+    ],
+    "particles": [
+     "J3375"
+    ]
+   },
+   "n_particle": 463963,
+   "res_A": 2.009
+  },
+  "J3377": {
+   "type": "new_local_refine",
+   "params": {
+    "refine_symmetry": "C4"
+   },
+   "in": {
+    "mask": [
+     "J3376"
+    ],
+    "particles": [
+     "J3376"
+    ],
+    "volume": [
+     "J3376"
+    ]
+   },
+   "n_particle": 463963,
+   "res_A": 1.967
+  },
+  "J3381": {
+   "type": "homo_abinit",
+   "params": {
+    "abinit_K": 2
+   },
+   "in": {
+    "particles": [
+     "J3377"
+    ]
+   },
+   "n_particle": 463963
+  },
+  "J3385": {
+   "type": "nonuniform_refine_new",
+   "params": {
+    "refine_res_init": 7,
+    "refine_symmetry": "C4",
+    "refine_defocus_refine": true,
+    "refine_ctf_global_refine": true,
+    "crg_do_spherical": true,
+    "crg_do_tetrafoil": true,
+    "crg_do_anisomag": true,
+    "refine_do_ews_correct": true
+   },
+   "in": {
+    "particles": [
+     "J3386"
+    ],
+    "volume": [
+     "J3386"
+    ]
+   },
+   "n_particle": 411781,
+   "res_A": 2.027
+  },
+  "J3386": {
+   "type": "hetero_refine",
+   "in": {
+    "particles": [
+     "J3381"
+    ],
+    "volume": [
+     "J3381"
+    ]
+   },
+   "n_particle": 463963
+  },
+  "J3387": {
+   "type": "new_local_refine",
+   "params": {
+    "refine_symmetry": "C4"
+   },
+   "in": {
+    "mask": [
+     "J3385"
+    ],
+    "particles": [
+     "J3385"
+    ],
+    "volume": [
+     "J3385"
+    ]
+   },
+   "n_particle": 411781,
+   "res_A": 1.994
+  },
+  "J3401": {
+   "type": "class_2D_new",
+   "params": {
+    "class2D_K": 200,
+    "compute_num_gpus": 4,
+    "class2D_max_res": 4
+   },
+   "in": {
+    "particles": [
+     "J3377"
+    ]
+   },
+   "n_particle": 462900
+  },
+  "J3405": {
+   "type": "select_2D",
+   "in": {
+    "particles": [
+     "J3401"
+    ],
+    "templates": [
+     "J3401"
+    ]
+   },
+   "n_particle": 408249
+  },
+  "J3406": {
+   "type": "nonuniform_refine_new",
+   "params": {
+    "refine_res_init": 7,
+    "refine_symmetry": "C4",
+    "refine_defocus_refine": true,
+    "refine_ctf_global_refine": true,
+    "crg_do_spherical": true,
+    "crg_do_tetrafoil": true,
+    "crg_do_anisomag": true,
+    "refine_do_ews_correct": true
+   },
+   "in": {
+    "volume": [
+     "J3377"
+    ],
+    "particles": [
+     "J3405"
+    ]
+   },
+   "n_particle": 408249,
+   "res_A": 2.027
+  },
+  "J3407": {
+   "type": "new_local_refine",
+   "params": {
+    "refine_res_init": 7,
+    "use_alignment_prior": true,
+    "refine_symmetry": "C4"
+   },
+   "in": {
+    "mask": [
+     "J3406"
+    ],
+    "particles": [
+     "J3406"
+    ],
+    "volume": [
+     "J3406"
+    ]
+   },
+   "n_particle": 408249,
+   "res_A": 1.996
+  },
+  "J3413": {
+   "type": "curate_exposures_v2",
+   "params": {
+    "auto_threshold_ctf_fit_to_A": "0,3",
+    "auto_threshold_df_avg": "10000,18000",
+    "auto_threshold_num_particles": "100,300",
+    "auto_threshold_ice_thickness_rel": "1,1.04"
+   },
+   "in": {
+    "exposures": [
+     "J3331"
+    ],
+    "particles": [
+     "J3374"
+    ]
+   },
+   "n_particle": 360342
+  },
+  "J3414": {
+   "type": "nonuniform_refine_new",
+   "params": {
+    "refine_res_init": 7,
+    "refine_symmetry": "C4",
+    "refine_defocus_refine": true,
+    "refine_ctf_global_refine": true,
+    "crg_do_spherical": true,
+    "crg_do_tetrafoil": true,
+    "crg_do_anisomag": true,
+    "refine_do_ews_correct": true
+   },
+   "in": {
+    "volume": [
+     "J3377"
+    ],
+    "particles": [
+     "J3413"
+    ]
+   },
+   "n_particle": 360342,
+   "res_A": 2.026
+  },
+  "J3415": {
+   "type": "new_local_refine",
+   "params": {
+    "refine_symmetry": "C4"
+   },
+   "in": {
+    "mask": [
+     "J3414"
+    ],
+    "particles": [
+     "J3414"
+    ],
+    "volume": [
+     "J3414"
+    ]
+   },
+   "n_particle": 360342,
+   "res_A": 1.977
+  },
+  "J3428": {
+   "type": "nonuniform_refine_new",
+   "params": {
+    "refine_res_init": 6,
+    "refine_symmetry": "C4",
+    "refine_defocus_refine": true,
+    "refine_ctf_global_refine": true,
+    "crg_do_spherical": true,
+    "crg_do_tetrafoil": true,
+    "crg_do_anisomag": true,
+    "refine_do_ews_correct": true
+   },
+   "in": {
+    "volume": [
+     "J3374"
+    ],
+    "particles": [
+     "J3429"
+    ]
+   },
+   "n_particle": 276071,
+   "res_A": 1.99
+  },
+  "J3429": {
+   "type": "curate_exposures_v2",
+   "params": {
+    "auto_threshold_ctf_fit_to_A": "0,3",
+    "auto_threshold_df_avg": "10000,16000",
+    "auto_threshold_num_particles": "100,300",
+    "auto_threshold_ice_thickness_rel": "1,1.04"
+   },
+   "in": {
+    "exposures": [
+     "J3331"
+    ],
+    "particles": [
+     "J3374"
+    ]
+   },
+   "n_particle": 326345
+  },
+  "J3430": {
+   "type": "new_local_refine",
+   "params": {
+    "use_alignment_prior": true,
+    "refine_symmetry": "C4",
+    "refine_res_init": 6
+   },
+   "in": {
+    "mask": [
+     "J3428"
+    ],
+    "particles": [
+     "J3428"
+    ],
+    "volume": [
+     "J3428"
+    ]
+   },
+   "n_particle": 276071,
+   "res_A": 1.975
+  },
+  "J3431": {
+   "type": "new_local_refine",
+   "params": {
+    "refine_symmetry": "C4",
+    "refine_res_init": 6
+   },
+   "in": {
+    "mask": [
+     "J3428"
+    ],
+    "particles": [
+     "J3428"
+    ],
+    "volume": [
+     "J3428"
+    ]
+   },
+   "n_particle": 276071,
+   "res_A": 1.979
+  },
+  "J3432": {
+   "type": "new_local_refine",
+   "params": {
+    "refine_symmetry": "C4",
+    "refine_res_init": 6
+   },
+   "in": {
+    "mask": [
+     "J3376"
+    ],
+    "particles": [
+     "J3376"
+    ],
+    "volume": [
+     "J3376"
+    ]
+   },
+   "n_particle": 463963,
+   "res_A": 1.975
+  },
+  "J3442": {
+   "type": "new_local_refine",
+   "in": {
+    "mask": [
+     "J3376"
+    ],
+    "particles": [
+     "J3376"
+    ],
+    "volume": [
+     "J3376"
+    ]
+   },
+   "n_particle": 463963,
+   "res_A": 2.123
+  }
+ }
+}

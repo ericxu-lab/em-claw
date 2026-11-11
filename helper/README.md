@@ -1,7 +1,7 @@
 # Helper scripts: build the raw history for the history bank
 
 EM-Claw's subR agent learns from an offline **history bank** of past CryoSPARC
-projects (`YOUR_HISTORY_BANK_PATH` in `profiles/cryosparc-agent/.claude/agents/subR.md`).
+projects, `profiles/cryosparc/history_bank/`, which ships with six example digests.
 These two scripts collect the raw history that the bank is built from. Use
 **either** one, depending on what you can access:
 
@@ -46,7 +46,7 @@ it loads their `.cs` files with numpy.
 ```sh
 python3 helper/extract_effective_cryosparc_flow.py \
     --project-dir /path/to/CS-myproject --resolution-cutoff 4.0 \
-    --outdir YOUR_HISTORY_BANK_PATH/CS-myproject/G1
+    --outdir profiles/cryosparc/history_bank/CS-myproject/G1
 ```
 
 It finds every completed reconstruction or refinement at or better than the
@@ -61,13 +61,14 @@ extracted workflow: the digest step looks for `*CS*/G*` folders.
 
 ## Then: have the agent digest the raw history
 
-Point subR at the bank by replacing `YOUR_HISTORY_BANK_PATH` in
-`profiles/cryosparc-agent/.claude/agents/subR.md`, start EM-Claw on the
-`cryosparc` route, and ask it to digest the raw history, for example:
+Start EM-Claw on the `cryosparc` route and ask it to digest the raw history
+into the bank, for example:
 
 ```text
-> Digest the raw CryoSPARC history in <output folder> into the history bank at <bank path>.
+> Digest the raw CryoSPARC history in <output folder> into history_bank/.
 ```
+
+subR then finds the new digests next to the bundled examples.
 
 The agent digests each kind of raw history with its own tool in
 `profiles/cryosparc/tools/`; both write compact `*_digest.json` files in the same

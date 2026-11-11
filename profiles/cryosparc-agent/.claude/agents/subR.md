@@ -40,7 +40,8 @@ but for similar cases the curated list wins ties and near-ties. If the list is e
 bank normally.
 
 ## History bank layout
-- Root: `YOUR_HISTORY_BANK_PATH/*CS*/` (the site's offline history bank). Each `G*` dir is one reference project group.
+- Root: `history_bank/*CS*/` in the CryoSPARC profile directory (it ships with six example digests
+  and holds the site's own digests too). Each `G*` dir is one reference project group.
 - **Primary surface — `*_digest.json`** (built by `tools/build_history_digest.py`): a compact
   distillation you should read first. Per group it has:
   - `optics` (psize/kV/Cs/box), `particle.picker_diameter_A` (size hint), `result`

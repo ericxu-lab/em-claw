@@ -1,0 +1,3502 @@
+{
+ "schema": "cryoem-history-digest/v1",
+ "project_uid": "P514",
+ "project_name": "CS-P514-transporter",
+ "project_slug": "CS-P514-transporter",
+ "group": "G006",
+ "workspaces": [
+  "W6"
+ ],
+ "cs_version": "v4.6.2",
+ "resolution_cutoff_A": 4.0,
+ "pdf": {
+  "present": false,
+  "note": "result images (2D classes, FSC, ...) are not distributed with the bundled example digests; recommend on numeric grounds",
+  "signal_2d": {
+   "uid": "J388"
+  }
+ },
+ "optics": {
+  "psize_A": 0.73,
+  "accel_kv": 300.0,
+  "cs_mm": 2.7,
+  "final_box_pix": 300
+ },
+ "particle": {
+  "title": null,
+  "picker_diameter_A": [
+   50,
+   70,
+   90,
+   100,
+   140,
+   250
+  ]
+ },
+ "result": {
+  "best_uid": "J404",
+  "best_job_type": "new_local_refine",
+  "best_res_A": 2.657,
+  "n_particles": 139555,
+  "n_seeds": 9
+ },
+ "job_type_counts": {
+  "class_2D_new": 43,
+  "select_2D": 40,
+  "extract_micrographs_multi": 29,
+  "nonuniform_refine_new": 12,
+  "topaz_train": 10,
+  "hetero_refine": 9,
+  "homo_abinit": 8,
+  "patch_ctf_estimation_multi": 7,
+  "template_picker_gpu": 7,
+  "topaz_extract": 7,
+  "blob_picker_gpu": 6,
+  "curate_exposures_v2": 6,
+  "particle_sets": 5,
+  "new_local_refine": 5,
+  "import_micrographs": 4,
+  "remove_duplicate_particles": 4,
+  "exposure_sets": 2,
+  "homo_reconstruct": 2,
+  "create_templates": 1
+ },
+ "param_policy": {
+  "note": "steps[].params keeps ALL non-default knobs verbatim (learn from these). Names in steps[].env_fields are environment-specific paths from the source project: re-fill from the WORKING environment, never copy or omit. Confirm the full required-param set per job via MCP validate_params before running.",
+  "env_fields_seen": [
+   "blob_paths",
+   "exec_path"
+  ]
+ },
+ "backbone": [
+  {
+   "uid": "J138",
+   "type": "homo_abinit",
+   "n_particle": 164923,
+   "params": {
+    "abinit_K": 3
+   }
+  },
+  {
+   "uid": "J139",
+   "type": "hetero_refine",
+   "n_particle": 164923
+  },
+  {
+   "uid": "J141",
+   "type": "homo_abinit",
+   "n_particle": 164923,
+   "params": {
+    "abinit_K": 4,
+    "abinit_init_res": 10,
+    "abinit_max_res": 4,
+    "abinit_minisize": 600,
+    "abinit_minisize_init": 200,
+    "abinit_center": false
+   }
+  },
+  {
+   "uid": "J194",
+   "type": "nonuniform_refine_new",
+   "res_A": 3.52,
+   "n_particle": 59165,
+   "params": {
+    "refine_res_init": 12
+   }
+  },
+  {
+   "uid": "J196",
+   "type": "new_local_refine",
+   "res_A": 3.533,
+   "delta_A": 0.013,
+   "n_particle": 59165,
+   "params": {
+    "init_r_extent": 10,
+    "init_s_extent": 5,
+    "refine_res_init": 5
+   }
+  },
+  {
+   "uid": "J202",
+   "type": "homo_abinit",
+   "n_particle": 1024436,
+   "params": {
+    "abinit_K": 6,
+    "abinit_init_res": 10,
+    "abinit_max_res": 4,
+    "abinit_minisize": 600,
+    "abinit_minisize_init": 200,
+    "abinit_center": false
+   }
+  },
+  {
+   "uid": "J214",
+   "type": "hetero_refine",
+   "n_particle": 1189359
+  },
+  {
+   "uid": "J215",
+   "type": "hetero_refine",
+   "n_particle": 336555
+  },
+  {
+   "uid": "J217",
+   "type": "nonuniform_refine_new",
+   "res_A": 3.346,
+   "delta_A": -0.187,
+   "n_particle": 158478,
+   "params": {
+    "refine_res_init": 7
+   }
+  },
+  {
+   "uid": "J226",
+   "type": "nonuniform_refine_new",
+   "res_A": 3.237,
+   "delta_A": -0.109,
+   "n_particle": 157188,
+   "params": {
+    "refine_res_init": 7
+   }
+  },
+  {
+   "uid": "J234",
+   "type": "homo_abinit",
+   "n_particle": 500000,
+   "params": {
+    "abinit_K": 4,
+    "abinit_num_particles": 500000
+   }
+  },
+  {
+   "uid": "J241",
+   "type": "hetero_refine",
+   "n_particle": 986731
+  },
+  {
+   "uid": "J242",
+   "type": "hetero_refine",
+   "n_particle": 390921
+  },
+  {
+   "uid": "J266",
+   "type": "nonuniform_refine_new",
+   "res_A": 3.305,
+   "delta_A": 0.068,
+   "n_particle": 148521,
+   "params": {
+    "refine_res_init": 8
+   }
+  },
+  {
+   "uid": "J269",
+   "type": "new_local_refine",
+   "res_A": 3.275,
+   "delta_A": -0.03,
+   "n_particle": 148521
+  },
+  {
+   "uid": "J383",
+   "type": "homo_abinit",
+   "n_particle": 205865,
+   "params": {
+    "abinit_K": 4,
+    "abinit_max_res": 4,
+    "abinit_init_res": 40,
+    "abinit_center": false,
+    "abinit_minisize_init": 300,
+    "abinit_minisize": 1000,
+    "abinit_minisize_epsilon": 0.005
+   }
+  },
+  {
+   "uid": "J384",
+   "type": "nonuniform_refine_new",
+   "res_A": 3.426,
+   "delta_A": 0.151,
+   "n_particle": 67215,
+   "params": {
+    "refine_res_init": 7
+   }
+  },
+  {
+   "uid": "J385",
+   "type": "nonuniform_refine_new",
+   "res_A": 3.622,
+   "delta_A": 0.196,
+   "n_particle": 61691,
+   "params": {
+    "refine_res_init": 7
+   }
+  },
+  {
+   "uid": "J391",
+   "type": "nonuniform_refine_new",
+   "res_A": 2.934,
+   "delta_A": -0.688,
+   "n_particle": 127878,
+   "params": {
+    "refine_res_init": 10
+   }
+  },
+  {
+   "uid": "J394",
+   "type": "homo_abinit",
+   "n_particle": 733423,
+   "params": {
+    "abinit_K": 5,
+    "abinit_num_particles": 50000
+   }
+  },
+  {
+   "uid": "J399",
+   "type": "hetero_refine",
+   "n_particle": 2330928
+  },
+  {
+   "uid": "J400",
+   "type": "hetero_refine",
+   "n_particle": 566991
+  },
+  {
+   "uid": "J401",
+   "type": "hetero_refine",
+   "n_particle": 211430
+  },
+  {
+   "uid": "J403",
+   "type": "nonuniform_refine_new",
+   "res_A": 2.68,
+   "delta_A": -0.254,
+   "n_particle": 139555,
+   "params": {
+    "refine_res_init": 15
+   }
+  },
+  {
+   "uid": "J404",
+   "type": "new_local_refine",
+   "res_A": 2.657,
+   "delta_A": -0.023,
+   "n_particle": 139555,
+   "params": {
+    "init_r_extent": 10,
+    "init_s_extent": 5,
+    "refine_res_init": 8
+   }
+  }
+ ],
+ "steps": {
+  "J1": {
+   "type": "import_micrographs",
+   "params": {
+    "blob_paths": "YOUR_DATA_PATH/*.mrc",
+    "psize_A": 0.7300000190734863,
+    "accel_kv": 300.0,
+    "total_dose_e_per_A2": 50.0,
+    "cs_mm": 2.700000047683716
+   },
+   "env_fields": [
+    "blob_paths"
+   ]
+  },
+  "J2": {
+   "type": "patch_ctf_estimation_multi",
+   "params": {
+    "compute_num_gpus": 2
+   },
+   "in": {
+    "exposures": [
+     "J1"
+    ]
+   }
+  },
+  "J3": {
+   "type": "patch_ctf_estimation_multi",
+   "params": {
+    "compute_num_gpus": 4
+   },
+   "in": {
+    "exposures": [
+     "J1"
+    ]
+   }
+  },
+  "J5": {
+   "type": "blob_picker_gpu",
+   "params": {
+    "diameter": 50,
+    "diameter_max": 250
+   },
+   "in": {
+    "micrographs": [
+     "J3"
+    ]
+   },
+   "n_particle": 689580
+  },
+  "J6": {
+   "type": "extract_micrographs_multi",
+   "params": {
+    "compute_num_gpus": 2,
+    "box_size_pix": 300,
+    "bin_size_pix": 150
+   },
+   "in": {
+    "micrographs": [
+     "J5"
+    ],
+    "particles": [
+     "J5"
+    ]
+   }
+  },
+  "J7": {
+   "type": "class_2D_new",
+   "params": {
+    "class2D_K": 400,
+    "class2D_max_res": 4,
+    "class2D_max_res_align": 4,
+    "compute_num_gpus": 4
+   },
+   "in": {
+    "particles": [
+     "J6"
+    ]
+   }
+  },
+  "J9": {
+   "type": "class_2D_new",
+   "params": {
+    "class2D_K": 400,
+    "class2D_max_res": 4,
+    "class2D_max_res_align": 4,
+    "compute_num_gpus": 4
+   },
+   "in": {
+    "particles": [
+     "J6"
+    ]
+   },
+   "n_particle": 586701
+  },
+  "J10": {
+   "type": "select_2D",
+   "in": {
+    "particles": [
+     "J9"
+    ],
+    "templates": [
+     "J9"
+    ]
+   },
+   "n_particle": 452982,
+   "select": {
+    "selected": 73,
+    "excluded": 327
+   }
+  },
+  "J11": {
+   "type": "class_2D_new",
+   "params": {
+    "class2D_K": 300,
+    "class2D_max_res": 4,
+    "class2D_max_res_align": 4,
+    "compute_num_gpus": 4
+   },
+   "in": {
+    "particles": [
+     "J10"
+    ]
+   },
+   "n_particle": 133469
+  },
+  "J12": {
+   "type": "select_2D",
+   "in": {
+    "particles": [
+     "J11"
+    ],
+    "templates": [
+     "J11"
+    ]
+   },
+   "n_particle": 112024,
+   "select": {
+    "selected": 24,
+    "excluded": 276
+   }
+  },
+  "J13": {
+   "type": "class_2D_new",
+   "params": {
+    "class2D_max_res": 4,
+    "class2D_max_res_align": 4,
+    "class2D_num_full_iter_batch": 40,
+    "class2D_num_full_iter_batchsize_per_class": 400,
+    "compute_num_gpus": 2
+   },
+   "in": {
+    "particles": [
+     "J12"
+    ]
+   },
+   "n_particle": 21424
+  },
+  "J14": {
+   "type": "curate_exposures_v2",
+   "in": {
+    "exposures": [
+     "J3"
+    ]
+   }
+  },
+  "J15": {
+   "type": "select_2D",
+   "in": {
+    "particles": [
+     "J13"
+    ],
+    "templates": [
+     "J13"
+    ]
+   },
+   "n_particle": 12170,
+   "select": {
+    "selected": 16,
+    "excluded": 34
+   }
+  },
+  "J16": {
+   "type": "topaz_train",
+   "params": {
+    "exec_path": "YOUR_TOOL_PATH/topaz",
+    "par_diam": 90,
+    "num_particles": 300
+   },
+   "env_fields": [
+    "exec_path"
+   ],
+   "in": {
+    "micrographs": [
+     "J14"
+    ],
+    "particles": [
+     "J15"
+    ]
+   }
+  },
+  "J18": {
+   "type": "template_picker_gpu",
+   "params": {
+    "diameter": 90
+   },
+   "in": {
+    "micrographs": [
+     "J3"
+    ],
+    "templates": [
+     "J15"
+    ]
+   },
+   "n_particle": 742843
+  },
+  "J19": {
+   "type": "extract_micrographs_multi",
+   "params": {
+    "compute_num_gpus": 3
+   },
+   "in": {
+    "micrographs": [
+     "J18"
+    ],
+    "particles": [
+     "J18"
+    ]
+   }
+  },
+  "J20": {
+   "type": "class_2D_new",
+   "params": {
+    "class2D_K": 400,
+    "class2D_max_res": 4,
+    "class2D_max_res_align": 4,
+    "class2D_num_full_iter_batch": 40,
+    "class2D_num_full_iter_batchsize_per_class": 400,
+    "compute_num_gpus": 2
+   },
+   "in": {
+    "particles": [
+     "J19"
+    ]
+   },
+   "n_particle": 645146
+  },
+  "J24": {
+   "type": "select_2D",
+   "in": {
+    "particles": [
+     "J20"
+    ],
+    "templates": [
+     "J20"
+    ]
+   },
+   "n_particle": 609366,
+   "select": {
+    "selected": 12,
+    "excluded": 388
+   }
+  },
+  "J25": {
+   "type": "topaz_train",
+   "params": {
+    "exec_path": "YOUR_TOOL_PATH/topaz",
+    "par_diam": 100,
+    "num_particles": 400
+   },
+   "env_fields": [
+    "exec_path"
+   ],
+   "in": {
+    "particles": [
+     "J12",
+     "J24"
+    ],
+    "micrographs": [
+     "J14"
+    ]
+   }
+  },
+  "J28": {
+   "type": "import_micrographs",
+   "params": {
+    "blob_paths": "YOUR_DATA_PATH/*.mrc",
+    "psize_A": 0.7300000190734863,
+    "accel_kv": 300.0,
+    "cs_mm": 2.700000047683716,
+    "total_dose_e_per_A2": 50.0
+   },
+   "env_fields": [
+    "blob_paths"
+   ]
+  },
+  "J29": {
+   "type": "patch_ctf_estimation_multi",
+   "params": {
+    "compute_num_gpus": 4
+   },
+   "in": {
+    "exposures": [
+     "J28"
+    ]
+   }
+  },
+  "J30": {
+   "type": "blob_picker_gpu",
+   "params": {
+    "diameter": 50,
+    "diameter_max": 250
+   },
+   "in": {
+    "micrographs": [
+     "J29"
+    ]
+   },
+   "n_particle": 1557252
+  },
+  "J31": {
+   "type": "extract_micrographs_multi",
+   "params": {
+    "compute_num_gpus": 4,
+    "bin_size_pix": 128
+   },
+   "in": {
+    "micrographs": [
+     "J30"
+    ],
+    "particles": [
+     "J30"
+    ]
+   }
+  },
+  "J32": {
+   "type": "class_2D_new",
+   "params": {
+    "class2D_K": 400,
+    "compute_num_gpus": 4
+   },
+   "in": {
+    "particles": [
+     "J31"
+    ]
+   },
+   "n_particle": 1365515
+  },
+  "J33": {
+   "type": "curate_exposures_v2",
+   "in": {
+    "exposures": [
+     "J29"
+    ]
+   }
+  },
+  "J34": {
+   "type": "template_picker_gpu",
+   "params": {
+    "diameter": 90
+   },
+   "in": {
+    "micrographs": [
+     "J29"
+    ],
+    "templates": [
+     "J36"
+    ]
+   },
+   "n_particle": 1555394
+  },
+  "J35": {
+   "type": "topaz_train",
+   "params": {
+    "exec_path": "YOUR_TOOL_PATH/topaz",
+    "par_diam": 100,
+    "num_particles": 400
+   },
+   "env_fields": [
+    "exec_path"
+   ],
+   "in": {
+    "micrographs": [
+     "J29"
+    ],
+    "particles": [
+     "J47"
+    ]
+   }
+  },
+  "J36": {
+   "type": "select_2D",
+   "in": {
+    "particles": [
+     "J32"
+    ],
+    "templates": [
+     "J32"
+    ]
+   },
+   "n_particle": 1177142,
+   "select": {
+    "selected": 46,
+    "excluded": 354
+   }
+  },
+  "J37": {
+   "type": "class_2D_new",
+   "params": {
+    "class2D_K": 150,
+    "class2D_max_res": 4,
+    "class2D_max_res_align": 4,
+    "class2D_num_full_iter_batch": 80,
+    "class2D_num_full_iter_batchsize_per_class": 400,
+    "class2D_num_full_iter": 10,
+    "compute_num_gpus": 2
+   },
+   "in": {
+    "particles": [
+     "J36"
+    ]
+   },
+   "n_particle": 188297
+  },
+  "J38": {
+   "type": "extract_micrographs_multi",
+   "params": {
+    "compute_num_gpus": 4,
+    "box_size_pix": 300,
+    "bin_size_pix": 150
+   },
+   "in": {
+    "micrographs": [
+     "J34"
+    ],
+    "particles": [
+     "J34"
+    ]
+   }
+  },
+  "J39": {
+   "type": "class_2D_new",
+   "params": {
+    "class2D_K": 200,
+    "class2D_max_res": 4,
+    "class2D_max_res_align": 4,
+    "class2D_num_full_iter_batch": 40,
+    "class2D_num_full_iter_batchsize_per_class": 400,
+    "compute_num_gpus": 2
+   },
+   "in": {
+    "particles": [
+     "J38"
+    ]
+   },
+   "n_particle": 1320494
+  },
+  "J40": {
+   "type": "select_2D",
+   "in": {
+    "particles": [
+     "J39"
+    ],
+    "templates": [
+     "J39"
+    ]
+   },
+   "n_particle": 1249663,
+   "select": {
+    "selected": 5,
+    "excluded": 195
+   }
+  },
+  "J41": {
+   "type": "select_2D",
+   "in": {
+    "particles": [
+     "J37"
+    ],
+    "templates": [
+     "J37"
+    ]
+   },
+   "n_particle": 170612,
+   "select": {
+    "selected": 10,
+    "excluded": 140
+   }
+  },
+  "J42": {
+   "type": "extract_micrographs_multi",
+   "params": {
+    "compute_num_gpus": 3,
+    "box_size_pix": 300,
+    "bin_size_pix": 150,
+    "update_location": true,
+    "update_alignments2D": true,
+    "recenter_key": "alignments2D"
+   },
+   "in": {
+    "micrographs": [
+     "J34"
+    ],
+    "particles": [
+     "J40"
+    ]
+   }
+  },
+  "J43": {
+   "type": "class_2D_new",
+   "params": {
+    "compute_num_gpus": 2,
+    "class2D_K": 100,
+    "class2D_max_res": 4,
+    "class2D_max_res_align": 4,
+    "class2D_num_full_iter_batch": 40,
+    "class2D_num_full_iter_batchsize_per_class": 400
+   },
+   "in": {
+    "particles": [
+     "J42"
+    ]
+   },
+   "n_particle": 70294
+  },
+  "J44": {
+   "type": "select_2D",
+   "in": {
+    "particles": [
+     "J43"
+    ],
+    "templates": [
+     "J43"
+    ]
+   },
+   "n_particle": 49357,
+   "select": {
+    "selected": 61,
+    "excluded": 39
+   }
+  },
+  "J45": {
+   "type": "class_2D_new",
+   "params": {
+    "compute_num_gpus": 2,
+    "class2D_K": 100,
+    "class2D_max_res": 4,
+    "class2D_max_res_align": 4,
+    "class2D_num_full_iter_batch": 80,
+    "class2D_num_full_iter_batchsize_per_class": 400,
+    "class2D_num_full_iter": 10
+   },
+   "in": {
+    "particles": [
+     "J44",
+     "J46"
+    ]
+   },
+   "n_particle": 59260
+  },
+  "J46": {
+   "type": "extract_micrographs_multi",
+   "params": {
+    "compute_num_gpus": 3,
+    "box_size_pix": 300,
+    "bin_size_pix": 150,
+    "update_location": true,
+    "update_alignments2D": true,
+    "recenter_key": "alignments2D"
+   },
+   "in": {
+    "micrographs": [
+     "J34"
+    ],
+    "particles": [
+     "J41"
+    ]
+   }
+  },
+  "J47": {
+   "type": "select_2D",
+   "in": {
+    "particles": [
+     "J45"
+    ],
+    "templates": [
+     "J45"
+    ]
+   },
+   "n_particle": 34739,
+   "select": {
+    "selected": 51,
+    "excluded": 49
+   }
+  },
+  "J48": {
+   "type": "topaz_extract",
+   "params": {
+    "exec_path": "YOUR_TOOL_PATH/topaz",
+    "par_diam": 100
+   },
+   "env_fields": [
+    "exec_path"
+   ],
+   "in": {
+    "micrographs": [
+     "J35"
+    ],
+    "model": [
+     "J35"
+    ]
+   },
+   "n_particle": 245098
+  },
+  "J49": {
+   "type": "extract_micrographs_multi",
+   "params": {
+    "compute_num_gpus": 3,
+    "box_size_pix": 300,
+    "bin_size_pix": 150,
+    "update_location": false,
+    "update_alignments2D": false,
+    "recenter_key": "alignments2D"
+   },
+   "in": {
+    "micrographs": [
+     "J34"
+    ],
+    "particles": [
+     "J48"
+    ]
+   }
+  },
+  "J50": {
+   "type": "class_2D_new",
+   "params": {
+    "prepare_window_inner_radius": 0.8,
+    "prepare_window_outer_radius": 0.9,
+    "class2D_K": 200,
+    "class2D_max_res": 4,
+    "class2D_num_full_iter": 20,
+    "class2D_num_full_iter_batch": 100,
+    "class2D_num_full_iter_batchsize_per_class": 400,
+    "compute_num_gpus": 2
+   },
+   "in": {
+    "particles": [
+     "J49"
+    ]
+   },
+   "n_particle": 242100
+  },
+  "J51": {
+   "type": "select_2D",
+   "in": {
+    "particles": [
+     "J50"
+    ],
+    "templates": [
+     "J50"
+    ]
+   },
+   "n_particle": 167277,
+   "select": {
+    "selected": 49,
+    "excluded": 151
+   }
+  },
+  "J53": {
+   "type": "class_2D_new",
+   "params": {
+    "class2D_K": 100,
+    "class2D_max_res": 4,
+    "class2D_num_full_iter": 20,
+    "class2D_num_full_iter_batch": 100,
+    "class2D_num_full_iter_batchsize_per_class": 400,
+    "compute_num_gpus": 2,
+    "class2D_max_res_align": 4
+   },
+   "in": {
+    "particles": [
+     "J51"
+    ]
+   },
+   "n_particle": 74823
+  },
+  "J54": {
+   "type": "topaz_train",
+   "params": {
+    "exec_path": "YOUR_TOOL_PATH/topaz",
+    "par_diam": 100,
+    "num_particles": 400
+   },
+   "env_fields": [
+    "exec_path"
+   ],
+   "in": {
+    "micrographs": [
+     "J29"
+    ],
+    "particles": [
+     "J51"
+    ]
+   }
+  },
+  "J56": {
+   "type": "topaz_extract",
+   "params": {
+    "exec_path": "YOUR_TOOL_PATH/topaz",
+    "par_diam": 100
+   },
+   "env_fields": [
+    "exec_path"
+   ],
+   "in": {
+    "micrographs": [
+     "J54"
+    ],
+    "model": [
+     "J54"
+    ]
+   },
+   "n_particle": 328440
+  },
+  "J57": {
+   "type": "extract_micrographs_multi",
+   "params": {
+    "compute_num_gpus": 4,
+    "box_size_pix": 300,
+    "bin_size_pix": 150,
+    "recenter_key": "alignments2D"
+   },
+   "in": {
+    "micrographs": [
+     "J56"
+    ],
+    "particles": [
+     "J56"
+    ]
+   }
+  },
+  "J59": {
+   "type": "class_2D_new",
+   "params": {
+    "prepare_window_inner_radius": 0.8,
+    "prepare_window_outer_radius": 0.9,
+    "class2D_K": 200,
+    "class2D_max_res": 4,
+    "class2D_num_full_iter": 20,
+    "class2D_num_full_iter_batch": 100,
+    "class2D_num_full_iter_batchsize_per_class": 400,
+    "compute_num_gpus": 4,
+    "class2D_max_res_align": 4
+   },
+   "in": {
+    "particles": [
+     "J57"
+    ]
+   },
+   "n_particle": 326902
+  },
+  "J60": {
+   "type": "select_2D",
+   "in": {
+    "particles": [
+     "J59"
+    ],
+    "templates": [
+     "J59"
+    ]
+   },
+   "n_particle": 282601,
+   "select": {
+    "selected": 20,
+    "excluded": 180
+   }
+  },
+  "J61": {
+   "type": "template_picker_gpu",
+   "params": {
+    "diameter": 90
+   },
+   "in": {
+    "micrographs": [
+     "J29"
+    ],
+    "templates": [
+     "J53",
+     "J60"
+    ]
+   },
+   "n_particle": 1542829
+  },
+  "J62": {
+   "type": "extract_micrographs_multi",
+   "params": {
+    "compute_num_gpus": 2,
+    "box_size_pix": 300,
+    "bin_size_pix": 150,
+    "recenter_key": "alignments2D"
+   },
+   "in": {
+    "micrographs": [
+     "J61"
+    ],
+    "particles": [
+     "J61"
+    ]
+   }
+  },
+  "J63": {
+   "type": "class_2D_new",
+   "params": {
+    "class2D_K": 200,
+    "class2D_max_res": 4,
+    "class2D_max_res_align": 4,
+    "class2D_num_full_iter_batchsize_per_class": 400,
+    "compute_num_gpus": 2,
+    "class2D_num_full_iter_batch": 40
+   },
+   "in": {
+    "particles": [
+     "J62"
+    ]
+   },
+   "n_particle": 1307199
+  },
+  "J64": {
+   "type": "select_2D",
+   "in": {
+    "particles": [
+     "J63"
+    ],
+    "templates": [
+     "J63"
+    ]
+   },
+   "n_particle": 1263129,
+   "select": {
+    "selected": 3,
+    "excluded": 197
+   }
+  },
+  "J65": {
+   "type": "class_2D_new",
+   "params": {
+    "class2D_K": 100,
+    "class2D_max_res": 4,
+    "class2D_max_res_align": 4,
+    "class2D_num_full_iter": 10,
+    "class2D_num_full_iter_batch": 400,
+    "class2D_num_full_iter_batchsize_per_class": 400,
+    "compute_num_gpus": 2
+   },
+   "in": {
+    "particles": [
+     "J60",
+     "J64"
+    ]
+   },
+   "n_particle": 74978
+  },
+  "J66": {
+   "type": "select_2D",
+   "in": {
+    "particles": [
+     "J65"
+    ],
+    "templates": [
+     "J65"
+    ]
+   },
+   "n_particle": 50829,
+   "select": {
+    "selected": 64,
+    "excluded": 36
+   }
+  },
+  "J67": {
+   "type": "class_2D_new",
+   "params": {
+    "class2D_max_res": 4,
+    "class2D_max_res_align": 4,
+    "class2D_num_full_iter": 10,
+    "class2D_num_full_iter_batch": 100,
+    "class2D_num_full_iter_batchsize_per_class": 400,
+    "compute_num_gpus": 2
+   },
+   "in": {
+    "particles": [
+     "J66"
+    ]
+   },
+   "n_particle": 50795
+  },
+  "J68": {
+   "type": "select_2D",
+   "in": {
+    "particles": [
+     "J67"
+    ],
+    "templates": [
+     "J67"
+    ]
+   },
+   "n_particle": 27992,
+   "select": {
+    "selected": 23,
+    "excluded": 27
+   }
+  },
+  "J69": {
+   "type": "topaz_train",
+   "params": {
+    "exec_path": "YOUR_TOOL_PATH/topaz",
+    "par_diam": 90,
+    "num_particles": 400
+   },
+   "env_fields": [
+    "exec_path"
+   ],
+   "in": {
+    "micrographs": [
+     "J29"
+    ],
+    "particles": [
+     "J68"
+    ]
+   }
+  },
+  "J70": {
+   "type": "topaz_extract",
+   "params": {
+    "exec_path": "YOUR_TOOL_PATH/topaz",
+    "par_diam": 90
+   },
+   "env_fields": [
+    "exec_path"
+   ],
+   "in": {
+    "micrographs": [
+     "J69"
+    ],
+    "model": [
+     "J69"
+    ]
+   },
+   "n_particle": 311373
+  },
+  "J71": {
+   "type": "extract_micrographs_multi",
+   "params": {
+    "compute_num_gpus": 2,
+    "box_size_pix": 300,
+    "bin_size_pix": 150,
+    "recenter_key": "alignments2D"
+   },
+   "in": {
+    "micrographs": [
+     "J70"
+    ],
+    "particles": [
+     "J70"
+    ]
+   }
+  },
+  "J72": {
+   "type": "class_2D_new",
+   "params": {
+    "class2D_max_res": 4,
+    "class2D_max_res_align": 4,
+    "class2D_num_full_iter": 10,
+    "class2D_num_full_iter_batch": 100,
+    "class2D_num_full_iter_batchsize_per_class": 400,
+    "compute_num_gpus": 2,
+    "class2D_K": 200
+   },
+   "in": {
+    "particles": [
+     "J71"
+    ]
+   },
+   "n_particle": 309069
+  },
+  "J73": {
+   "type": "select_2D",
+   "in": {
+    "particles": [
+     "J72"
+    ],
+    "templates": [
+     "J72"
+    ]
+   },
+   "n_particle": 276324,
+   "select": {
+    "selected": 14,
+    "excluded": 186
+   }
+  },
+  "J74": {
+   "type": "template_picker_gpu",
+   "params": {
+    "diameter": 90
+   },
+   "in": {
+    "micrographs": [
+     "J33"
+    ],
+    "templates": [
+     "J73"
+    ]
+   },
+   "n_particle": 1573427
+  },
+  "J75": {
+   "type": "extract_micrographs_multi",
+   "params": {
+    "compute_num_gpus": 2,
+    "box_size_pix": 300,
+    "bin_size_pix": 150
+   },
+   "in": {
+    "micrographs": [
+     "J74"
+    ],
+    "particles": [
+     "J74"
+    ]
+   }
+  },
+  "J76": {
+   "type": "class_2D_new",
+   "params": {
+    "class2D_K": 300,
+    "compute_num_gpus": 2
+   },
+   "in": {
+    "particles": [
+     "J75"
+    ]
+   },
+   "n_particle": 1333077
+  },
+  "J77": {
+   "type": "select_2D",
+   "in": {
+    "particles": [
+     "J76"
+    ],
+    "templates": [
+     "J76"
+    ]
+   },
+   "n_particle": 1265438,
+   "select": {
+    "selected": 8,
+    "excluded": 292
+   }
+  },
+  "J78": {
+   "type": "class_2D_new",
+   "params": {
+    "class2D_max_res": 4,
+    "class2D_max_res_align": 4,
+    "class2D_num_full_iter": 10,
+    "class2D_num_full_iter_batch": 100,
+    "class2D_num_full_iter_batchsize_per_class": 400,
+    "compute_num_gpus": 2,
+    "class2D_K": 100
+   },
+   "in": {
+    "particles": [
+     "J77"
+    ]
+   },
+   "n_particle": 67551
+  },
+  "J79": {
+   "type": "select_2D",
+   "in": {
+    "particles": [
+     "J78"
+    ],
+    "templates": [
+     "J78"
+    ]
+   },
+   "n_particle": 35429,
+   "select": {
+    "selected": 28,
+    "excluded": 72
+   }
+  },
+  "J81": {
+   "type": "remove_duplicate_particles",
+   "in": {
+    "particles": [
+     "J40",
+     "J51",
+     "J60",
+     "J68",
+     "J73",
+     "J79"
+    ]
+   },
+   "n_particle": 167851
+  },
+  "J82": {
+   "type": "class_2D_new",
+   "params": {
+    "class2D_num_full_iter_batch": 40,
+    "class2D_num_full_iter_batchsize_per_class": 200,
+    "compute_num_gpus": 4,
+    "class2D_K": 150
+   },
+   "in": {
+    "particles": [
+     "J81"
+    ]
+   },
+   "n_particle": 164139
+  },
+  "J83": {
+   "type": "import_micrographs",
+   "params": {
+    "blob_paths": "YOUR_DATA_PATH/*.mrc",
+    "psize_A": 0.7300000190734863,
+    "accel_kv": 300.0,
+    "cs_mm": 2.700000047683716,
+    "total_dose_e_per_A2": 50.0
+   },
+   "env_fields": [
+    "blob_paths"
+   ]
+  },
+  "J84": {
+   "type": "exposure_sets",
+   "in": {
+    "exposures_A": [
+     "J83"
+    ]
+   }
+  },
+  "J85": {
+   "type": "patch_ctf_estimation_multi",
+   "params": {
+    "compute_num_gpus": 4
+   },
+   "in": {
+    "exposures": [
+     "J84"
+    ]
+   }
+  },
+  "J86": {
+   "type": "patch_ctf_estimation_multi",
+   "params": {
+    "compute_num_gpus": 4
+   },
+   "in": {
+    "exposures": [
+     "J84"
+    ]
+   }
+  },
+  "J87": {
+   "type": "curate_exposures_v2",
+   "in": {
+    "exposures": [
+     "J85"
+    ]
+   }
+  },
+  "J88": {
+   "type": "curate_exposures_v2",
+   "in": {
+    "exposures": [
+     "J86"
+    ]
+   }
+  },
+  "J89": {
+   "type": "blob_picker_gpu",
+   "params": {
+    "diameter": 50,
+    "diameter_max": 250
+   },
+   "in": {
+    "micrographs": [
+     "J87"
+    ]
+   },
+   "n_particle": 5137114
+  },
+  "J90": {
+   "type": "blob_picker_gpu",
+   "params": {
+    "diameter": 50,
+    "diameter_max": 250
+   },
+   "in": {
+    "micrographs": [
+     "J88"
+    ]
+   },
+   "n_particle": 5005648
+  },
+  "J91": {
+   "type": "select_2D",
+   "in": {
+    "particles": [
+     "J82"
+    ],
+    "templates": [
+     "J82"
+    ]
+   },
+   "n_particle": 96012,
+   "select": {
+    "selected": 42,
+    "excluded": 108
+   }
+  },
+  "J92": {
+   "type": "template_picker_gpu",
+   "params": {
+    "lowpass_res_template": 10,
+    "diameter": 90
+   },
+   "in": {
+    "micrographs": [
+     "J87"
+    ],
+    "templates": [
+     "J91"
+    ]
+   },
+   "n_particle": 5199345
+  },
+  "J93": {
+   "type": "template_picker_gpu",
+   "params": {
+    "lowpass_res_template": 10,
+    "diameter": 90
+   },
+   "in": {
+    "micrographs": [
+     "J33",
+     "J88"
+    ],
+    "templates": [
+     "J91"
+    ]
+   },
+   "n_particle": 6695781
+  },
+  "J94": {
+   "type": "topaz_train",
+   "params": {
+    "exec_path": "YOUR_TOOL_PATH/topaz",
+    "par_diam": 90,
+    "num_particles": 200
+   },
+   "env_fields": [
+    "exec_path"
+   ],
+   "in": {
+    "micrographs": [
+     "J33",
+     "J87",
+     "J88"
+    ],
+    "particles": [
+     "J91"
+    ]
+   }
+  },
+  "J95": {
+   "type": "topaz_extract",
+   "params": {
+    "exec_path": "YOUR_TOOL_PATH/topaz",
+    "par_diam": 90
+   },
+   "env_fields": [
+    "exec_path"
+   ],
+   "in": {
+    "micrographs": [
+     "J94"
+    ],
+    "model": [
+     "J94"
+    ]
+   },
+   "n_particle": 1420882
+  },
+  "J96": {
+   "type": "extract_micrographs_multi",
+   "params": {
+    "compute_num_gpus": 4,
+    "box_size_pix": 300,
+    "bin_size_pix": 150
+   },
+   "in": {
+    "micrographs": [
+     "J89"
+    ],
+    "particles": [
+     "J89"
+    ]
+   }
+  },
+  "J97": {
+   "type": "extract_micrographs_multi",
+   "params": {
+    "compute_num_gpus": 4,
+    "box_size_pix": 300,
+    "bin_size_pix": 150
+   },
+   "in": {
+    "micrographs": [
+     "J90"
+    ],
+    "particles": [
+     "J90"
+    ]
+   }
+  },
+  "J98": {
+   "type": "extract_micrographs_multi",
+   "params": {
+    "compute_num_gpus": 4,
+    "box_size_pix": 300,
+    "bin_size_pix": 150
+   },
+   "in": {
+    "micrographs": [
+     "J92"
+    ],
+    "particles": [
+     "J92"
+    ]
+   }
+  },
+  "J99": {
+   "type": "extract_micrographs_multi",
+   "params": {
+    "compute_num_gpus": 4,
+    "box_size_pix": 300,
+    "bin_size_pix": 150
+   },
+   "in": {
+    "micrographs": [
+     "J93"
+    ],
+    "particles": [
+     "J93"
+    ]
+   }
+  },
+  "J100": {
+   "type": "extract_micrographs_multi",
+   "params": {
+    "compute_num_gpus": 4,
+    "box_size_pix": 300,
+    "bin_size_pix": 150
+   },
+   "in": {
+    "micrographs": [
+     "J95"
+    ],
+    "particles": [
+     "J95"
+    ]
+   }
+  },
+  "J101": {
+   "type": "particle_sets",
+   "in": {
+    "particles_A": [
+     "J96"
+    ]
+   },
+   "n_particle": 2203778
+  },
+  "J102": {
+   "type": "particle_sets",
+   "in": {
+    "particles_A": [
+     "J97"
+    ]
+   },
+   "n_particle": 2146395
+  },
+  "J103": {
+   "type": "class_2D_new",
+   "params": {
+    "class2D_K": 200,
+    "class2D_num_full_iter_batch": 30,
+    "compute_num_gpus": 4
+   },
+   "in": {
+    "particles": [
+     "J101"
+    ]
+   },
+   "n_particle": 2198807
+  },
+  "J104": {
+   "type": "class_2D_new",
+   "params": {
+    "class2D_K": 200,
+    "class2D_num_full_iter_batch": 30,
+    "compute_num_gpus": 4
+   },
+   "in": {
+    "particles": [
+     "J101"
+    ]
+   },
+   "n_particle": 2195944
+  },
+  "J105": {
+   "type": "class_2D_new",
+   "params": {
+    "class2D_K": 200,
+    "class2D_num_full_iter_batch": 30,
+    "compute_num_gpus": 4
+   },
+   "in": {
+    "particles": [
+     "J102"
+    ]
+   },
+   "n_particle": 2139872
+  },
+  "J106": {
+   "type": "class_2D_new",
+   "params": {
+    "class2D_K": 200,
+    "class2D_num_full_iter_batch": 30,
+    "compute_num_gpus": 4
+   },
+   "in": {
+    "particles": [
+     "J102"
+    ]
+   },
+   "n_particle": 2139673
+  },
+  "J107": {
+   "type": "class_2D_new",
+   "params": {
+    "class2D_K": 400,
+    "class2D_num_full_iter_batch": 40,
+    "class2D_num_full_iter_batchsize_per_class": 200,
+    "compute_num_gpus": 4
+   },
+   "in": {
+    "particles": [
+     "J100"
+    ]
+   },
+   "n_particle": 1412995
+  },
+  "J108": {
+   "type": "particle_sets",
+   "in": {
+    "particles_A": [
+     "J98"
+    ]
+   },
+   "n_particle": 2228074
+  },
+  "J109": {
+   "type": "class_2D_new",
+   "params": {
+    "class2D_K": 200,
+    "class2D_num_full_iter_batch": 30,
+    "compute_num_gpus": 4
+   },
+   "in": {
+    "particles": [
+     "J108"
+    ]
+   },
+   "n_particle": 2194001
+  },
+  "J110": {
+   "type": "class_2D_new",
+   "params": {
+    "class2D_K": 200,
+    "class2D_num_full_iter_batch": 30,
+    "compute_num_gpus": 3
+   },
+   "in": {
+    "particles": [
+     "J108"
+    ]
+   },
+   "n_particle": 2192725
+  },
+  "J111": {
+   "type": "particle_sets",
+   "in": {
+    "particles_A": [
+     "J99"
+    ]
+   },
+   "n_particle": 2873391
+  },
+  "J113": {
+   "type": "class_2D_new",
+   "params": {
+    "class2D_K": 200,
+    "class2D_num_full_iter_batch": 30,
+    "compute_num_gpus": 4
+   },
+   "in": {
+    "particles": [
+     "J111"
+    ]
+   },
+   "n_particle": 2829640
+  },
+  "J114": {
+   "type": "class_2D_new",
+   "params": {
+    "class2D_K": 200,
+    "class2D_num_full_iter_batch": 30,
+    "compute_num_gpus": 4
+   },
+   "in": {
+    "particles": [
+     "J111"
+    ]
+   },
+   "n_particle": 2831783
+  },
+  "J115": {
+   "type": "select_2D",
+   "in": {
+    "particles": [
+     "J103"
+    ],
+    "templates": [
+     "J103"
+    ]
+   },
+   "n_particle": 1664619,
+   "select": {
+    "selected": 47,
+    "excluded": 153
+   }
+  },
+  "J116": {
+   "type": "select_2D",
+   "in": {
+    "particles": [
+     "J104"
+    ],
+    "templates": [
+     "J104"
+    ]
+   },
+   "n_particle": 1429831,
+   "select": {
+    "selected": 72,
+    "excluded": 128
+   }
+  },
+  "J117": {
+   "type": "select_2D",
+   "in": {
+    "particles": [
+     "J105"
+    ],
+    "templates": [
+     "J105"
+    ]
+   },
+   "n_particle": 1602763,
+   "select": {
+    "selected": 45,
+    "excluded": 155
+   }
+  },
+  "J118": {
+   "type": "select_2D",
+   "in": {
+    "particles": [
+     "J106"
+    ],
+    "templates": [
+     "J106"
+    ]
+   },
+   "n_particle": 1460943,
+   "select": {
+    "selected": 60,
+    "excluded": 140
+   }
+  },
+  "J119": {
+   "type": "select_2D",
+   "in": {
+    "particles": [
+     "J107"
+    ],
+    "templates": [
+     "J107"
+    ]
+   },
+   "n_particle": 1023660,
+   "select": {
+    "selected": 86,
+    "excluded": 314
+   }
+  },
+  "J120": {
+   "type": "select_2D",
+   "in": {
+    "particles": [
+     "J109"
+    ],
+    "templates": [
+     "J109"
+    ]
+   },
+   "n_particle": 1526529,
+   "select": {
+    "selected": 57,
+    "excluded": 143
+   }
+  },
+  "J121": {
+   "type": "select_2D",
+   "in": {
+    "particles": [
+     "J110"
+    ],
+    "templates": [
+     "J110"
+    ]
+   },
+   "n_particle": 1596589,
+   "select": {
+    "selected": 43,
+    "excluded": 157
+   }
+  },
+  "J122": {
+   "type": "select_2D",
+   "in": {
+    "particles": [
+     "J113"
+    ],
+    "templates": [
+     "J113"
+    ]
+   },
+   "n_particle": 2140458,
+   "select": {
+    "selected": 39,
+    "excluded": 161
+   }
+  },
+  "J123": {
+   "type": "select_2D",
+   "in": {
+    "particles": [
+     "J114"
+    ],
+    "templates": [
+     "J114"
+    ]
+   },
+   "n_particle": 1961290,
+   "select": {
+    "selected": 48,
+    "excluded": 152
+   }
+  },
+  "J124": {
+   "type": "class_2D_new",
+   "params": {
+    "class2D_K": 400,
+    "class2D_max_res": 4,
+    "class2D_max_res_align": 4,
+    "class2D_num_full_iter_batch": 40,
+    "class2D_num_full_iter_batchsize_per_class": 200,
+    "compute_num_gpus": 4
+   },
+   "in": {
+    "particles": [
+     "J115",
+     "J116",
+     "J117",
+     "J118"
+    ]
+   },
+   "n_particle": 2507153
+  },
+  "J125": {
+   "type": "class_2D_new",
+   "params": {
+    "class2D_K": 400,
+    "class2D_max_res": 4,
+    "class2D_max_res_align": 4,
+    "class2D_num_full_iter_batch": 40,
+    "class2D_num_full_iter_batchsize_per_class": 200,
+    "compute_num_gpus": 4
+   },
+   "in": {
+    "particles": [
+     "J120",
+     "J121",
+     "J122",
+     "J123"
+    ]
+   },
+   "n_particle": 2803264
+  },
+  "J126": {
+   "type": "select_2D",
+   "in": {
+    "particles": [
+     "J124"
+    ],
+    "templates": [
+     "J124"
+    ]
+   },
+   "n_particle": 2188471,
+   "select": {
+    "selected": 38,
+    "excluded": 362
+   }
+  },
+  "J127": {
+   "type": "select_2D",
+   "in": {
+    "particles": [
+     "J125"
+    ],
+    "templates": [
+     "J125"
+    ]
+   },
+   "n_particle": 2492959,
+   "select": {
+    "selected": 24,
+    "excluded": 376
+   }
+  },
+  "J128": {
+   "type": "class_2D_new",
+   "params": {
+    "class2D_K": 300,
+    "class2D_max_res": 4,
+    "class2D_max_res_align": 4,
+    "class2D_num_full_iter_batch": 40,
+    "class2D_num_full_iter_batchsize_per_class": 400,
+    "compute_num_gpus": 2
+   },
+   "in": {
+    "particles": [
+     "J119",
+     "J126",
+     "J127"
+    ]
+   },
+   "n_particle": 820220
+  },
+  "J129": {
+   "type": "select_2D",
+   "in": {
+    "particles": [
+     "J128"
+    ],
+    "templates": [
+     "J128"
+    ]
+   },
+   "n_particle": 655297,
+   "select": {
+    "selected": 39,
+    "excluded": 261
+   }
+  },
+  "J138": {
+   "type": "homo_abinit",
+   "params": {
+    "abinit_K": 3
+   },
+   "in": {
+    "particles": [
+     "J129"
+    ]
+   },
+   "n_particle": 164923
+  },
+  "J139": {
+   "type": "hetero_refine",
+   "in": {
+    "particles": [
+     "J138"
+    ],
+    "volume": [
+     "J138"
+    ]
+   },
+   "n_particle": 164923
+  },
+  "J140": {
+   "type": "homo_abinit",
+   "params": {
+    "abinit_K": 4,
+    "abinit_init_res": 15,
+    "abinit_max_res": 5,
+    "abinit_minisize": 600,
+    "abinit_minisize_init": 200
+   },
+   "in": {
+    "particles": [
+     "J129"
+    ]
+   },
+   "n_particle": 164923
+  },
+  "J141": {
+   "type": "homo_abinit",
+   "params": {
+    "abinit_K": 4,
+    "abinit_init_res": 10,
+    "abinit_max_res": 4,
+    "abinit_minisize": 600,
+    "abinit_minisize_init": 200,
+    "abinit_center": false
+   },
+   "in": {
+    "particles": [
+     "J129"
+    ]
+   },
+   "n_particle": 164923
+  },
+  "J144": {
+   "type": "extract_micrographs_multi",
+   "params": {
+    "update_location": true,
+    "update_alignments3D": true,
+    "update_alignments2D": true,
+    "compute_num_gpus": 4,
+    "box_size_pix": 300
+   },
+   "in": {
+    "micrographs": [
+     "J33",
+     "J87",
+     "J88"
+    ],
+    "particles": [
+     "J139"
+    ]
+   }
+  },
+  "J152": {
+   "type": "class_2D_new",
+   "params": {
+    "class2D_K": 150,
+    "class2D_max_res": 4,
+    "class2D_max_res_align": 4,
+    "class2D_num_full_iter_batch": 30,
+    "class2D_num_full_iter_batchsize_per_class": 100,
+    "compute_num_gpus": 2
+   },
+   "in": {
+    "particles": [
+     "J129"
+    ]
+   },
+   "n_particle": 164773
+  },
+  "J153": {
+   "type": "class_2D_new",
+   "params": {
+    "class2D_K": 50,
+    "class2D_max_res": 4,
+    "class2D_max_res_align": 4,
+    "class2D_num_full_iter_batch": 30,
+    "class2D_num_full_iter_batchsize_per_class": 200,
+    "compute_num_gpus": 2
+   },
+   "in": {
+    "particles": [
+     "J144"
+    ]
+   },
+   "n_particle": 71501
+  },
+  "J154": {
+   "type": "select_2D",
+   "in": {
+    "particles": [
+     "J153"
+    ],
+    "templates": [
+     "J153"
+    ]
+   },
+   "n_particle": 52709,
+   "select": {
+    "selected": 25,
+    "excluded": 25
+   }
+  },
+  "J155": {
+   "type": "class_2D_new",
+   "params": {
+    "class2D_max_res": 4,
+    "class2D_max_res_align": 4,
+    "class2D_num_full_iter_batch": 30,
+    "class2D_num_full_iter_batchsize_per_class": 200,
+    "compute_num_gpus": 2
+   },
+   "in": {
+    "particles": [
+     "J154"
+    ]
+   },
+   "n_particle": 52705
+  },
+  "J159": {
+   "type": "topaz_train",
+   "params": {
+    "exec_path": "YOUR_TOOL_PATH/topaz",
+    "par_diam": 90,
+    "num_particles": 150
+   },
+   "env_fields": [
+    "exec_path"
+   ],
+   "in": {
+    "micrographs": [
+     "J33",
+     "J87",
+     "J88"
+    ],
+    "particles": [
+     "J154"
+    ]
+   }
+  },
+  "J183": {
+   "type": "extract_micrographs_multi",
+   "params": {
+    "update_location": true,
+    "update_alignments3D": true,
+    "update_alignments2D": true,
+    "compute_num_gpus": 4,
+    "box_size_pix": 300
+   },
+   "in": {
+    "micrographs": [
+     "J33",
+     "J87",
+     "J88"
+    ],
+    "particles": [
+     "J141"
+    ]
+   }
+  },
+  "J184": {
+   "type": "homo_reconstruct",
+   "in": {
+    "particles": [
+     "J141"
+    ]
+   },
+   "n_particle": 59605
+  },
+  "J186": {
+   "type": "nonuniform_refine_new",
+   "params": {
+    "refine_res_init": 12
+   },
+   "in": {
+    "particles": [
+     "J183"
+    ],
+    "volume": [
+     "J184"
+    ]
+   },
+   "n_particle": 59165,
+   "res_A": 3.907
+  },
+  "J194": {
+   "type": "nonuniform_refine_new",
+   "params": {
+    "refine_res_init": 12
+   },
+   "in": {
+    "volume": [
+     "J141"
+    ],
+    "particles": [
+     "J183"
+    ]
+   },
+   "n_particle": 59165,
+   "res_A": 3.52
+  },
+  "J196": {
+   "type": "new_local_refine",
+   "params": {
+    "init_r_extent": 10,
+    "init_s_extent": 5,
+    "refine_res_init": 5
+   },
+   "in": {
+    "mask": [
+     "J194"
+    ],
+    "particles": [
+     "J194"
+    ],
+    "volume": [
+     "J194"
+    ]
+   },
+   "n_particle": 59165,
+   "res_A": 3.533
+  },
+  "J197": {
+   "type": "topaz_train",
+   "params": {
+    "exec_path": "YOUR_TOOL_PATH/topaz",
+    "par_diam": 90,
+    "num_particles": 150
+   },
+   "env_fields": [
+    "exec_path"
+   ],
+   "in": {
+    "micrographs": [
+     "J33",
+     "J87",
+     "J88"
+    ],
+    "particles": [
+     "J194"
+    ]
+   }
+  },
+  "J198": {
+   "type": "topaz_extract",
+   "params": {
+    "exec_path": "YOUR_TOOL_PATH/topaz",
+    "par_diam": 90
+   },
+   "env_fields": [
+    "exec_path"
+   ],
+   "in": {
+    "micrographs": [
+     "J197"
+    ],
+    "model": [
+     "J197"
+    ]
+   },
+   "n_particle": 1038039
+  },
+  "J200": {
+   "type": "extract_micrographs_multi",
+   "params": {
+    "update_location": false,
+    "update_alignments3D": false,
+    "update_alignments2D": false,
+    "compute_num_gpus": 2,
+    "box_size_pix": 300,
+    "bin_size_pix": 150
+   },
+   "in": {
+    "micrographs": [
+     "J33",
+     "J87",
+     "J88"
+    ],
+    "particles": [
+     "J198"
+    ]
+   }
+  },
+  "J202": {
+   "type": "homo_abinit",
+   "params": {
+    "abinit_K": 6,
+    "abinit_init_res": 10,
+    "abinit_max_res": 4,
+    "abinit_minisize": 600,
+    "abinit_minisize_init": 200,
+    "abinit_center": false
+   },
+   "in": {
+    "particles": [
+     "J200"
+    ]
+   },
+   "n_particle": 1024436
+  },
+  "J214": {
+   "type": "hetero_refine",
+   "in": {
+    "particles": [
+     "J129",
+     "J202"
+    ],
+    "volume": [
+     "J194",
+     "J202"
+    ]
+   },
+   "n_particle": 1189359
+  },
+  "J215": {
+   "type": "hetero_refine",
+   "in": {
+    "volume": [
+     "J194",
+     "J202"
+    ],
+    "particles": [
+     "J214"
+    ]
+   },
+   "n_particle": 336555
+  },
+  "J216": {
+   "type": "nonuniform_refine_new",
+   "params": {
+    "refine_res_init": 7
+   },
+   "in": {
+    "particles": [
+     "J215"
+    ],
+    "volume": [
+     "J215"
+    ]
+   },
+   "n_particle": 158478,
+   "res_A": 3.404
+  },
+  "J217": {
+   "type": "nonuniform_refine_new",
+   "params": {
+    "refine_res_init": 7
+   },
+   "in": {
+    "volume": [
+     "J196"
+    ],
+    "particles": [
+     "J215"
+    ]
+   },
+   "n_particle": 158478,
+   "res_A": 3.346
+  },
+  "J219": {
+   "type": "extract_micrographs_multi",
+   "params": {
+    "compute_num_gpus": 2,
+    "box_size_pix": 300,
+    "update_location": true,
+    "update_alignments3D": true
+   },
+   "in": {
+    "micrographs": [
+     "J33",
+     "J87",
+     "J88"
+    ],
+    "particles": [
+     "J217"
+    ]
+   },
+   "n_particle": 157188
+  },
+  "J225": {
+   "type": "homo_reconstruct",
+   "in": {
+    "particles": [
+     "J219"
+    ]
+   },
+   "n_particle": 157188
+  },
+  "J226": {
+   "type": "nonuniform_refine_new",
+   "params": {
+    "refine_res_init": 7
+   },
+   "in": {
+    "particles": [
+     "J225"
+    ],
+    "volume": [
+     "J225"
+    ]
+   },
+   "n_particle": 157188,
+   "res_A": 3.237
+  },
+  "J227": {
+   "type": "class_2D_new",
+   "params": {
+    "class2D_K": 150,
+    "class2D_num_full_iter_batch": 40,
+    "class2D_max_res": 4,
+    "compute_num_gpus": 4
+   },
+   "in": {
+    "particles": [
+     "J219"
+    ]
+   },
+   "n_particle": 126258
+  },
+  "J228": {
+   "type": "select_2D",
+   "in": {
+    "particles": [
+     "J227"
+    ],
+    "templates": [
+     "J227"
+    ]
+   },
+   "n_particle": 94428,
+   "select": {
+    "selected": 60,
+    "excluded": 90
+   }
+  },
+  "J229": {
+   "type": "topaz_train",
+   "params": {
+    "exec_path": "YOUR_TOOL_PATH/topaz",
+    "par_diam": 90,
+    "num_particles": 100
+   },
+   "env_fields": [
+    "exec_path"
+   ],
+   "in": {
+    "micrographs": [
+     "J33",
+     "J87",
+     "J88"
+    ],
+    "particles": [
+     "J228",
+     "J230"
+    ]
+   }
+  },
+  "J230": {
+   "type": "select_2D",
+   "in": {
+    "particles": [
+     "J155"
+    ],
+    "templates": [
+     "J155"
+    ]
+   },
+   "n_particle": 35121,
+   "select": {
+    "selected": 20,
+    "excluded": 30
+   }
+  },
+  "J231": {
+   "type": "topaz_extract",
+   "params": {
+    "exec_path": "YOUR_TOOL_PATH/topaz",
+    "par_diam": 90
+   },
+   "env_fields": [
+    "exec_path"
+   ],
+   "in": {
+    "micrographs": [
+     "J229"
+    ],
+    "model": [
+     "J229"
+    ]
+   },
+   "n_particle": 836199
+  },
+  "J232": {
+   "type": "extract_micrographs_multi",
+   "params": {
+    "box_size_pix": 300,
+    "bin_size_pix": 150,
+    "compute_num_gpus": 2
+   },
+   "in": {
+    "micrographs": [
+     "J231"
+    ],
+    "particles": [
+     "J231"
+    ]
+   }
+  },
+  "J234": {
+   "type": "homo_abinit",
+   "params": {
+    "abinit_K": 4,
+    "abinit_num_particles": 500000
+   },
+   "in": {
+    "particles": [
+     "J232"
+    ]
+   },
+   "n_particle": 500000
+  },
+  "J235": {
+   "type": "hetero_refine",
+   "in": {
+    "volume": [
+     "J226",
+     "J234"
+    ],
+    "particles": [
+     "J234"
+    ]
+   },
+   "n_particle": 828253
+  },
+  "J241": {
+   "type": "hetero_refine",
+   "in": {
+    "particles": [
+     "J215",
+     "J234"
+    ],
+    "volume": [
+     "J226",
+     "J234"
+    ]
+   },
+   "n_particle": 986731
+  },
+  "J242": {
+   "type": "hetero_refine",
+   "in": {
+    "volume": [
+     "J226",
+     "J234"
+    ],
+    "particles": [
+     "J241"
+    ]
+   },
+   "n_particle": 390921
+  },
+  "J263": {
+   "type": "remove_duplicate_particles",
+   "in": {
+    "particles": [
+     "J242"
+    ]
+   },
+   "n_particle": 149717
+  },
+  "J265": {
+   "type": "extract_micrographs_multi",
+   "params": {
+    "update_location": true,
+    "update_alignments3D": true,
+    "box_size_pix": 300,
+    "compute_num_gpus": 2
+   },
+   "in": {
+    "micrographs": [
+     "J33",
+     "J87",
+     "J88"
+    ],
+    "particles": [
+     "J263"
+    ]
+   },
+   "n_particle": 148521
+  },
+  "J266": {
+   "type": "nonuniform_refine_new",
+   "params": {
+    "refine_res_init": 8
+   },
+   "in": {
+    "volume": [
+     "J242"
+    ],
+    "particles": [
+     "J265"
+    ]
+   },
+   "n_particle": 148521,
+   "res_A": 3.305
+  },
+  "J269": {
+   "type": "new_local_refine",
+   "in": {
+    "mask": [
+     "J266"
+    ],
+    "particles": [
+     "J266"
+    ],
+    "volume": [
+     "J266"
+    ]
+   },
+   "n_particle": 148521,
+   "res_A": 3.275
+  },
+  "J353": {
+   "type": "import_micrographs",
+   "params": {
+    "blob_paths": "YOUR_DATA_PATH/*.mrc",
+    "psize_A": 0.8240000009536743,
+    "accel_kv": 300.0,
+    "cs_mm": 2.700000047683716,
+    "total_dose_e_per_A2": 50.0
+   },
+   "env_fields": [
+    "blob_paths"
+   ]
+  },
+  "J354": {
+   "type": "exposure_sets",
+   "in": {
+    "exposures_A": [
+     "J353"
+    ]
+   }
+  },
+  "J355": {
+   "type": "patch_ctf_estimation_multi",
+   "params": {
+    "compute_num_gpus": 2
+   },
+   "in": {
+    "exposures": [
+     "J354"
+    ]
+   }
+  },
+  "J356": {
+   "type": "patch_ctf_estimation_multi",
+   "params": {
+    "compute_num_gpus": 2
+   },
+   "in": {
+    "exposures": [
+     "J354"
+    ]
+   }
+  },
+  "J357": {
+   "type": "blob_picker_gpu",
+   "params": {
+    "diameter": 70,
+    "diameter_max": 140
+   },
+   "in": {
+    "micrographs": [
+     "J355"
+    ]
+   },
+   "n_particle": 4726725
+  },
+  "J358": {
+   "type": "blob_picker_gpu",
+   "params": {
+    "diameter": 70,
+    "diameter_max": 140
+   },
+   "in": {
+    "micrographs": [
+     "J356"
+    ]
+   },
+   "n_particle": 4782759
+  },
+  "J359": {
+   "type": "extract_micrographs_multi",
+   "params": {
+    "box_size_pix": 300,
+    "bin_size_pix": 150,
+    "compute_num_gpus": 4
+   },
+   "in": {
+    "micrographs": [
+     "J357"
+    ],
+    "particles": [
+     "J357"
+    ]
+   },
+   "n_particle": 4085106
+  },
+  "J360": {
+   "type": "extract_micrographs_multi",
+   "params": {
+    "box_size_pix": 300,
+    "bin_size_pix": 150,
+    "compute_num_gpus": 3
+   },
+   "in": {
+    "micrographs": [
+     "J358"
+    ],
+    "particles": [
+     "J358"
+    ]
+   },
+   "n_particle": 4132848
+  },
+  "J361": {
+   "type": "class_2D_new",
+   "params": {
+    "class2D_K": 400,
+    "class2D_num_full_iter_batch": 30,
+    "compute_num_gpus": 4
+   },
+   "in": {
+    "particles": [
+     "J359"
+    ]
+   },
+   "n_particle": 4085054
+  },
+  "J362": {
+   "type": "class_2D_new",
+   "params": {
+    "class2D_K": 400,
+    "class2D_num_full_iter_batch": 30,
+    "compute_num_gpus": 3
+   },
+   "in": {
+    "particles": [
+     "J360"
+    ]
+   },
+   "n_particle": 4132771
+  },
+  "J363": {
+   "type": "curate_exposures_v2",
+   "in": {
+    "exposures": [
+     "J355"
+    ]
+   }
+  },
+  "J364": {
+   "type": "curate_exposures_v2",
+   "in": {
+    "exposures": [
+     "J356"
+    ]
+   }
+  },
+  "J365": {
+   "type": "create_templates",
+   "params": {
+    "n_templates": 300
+   },
+   "in": {
+    "volume": [
+     "J269"
+    ]
+   }
+  },
+  "J366": {
+   "type": "template_picker_gpu",
+   "params": {
+    "diameter": 100
+   },
+   "in": {
+    "micrographs": [
+     "J363",
+     "J364"
+    ],
+    "templates": [
+     "J365"
+    ]
+   },
+   "n_particle": 12738724
+  },
+  "J367": {
+   "type": "extract_micrographs_multi",
+   "params": {
+    "box_size_pix": 300,
+    "bin_size_pix": 150,
+    "compute_num_gpus": 2
+   },
+   "in": {
+    "micrographs": [
+     "J366"
+    ],
+    "particles": [
+     "J366"
+    ]
+   },
+   "n_particle": 11177418
+  },
+  "J368": {
+   "type": "particle_sets",
+   "in": {
+    "particles_A": [
+     "J367"
+    ]
+   },
+   "n_particle": 5588709
+  },
+  "J370": {
+   "type": "class_2D_new",
+   "params": {
+    "class2D_K": 400,
+    "class2D_max_res": 4,
+    "class2D_max_res_align": 4,
+    "class2D_num_full_iter_batch": 40,
+    "class2D_num_full_iter_batchsize_per_class": 400,
+    "compute_num_gpus": 2
+   },
+   "in": {
+    "particles": [
+     "J368"
+    ]
+   },
+   "n_particle": 5542088
+  },
+  "J371": {
+   "type": "class_2D_new",
+   "params": {
+    "class2D_K": 400,
+    "class2D_max_res": 4,
+    "class2D_max_res_align": 4,
+    "class2D_num_full_iter_batch": 40,
+    "class2D_num_full_iter_batchsize_per_class": 400,
+    "compute_num_gpus": 2
+   },
+   "in": {
+    "particles": [
+     "J368"
+    ]
+   },
+   "n_particle": 5548930
+  },
+  "J372": {
+   "type": "select_2D",
+   "in": {
+    "particles": [
+     "J361"
+    ],
+    "templates": [
+     "J361"
+    ]
+   },
+   "n_particle": 3469185,
+   "select": {
+    "selected": 41,
+    "excluded": 359
+   }
+  },
+  "J373": {
+   "type": "select_2D",
+   "in": {
+    "particles": [
+     "J362"
+    ],
+    "templates": [
+     "J362"
+    ]
+   },
+   "n_particle": 3669841,
+   "select": {
+    "selected": 24,
+    "excluded": 376
+   }
+  },
+  "J374": {
+   "type": "class_2D_new",
+   "params": {
+    "class2D_K": 300,
+    "class2D_max_res": 4,
+    "class2D_max_res_align": 4,
+    "class2D_num_full_iter_batch": 40,
+    "class2D_num_full_iter_batchsize_per_class": 400,
+    "compute_num_gpus": 2
+   },
+   "in": {
+    "particles": [
+     "J372",
+     "J373"
+    ]
+   },
+   "n_particle": 1078777
+  },
+  "J375": {
+   "type": "select_2D",
+   "in": {
+    "particles": [
+     "J374"
+    ],
+    "templates": [
+     "J374"
+    ]
+   },
+   "n_particle": 605398,
+   "select": {
+    "selected": 123,
+    "excluded": 177
+   }
+  },
+  "J376": {
+   "type": "select_2D",
+   "in": {
+    "particles": [
+     "J370"
+    ],
+    "templates": [
+     "J370"
+    ]
+   },
+   "n_particle": 4847737,
+   "select": {
+    "selected": 30,
+    "excluded": 370
+   }
+  },
+  "J377": {
+   "type": "select_2D",
+   "in": {
+    "particles": [
+     "J371"
+    ],
+    "templates": [
+     "J371"
+    ]
+   },
+   "n_particle": 4972425,
+   "select": {
+    "selected": 23,
+    "excluded": 377
+   }
+  },
+  "J378": {
+   "type": "class_2D_new",
+   "params": {
+    "class2D_K": 300,
+    "class2D_max_res": 4,
+    "class2D_num_full_iter_batch": 40,
+    "class2D_num_full_iter_batchsize_per_class": 200,
+    "compute_num_gpus": 4
+   },
+   "in": {
+    "particles": [
+     "J375"
+    ]
+   },
+   "n_particle": 605394
+  },
+  "J379": {
+   "type": "select_2D",
+   "in": {
+    "particles": [
+     "J378"
+    ],
+    "templates": [
+     "J378"
+    ]
+   },
+   "n_particle": 399529,
+   "select": {
+    "selected": 58,
+    "excluded": 242
+   }
+  },
+  "J380": {
+   "type": "class_2D_new",
+   "params": {
+    "class2D_K": 300,
+    "class2D_max_res": 4,
+    "class2D_max_res_align": 4,
+    "class2D_num_full_iter_batch": 40,
+    "class2D_num_full_iter_batchsize_per_class": 400,
+    "compute_num_gpus": 2
+   },
+   "in": {
+    "particles": [
+     "J376",
+     "J377"
+    ]
+   },
+   "n_particle": 1267594
+  },
+  "J381": {
+   "type": "topaz_train",
+   "params": {
+    "exec_path": "YOUR_TOOL_PATH/topaz",
+    "par_diam": 100,
+    "num_particles": 300
+   },
+   "env_fields": [
+    "exec_path"
+   ],
+   "in": {
+    "micrographs": [
+     "J355",
+     "J356"
+    ],
+    "particles": [
+     "J379"
+    ]
+   }
+  },
+  "J382": {
+   "type": "topaz_extract",
+   "params": {
+    "exec_path": "YOUR_TOOL_PATH/topaz",
+    "par_diam": 100
+   },
+   "env_fields": [
+    "exec_path"
+   ],
+   "in": {
+    "micrographs": [
+     "J381"
+    ],
+    "model": [
+     "J381"
+    ]
+   },
+   "n_particle": 1842833
+  },
+  "J383": {
+   "type": "homo_abinit",
+   "params": {
+    "abinit_K": 4,
+    "abinit_max_res": 4,
+    "abinit_init_res": 40,
+    "abinit_center": false,
+    "abinit_minisize_init": 300,
+    "abinit_minisize": 1000,
+    "abinit_minisize_epsilon": 0.005
+   },
+   "in": {
+    "particles": [
+     "J379"
+    ]
+   },
+   "n_particle": 205865
+  },
+  "J384": {
+   "type": "nonuniform_refine_new",
+   "params": {
+    "refine_res_init": 7
+   },
+   "in": {
+    "particles": [
+     "J383"
+    ],
+    "volume": [
+     "J383"
+    ]
+   },
+   "n_particle": 67215,
+   "res_A": 3.426
+  },
+  "J385": {
+   "type": "nonuniform_refine_new",
+   "params": {
+    "refine_res_init": 7
+   },
+   "in": {
+    "particles": [
+     "J383"
+    ],
+    "volume": [
+     "J383"
+    ]
+   },
+   "n_particle": 61691,
+   "res_A": 3.622
+  },
+  "J387": {
+   "type": "extract_micrographs_multi",
+   "params": {
+    "compute_num_gpus": 4,
+    "box_size_pix": 300,
+    "bin_size_pix": 150
+   },
+   "in": {
+    "micrographs": [
+     "J382"
+    ],
+    "particles": [
+     "J382"
+    ]
+   },
+   "n_particle": 1828594
+  },
+  "J388": {
+   "type": "select_2D",
+   "in": {
+    "particles": [
+     "J380"
+    ],
+    "templates": [
+     "J380"
+    ]
+   },
+   "n_particle": 783423,
+   "select": {
+    "selected": 114,
+    "excluded": 186
+   }
+  },
+  "J389": {
+   "type": "extract_micrographs_multi",
+   "params": {
+    "update_location": true,
+    "update_alignments3D": true,
+    "update_alignments2D": true,
+    "compute_num_gpus": 4,
+    "box_size_pix": 300
+   },
+   "in": {
+    "micrographs": [
+     "J355",
+     "J356"
+    ],
+    "particles": [
+     "J385"
+    ]
+   },
+   "n_particle": 61193
+  },
+  "J390": {
+   "type": "extract_micrographs_multi",
+   "params": {
+    "update_location": true,
+    "update_alignments3D": true,
+    "update_alignments2D": true,
+    "compute_num_gpus": 4,
+    "box_size_pix": 300
+   },
+   "in": {
+    "micrographs": [
+     "J355",
+     "J356"
+    ],
+    "particles": [
+     "J384"
+    ]
+   },
+   "n_particle": 66685
+  },
+  "J391": {
+   "type": "nonuniform_refine_new",
+   "params": {
+    "refine_res_init": 10
+   },
+   "in": {
+    "volume": [
+     "J383"
+    ],
+    "particles": [
+     "J389",
+     "J390"
+    ]
+   },
+   "n_particle": 127878,
+   "res_A": 2.934
+  },
+  "J392": {
+   "type": "homo_abinit",
+   "params": {
+    "abinit_K": 5
+   },
+   "in": {
+    "particles": [
+     "J388"
+    ]
+   }
+  },
+  "J394": {
+   "type": "homo_abinit",
+   "params": {
+    "abinit_K": 5,
+    "abinit_num_particles": 50000
+   },
+   "in": {
+    "particles": [
+     "J388"
+    ]
+   },
+   "n_particle": 733423
+  },
+  "J395": {
+   "type": "nonuniform_refine_new",
+   "params": {
+    "refine_res_init": 7
+   },
+   "in": {
+    "particles": [
+     "J384",
+     "J385"
+    ],
+    "volume": [
+     "J384"
+    ]
+   },
+   "n_particle": 128906,
+   "res_A": 3.41
+  },
+  "J396": {
+   "type": "new_local_refine",
+   "params": {
+    "init_r_extent": 10,
+    "init_s_extent": 5,
+    "refine_res_init": 8
+   },
+   "in": {
+    "mask": [
+     "J391"
+    ],
+    "particles": [
+     "J391"
+    ],
+    "volume": [
+     "J391"
+    ]
+   },
+   "n_particle": 127878,
+   "res_A": 2.908
+  },
+  "J398": {
+   "type": "remove_duplicate_particles",
+   "in": {
+    "particles": [
+     "J379",
+     "J387",
+     "J388"
+    ]
+   },
+   "n_particle": 2330928
+  },
+  "J399": {
+   "type": "hetero_refine",
+   "in": {
+    "volume": [
+     "J391",
+     "J394"
+    ],
+    "particles": [
+     "J398"
+    ]
+   },
+   "n_particle": 2330928
+  },
+  "J400": {
+   "type": "hetero_refine",
+   "in": {
+    "volume": [
+     "J391",
+     "J394"
+    ],
+    "particles": [
+     "J399"
+    ]
+   },
+   "n_particle": 566991
+  },
+  "J401": {
+   "type": "hetero_refine",
+   "in": {
+    "volume": [
+     "J391",
+     "J394"
+    ],
+    "particles": [
+     "J400"
+    ]
+   },
+   "n_particle": 211430
+  },
+  "J402": {
+   "type": "extract_micrographs_multi",
+   "params": {
+    "update_location": true,
+    "update_alignments3D": true,
+    "box_size_pix": 300
+   },
+   "in": {
+    "micrographs": [
+     "J355",
+     "J356"
+    ],
+    "particles": [
+     "J401"
+    ]
+   },
+   "n_particle": 139555
+  },
+  "J403": {
+   "type": "nonuniform_refine_new",
+   "params": {
+    "refine_res_init": 15
+   },
+   "in": {
+    "volume": [
+     "J401"
+    ],
+    "particles": [
+     "J402"
+    ]
+   },
+   "n_particle": 139555,
+   "res_A": 2.68
+  },
+  "J404": {
+   "type": "new_local_refine",
+   "params": {
+    "init_r_extent": 10,
+    "init_s_extent": 5,
+    "refine_res_init": 8
+   },
+   "in": {
+    "mask": [
+     "J403"
+    ],
+    "particles": [
+     "J403"
+    ],
+    "volume": [
+     "J403"
+    ]
+   },
+   "n_particle": 139555,
+   "res_A": 2.657
+  },
+  "J405": {
+   "type": "remove_duplicate_particles",
+   "in": {
+    "particles": [
+     "J389",
+     "J390",
+     "J402"
+    ]
+   },
+   "n_particle": 225549
+  },
+  "J406": {
+   "type": "nonuniform_refine_new",
+   "params": {
+    "refine_res_init": 15
+   },
+   "in": {
+    "volume": [
+     "J401"
+    ],
+    "particles": [
+     "J405"
+    ]
+   },
+   "n_particle": 225549,
+   "res_A": 2.717
+  },
+  "J407": {
+   "type": "new_local_refine",
+   "params": {
+    "init_r_extent": 10,
+    "init_s_extent": 5,
+    "refine_res_init": 8
+   },
+   "in": {
+    "mask": [
+     "J406"
+    ],
+    "particles": [
+     "J406"
+    ],
+    "volume": [
+     "J406"
+    ]
+   },
+   "n_particle": 225549,
+   "res_A": 2.696
+  }
+ }
+}
